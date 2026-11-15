@@ -1,10 +1,49 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cherrydale Point · Management</title><style>
 :root{font-family:system-ui,-apple-system,sans-serif;color-scheme:dark;background:#08142a;color:#e8f5ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#16365c,#08142a 60%);min-height:100vh}header{padding:20px max(16px,calc((100vw - 1100px)/2));border-bottom:1px solid #3c5674;background:#0a1931d9;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1{font-size:clamp(21px,4vw,30px);margin:5px 0}h2{font-size:20px;margin:0 0 16px}h3{margin:8px 0}small,.muted{color:#a7c4de}.tag{font-size:11px;color:#6fd6ff;font-weight:800;letter-spacing:.09em}main{max-width:1100px;margin:auto;padding:20px 15px 70px}.card{background:#152d4d;border:1px solid #375578;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 12px 40px #0002}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.metric{background:#203c60;border-radius:13px;padding:15px}.metric b{font-size:23px;display:block;margin-top:8px}.metrics4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.metrics4 .metric{padding:9px;text-align:center}.metrics4 b{font-size:clamp(12px,2vw,17px)}button{cursor:pointer;background:#087ebc;border:1px solid #4ca8d3;color:#fff;border-radius:10px;padding:11px 14px;font-weight:700}button:hover{background:#07649b}button:disabled{opacity:.45;cursor:not-allowed}input,select{border:1px solid #58799b;background:#0d223c;color:#fff;border-radius:9px;padding:11px;max-width:100%;font:inherit}input[type=checkbox]{width:19px;height:19px}.field{display:grid;gap:6px;margin:12px 0}.field input{width:100%}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.space{justify-content:space-between}.nav{display:flex;gap:8px;overflow-x:auto;margin-bottom:17px;padding-bottom:3px}.nav button{white-space:nowrap;background:#173454}.nav button.active{background:#087ebc}.hidden,[hidden]{display:none!important}.staff{width:100%;text-align:left;background:#1b395b;border:1px solid #4a6686;padding:15px;margin:7px 0}.staff strong{font-size:16px}.section{display:none}.section.active{display:block}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px 6px;text-align:left;border-bottom:1px solid #385472}th{color:#a6c4df}td input{width:90px;padding:7px}.table-scroll{overflow-x:auto}#login{position:fixed;inset:0;background:#08142a;display:grid;place-items:center;z-index:50;padding:18px}#login .card{width:min(100%,430px)}#notice{position:sticky;bottom:15px;background:#164a57;border:1px solid #57bdb9;border-radius:12px;padding:12px;display:none;margin:12px 0;z-index:5}.pill{background:#274869;border-radius:50px;padding:5px 9px;font-size:12px}.warning{color:#f5d27e}iframe{width:100%;height:78vh;border:1px solid #476585;border-radius:12px;background:#fff}.subtle{font-size:12px;color:#9fbad6}.actions{display:flex;gap:8px;flex-wrap:wrap}#previewPanel{margin-top:14px}@media(max-width:580px){.card{padding:13px}.metrics4 .metric{padding:6px}.metrics4 small{font-size:10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Flat AT&T-blue Liquid Glass home dashboard */
+:root{--glass-border:#6489ad;--glass-bg:#183758;--accent-blue:#00a8e8}
+body{background:radial-gradient(ellipse at 75% -15%,#0c4276 0%,#081b35 42%,#041125 100%);background-attachment:fixed}
+header{background:linear-gradient(120deg,rgba(7,28,54,.94),rgba(12,47,81,.84));border-bottom:1px solid #456d92;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+header h1{font-size:clamp(24px,5vw,35px);letter-spacing:-.035em}
+header .tag{color:#79cfff}
+.card{background:rgba(23,52,82,.83);border:1px solid rgba(119,160,200,.42);box-shadow:0 5px 22px #0002;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.nav{gap:7px}.nav button{background:rgba(27,59,92,.8);border-color:#42688e}.nav button.active{background:#096ba5}
+.home-banner{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 18px;margin-bottom:17px;border:1px solid #4c81ae;border-radius:18px;background:rgba(15,45,76,.76);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.home-banner strong{font-size:15px}.home-banner small{font-size:12px}
+.home-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.home-tile{position:relative;min-height:206px;display:flex;flex-direction:column;text-align:left;align-items:stretch;padding:19px 20px 15px;border-radius:22px;border:1px solid rgba(139,188,225,.7);background:linear-gradient(155deg,rgba(49,91,129,.82),rgba(12,40,70,.88) 65%);color:#fff;box-shadow:inset 0 1px rgba(233,248,255,.16),0 5px 18px #0002;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);transition:transform .15s,border-color .15s}
+.home-tile:hover,.home-tile:focus-visible{background:linear-gradient(155deg,rgba(58,107,150,.9),rgba(13,49,84,.94));border-color:#b0d8f6;transform:translateY(-1px)}
+.home-tile:focus-visible{outline:2px solid #d0edff;outline-offset:3px}
+.home-tile .tile-icon{width:40px;height:40px;display:flex;align-items:center;justify-content:flex-start;color:#e3f3ff;font-size:32px;font-weight:500;line-height:1}
+.home-tile .tile-icon svg{width:38px;height:38px;stroke:currentColor;stroke-width:1.7;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.home-tile .tile-title{font-size:clamp(17px,2.6vw,23px);font-weight:800;line-height:1.12;margin:11px 24px 7px 0;letter-spacing:-.025em}
+.home-tile .tile-desc{font-size:clamp(12px,1.7vw,15px);line-height:1.38;color:#dcecf9;font-weight:400}
+.home-tile .tile-arrow{position:absolute;right:17px;top:46%;font-size:27px;font-weight:300;color:#d4e9f9}
+.home-tile .tile-foot{margin-top:auto;border-top:1px solid rgba(171,205,231,.28);padding-top:10px;font-size:13px;color:#dcefff;min-height:28px}
+.home-tile .tile-foot b{font-size:19px;color:white}
+.home-tile .tile-foot .split{display:flex;justify-content:space-between;gap:10px}
+.home-tile .tile-chip{position:absolute;top:19px;right:15px;padding:5px 9px;border:1px solid #7eaccf;border-radius:99px;background:#0c3659b8;font-size:11px;color:#e2f1fc;font-weight:700}
+.home-tile .tile-chip.attention{border-color:#f1c66b;color:#ffe2a2}
+.home-tile[aria-disabled=true]{cursor:default;opacity:.78}
+.home-tile[aria-disabled=true]:hover{transform:none}
+.home-tile .tile-foot:empty{display:none}
+.home-tile:has(.tile-foot:empty){min-height:190px}
+.home-bottom{margin:18px 0 6px;padding:14px;border:1px solid #436d92;border-radius:16px;background:rgba(18,48,78,.7);display:flex;justify-content:space-around;gap:10px;flex-wrap:wrap;font-size:12px;color:#d6e7f6}
+.home-bottom b{display:block;color:#fff;font-size:13px}
+.home-back{margin:0 0 15px;background:#163f68;border-color:#668db1}
+@media(min-width:900px){.home-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.home-tile{min-height:240px;padding:18px 15px}.home-tile .tile-title{font-size:19px}.home-tile .tile-desc{font-size:13px}.home-tile .tile-chip{position:static;align-self:flex-start;margin-top:10px}.home-tile .tile-arrow{right:9px}}
+@media(max-width:580px){main{padding:14px 12px 70px}header{padding:16px 14px}.home-grid{gap:10px}.home-tile{min-height:200px;padding:15px 13px 13px;border-radius:19px}.home-tile .tile-title{font-size:17px;margin:8px 12px 6px 0}.home-tile .tile-desc{font-size:12px}.home-tile .tile-icon,.home-tile .tile-icon svg{width:31px;height:31px}.home-tile .tile-arrow{font-size:21px;right:10px}.home-tile .tile-chip{position:static;align-self:flex-start;margin-top:7px;font-size:10px}.home-tile .tile-foot{font-size:11px}.home-tile .tile-foot b{font-size:15px}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body>
 <div id="login"><div class="card"><div class="tag">CHERRYDALE POINT · OWS306</div><h1>Management Sign In</h1><p class="muted">Admin accounts only</p><form id="loginForm" onsubmit="return false"><label class="field">Email<input id="email" type="email" required autocomplete="username"></label><label class="field">Password<input id="password" type="password" required autocomplete="current-password"></label><button type="submit">Sign In</button></form><p id="loginError" class="warning"></p></div></div>
 <header><div><div class="tag">ONE WIRELESS SOLUTION · STORE #306</div><h1>Management Center</h1><small id="identity">Cherrydale Point</small></div><button id="logout">Sign Out</button></header>
-<main><div class="nav" id="nav"><button class="active" data-page="overview">Store Overview</button><button data-page="team">Team Dashboard</button><button data-page="reports">Report Center</button><button data-page="accounts">User Accounts</button><button data-page="settings">Settings</button><button data-page="payouts">Payout Center</button></div>
-<section id="overview" class="section active"><div class="grid" id="storeMetrics"></div><div class="card"><h2>Store Performance</h2><p class="muted">Totals from the latest approved collective report. These are not employee AGT/ADT targets.</p><div id="storeBreakdown"></div></div><div class="card"><h2>Team Snapshot</h2><div id="overviewStaff"></div></div></section>
+<main><div class="nav" id="nav"><button class="active" data-page="home">Home</button><button data-page="overview">Store Overview</button><button data-page="team">Team Dashboard</button><button data-page="reports">Report Center</button><button data-page="accounts">User Accounts</button><button data-page="settings">Settings</button><button data-page="payouts">Payout Center</button></div>
+<section id="home" class="section active">
+ <div class="home-banner"><strong>Cherrydale Point OWS306</strong><small id="homeSystem">Management dashboard · Connected data</small></div>
+ <div class="home-grid" id="homeGrid"></div>
+ <div class="home-bottom"><span><b>Store</b>Cherrydale Point OWS306</span><span><b>Current period</b><span id="homePeriod">—</span></span><span><b>Employees</b><span id="homePeople">—</span></span><span><b>Latest approved report</b><span id="homeReportDate">—</span></span></div>
+</section>
+<section id="overview" class="section"><div class="grid" id="storeMetrics"></div><div class="card"><h2>Store Performance</h2><p class="muted">Totals from the latest approved collective report. These are not employee AGT/ADT targets.</p><div id="storeBreakdown"></div></div><div class="card"><h2>Team Snapshot</h2><div id="overviewStaff"></div></div></section>
 <section id="team" class="section"><div class="card"><h2>Employee Performance · GP / Voice / INT / HTP</h2><div id="staffList"></div></div><div id="employeeDetail" class="card hidden"><div class="row space"><h2 id="detailName">Employee Dashboard</h2><button id="closeDetail">Close</button></div><div id="detailMetrics"></div><p class="muted">Management detail view: official AGT/ADT calculations are preserved. The full pixel-identical Employee App preview is not implemented in this build.</p><div id="detailOfficial"></div><h3>Shift history</h3><div id="detailShifts"></div><div class="row"><label>Correct shift date <input id="fixDate" type="date"></label><button id="markWorked">Mark Worked</button><button id="markMissed">Remove Shift</button></div></div></section>
 <section id="reports" class="section"><div class="card"><h2>Collective KPI Report</h2><p class="muted">Upload one store-wide Sales Performance Report. Review every employee's values before publishing. No data changes until you approve.</p><label class="field">PDF report<input type="file" id="pdf" accept=".pdf,application/pdf"></label><p id="parseStatus" class="muted"></p><div class="row"><label>Report start <input type="date" id="start"></label><label>Report end <input type="date" id="end"></label></div><div id="review" hidden><h3>Review and correct extracted employee rows</h3><p class="warning">Verify names, UIDs and every KPI against the PDF. If extraction is incomplete, enter missing values manually. Do not publish until verified.</p><div class="table-scroll"><table><thead><tr><th>UID</th><th>Name</th><th>GP</th><th>Voice</th><th>UP</th><th>CRU</th><th>FN</th><th>INT</th><th>OPPS</th><th>Events</th><th>APO</th><th>HTP</th></tr></thead><tbody id="reviewRows"></tbody></table></div><button id="publish">Approve &amp; Publish</button></div></div><div class="card"><h2>Published Reports</h2><div id="reportHistory"></div></div></section>
 <section id="accounts" class="section"><div class="card"><h2>User Account Management</h2><p class="muted">Admin or Employee role. Create logins using a secure Edge Function. No service-role secret is ever included in this website.</p><div id="accountList"></div><h3>Invite team member</h3><form id="inviteForm"><div class="grid"><label class="field">Full name<input id="newName" required></label><label class="field">AT&amp;T UID<input id="newUid" required></label><label class="field">Email<input id="newEmail" type="email" required></label><label class="field">Permission<select id="newRole"><option value="employee">Employee</option><option value="admin">Admin</option></select></label></div><button type="submit">Send Invitation</button></form></div></section>
@@ -29,14 +68,57 @@ const flash=t=>{$('notice').textContent=t;$('notice').style.display='block';setT
 const values=r=>r?.actuals||{},name=id=>profiles.find(p=>p.user_id===id)?.full_name||'Unknown';
 const latest=id=>kpis.filter(r=>r.employee_id===id).sort((a,b)=>b.published_at.localeCompare(a.published_at))[0];
 const total=id=>shifts.filter(s=>s.employee_id===id&&s.state==='active'&&s.shift_date.startsWith(new Date().toLocaleDateString('en-CA',{timeZone:'America/New_York'}).slice(0,7))).length;
-function showPage(p){document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===p));document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));}
+function showPage(p){document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===p));document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));window.scrollTo({top:0,behavior:'instant'});}
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
 // Exact original app calculation function and status logic; do not modify without approval.
 const KPI_CONFIG=[{key:'VGA',name:'Voice Gross Adds',type:'daily',dailyTarget:1.25,groupSpan:1,groupTarget:1.25},{key:'UP',name:'Upgrades',type:'daily',dailyTarget:1.1,groupSpan:1,groupTarget:1.1},{key:'CRU',name:'Corporate Responsibility User',type:'grouped',dailyTarget:.25,groupSpan:4,groupTarget:1},{key:'FN',name:'FirstNet',type:'grouped',dailyTarget:1/6,groupSpan:6,groupTarget:1},{key:'INT',name:'Internet (Internet Air + HSI)',type:'grouped',dailyTarget:.5,groupSpan:2,groupTarget:1},{key:'OPPS',name:'Opportunities',type:'daily',dailyTarget:2.35,groupSpan:1,groupTarget:2.35},{key:'EVENTS',name:'Premium Out-of-Store Events',type:'grouped',dailyTarget:.25,groupSpan:4,groupTarget:1}];
 function statusFor(target,actual,variance,base){if(variance<=1e-9)return{code:'green',label:'Met'};const ratio=target>0?actual/target:0;if(ratio>=.75||variance<=base)return{code:'yellow',label:'Almost There'};return{code:'red',label:'Not Met'}}
 function compute(shifts,actuals){const s=Math.max(0,Number(shifts)||0);return KPI_CONFIG.map(m=>{const actual=Math.max(0,Number(actuals[m.key])||0);let target,base;if(m.type==='daily'){target=m.dailyTarget*s;base=m.dailyTarget}else{target=m.groupTarget*(s/m.groupSpan);base=m.groupTarget}const variance=target-actual,adjusted=variance>1e-9?variance+base:0;return{key:m.key,name:m.name,actual,target,variance,adjusted,status:statusFor(target,actual,variance,base)}})}
 function snap(p){const r=latest(p.user_id),a=values(r);return `<button class="staff" data-employee="${esc(p.user_id)}"><div class="row space"><strong>${esc(p.full_name)}</strong><span class="pill">${esc(p.att_uid||'No UID')}</span></div><div class="metrics4">${[['GP',r?.gp==null?'—':money(r.gp)],['Voice',r?.actuals?.VGA??'—'],['INT',r?.actuals?.INT??'—'],['HTP',r?.htp??'—']].map(([label,value])=>`<div class="metric"><small>${label}</small><b>${esc(value)}</b></div>`).join('')}</div><small>Open employee dashboard →</small></button>`}
-function render(){const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).join('');$('overviewStaff').innerHTML=people.map(snap).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));
+
+const homeIcons={
+overview:'<path d="M4 20V12m6 8V7m6 13V4m6 16H2"/>',
+reports:'<path d="M12 16V3m-5 5 5-5 5 5"/><path d="M4 16v4h16v-4"/>',
+team:'<circle cx="9" cy="8" r="3"/><path d="M2 20v-2a7 7 0 0 1 14 0v2M17 5a3 3 0 0 1 0 6m1 4a5 5 0 0 1 4 5"/>',
+goals:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/><path d="M12 12l7-7"/>',
+fast:'<path d="M13 2 5 13h7l-1 9 8-12h-7z"/>',
+history:'<path d="M4 6h16v4H4zM6 10v11h12V10M10 15h4"/>',
+accounts:'<circle cx="9" cy="8" r="3"/><path d="M3 20v-2a6 6 0 0 1 12 0v2M19 8v8m-4-4h8"/>',
+settings:'<circle cx="12" cy="12" r="3"/><path d="M10 2h4l1 3 3 1 3-1 2 4-2 2v2l2 2-2 4-3-1-3 1-1 3h-4l-1-3-3-1-3 1-2-4 2-2v-2L1 9l2-4 3 1 3-1z"/>',
+sync:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v7c0 4 18 4 18 0V5M3 12v7c0 4 18 4 18 0v-7"/>',
+payouts:'<rect x="2" y="5" width="20" height="15" rx="2"/><path d="M2 10h20M6 16h5"/>'
+};
+function renderHome(){
+ const people=profiles.filter(p=>p.active),most=reports.filter(r=>r.status==='approved'||r.status==='published').sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0]||reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
+ const list=most?kpis.filter(r=>r.report_id===most.id):[];
+ const gp=list.reduce((a,r)=>a+n(r.gp),0),voice=list.reduce((a,r)=>a+n(values(r).VGA),0);
+ const reportDate=most?.report_end||'No approved report';
+ const current=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'America/New_York'});
+ const tiles=[
+ {id:'overview',title:'Store Overview',desc:'Combined MTD performance and store progress',foot:most?'<div class="split"><span>GP (MTD)<br><b>'+money(gp)+'</b></span><span>Voice (MTD)<br><b>'+voice+'</b></span></div>':'No approved KPI data yet',chip:'MTD'},
+ {id:'reports',title:'Upload KPI Report',desc:'Import and approve the Sales Performance Report',foot:most?'Latest approved: '+esc(reportDate):'Awaiting first approved report'},
+ {id:'team',title:'Team Snapshots',desc:'View and manage each employee’s MTD performance',foot:people.length+' active employee'+(people.length===1?'':'s')},
+ {id:'goals',title:'Goals & Targets',desc:'Store goals and performance targets',foot:'Settings & target configuration',page:'settings'},
+ {id:'fast',title:'Fast Start',desc:'33% due by day 7 · Separate from official AGT/ADT',chip:'Coming Soon',disabled:true},
+ {id:'history',title:'Report History',desc:'View past approved reports and reporting periods',foot:reports.length+' saved report'+(reports.length===1?'':'s'),page:'reports'},
+ {id:'accounts',title:'Employee Management',desc:'Add, edit and manage employee accounts',foot:people.length+' active · '+profiles.filter(p=>!p.active).length+' inactive'},
+ {id:'settings',title:'App Settings',desc:'Store details and system preferences'},
+ {id:'sync',title:'Sync & Data',desc:'Shared Supabase data and report status',foot:'Latest loaded data · '+esc(reportDate),page:'settings'},
+ {id:'payouts',title:'Payout Center',desc:'Commission, incentives and payout tracking',chip:'Not enabled'}
+ ];
+ $('homeGrid').innerHTML=tiles.map(t=>'<button type="button" class="home-tile" data-home="'+esc(t.id)+'" '+(t.disabled?'aria-disabled="true"':'')+'><span class="tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+homeIcons[t.id]+'</svg></span><span class="tile-title">'+esc(t.title)+'</span><span class="tile-desc">'+esc(t.desc)+'</span>'+(t.chip?'<span class="tile-chip">'+esc(t.chip)+'</span>':'')+(t.disabled?'':'<span class="tile-arrow" aria-hidden="true">›</span>')+'<span class="tile-foot">'+(t.foot||'')+'</span></button>').join('');
+ $('homeGrid').querySelectorAll('[data-home]').forEach(btn=>btn.onclick=()=>{
+  const t=tiles.find(x=>x.id===btn.dataset.home);
+  if(t.disabled)return;
+  showPage(t.page||({history:'reports',goals:'settings',sync:'settings'}[t.id]||t.id));
+ });
+ $('homePeriod').textContent=current;
+ $('homePeople').textContent=people.length+' active';
+ $('homeReportDate').textContent=reportDate;
+ $('homeSystem').textContent=most?'Latest report: '+reportDate:'No approved report yet';
+}
+
+function render(){renderHome();const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).join('');$('overviewStaff').innerHTML=people.map(snap).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));
 const most=reports.slice().sort((a,b)=>b.report_end.localeCompare(a.report_end))[0];const list=kpis.filter(r=>r.report_id===most?.id);const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0);
 $('storeMetrics').innerHTML=[['Store Gross Profit',money(gp)],['Postpaid Voice',sum('VGA')],['Internet',sum('INT')],['Team Members',people.length+' / 10']].map(([label,value])=>`<div class="metric"><small>${label}</small><b>${value}</b></div>`).join('');$('storeBreakdown').textContent=most?'Latest report: '+most.report_start+' through '+most.report_end+' · '+list.length+' employees.':'No collective report published yet.';
 $('reportHistory').innerHTML=reports.slice().sort((a,b)=>b.created_at.localeCompare(a.created_at)).map(r=>`<p>${esc(r.report_start)} – ${esc(r.report_end)} · ${esc(r.status)}</p>`).join('')||'No reports yet.';
@@ -67,6 +149,7 @@ async function activate(user){
   me=data;
   $('identity').textContent=data.full_name+' · Admin';
   $('login').hidden=true;
+  showPage('home');
   $('password').value='';
   try{await load()}catch(e){flash('Database setup incomplete: '+e.message);}
 }
