@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Cherrydale Point OWS306 — Daily Progress & Breakdown</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<style>
+:root{--navy:#0f172a;--deep:#020617;--edge:#334155;--muted:#cbd5e1;--green:#34d399;--yellow:#fbbf24;--red:#f87171;--cyan:#38bdf8}*{box-sizing:border-box}html{font-size:16px}body{margin:0;background:#e2e8f0;color:#fff;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.45;min-width:0}header{background:var(--navy);border-bottom:1px solid var(--edge);padding:calc(16px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) 16px max(16px,env(safe-area-inset-left))}.header-inner{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h1{font-size:clamp(19px,4.8vw,27px);margin:0 0 6px}h2{font-size:17px;margin:0}p{margin:5px 0}.muted{color:var(--muted);font-size:12px}.identity{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.identity input{width:160px}main{width:100%;max-width:1100px;margin:auto;padding:14px max(12px,env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) max(12px,env(safe-area-inset-left))}.card{background:var(--navy);border:1px solid var(--edge);border-radius:15px;padding:16px;margin-bottom:14px;min-width:0;box-shadow:0 4px 15px #0f172a15}.setup{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,.8fr);gap:12px;align-items:stretch}.setup>div{background:var(--deep);border:1px solid var(--edge);border-radius:12px;padding:12px;min-width:0}label{font-size:12px;font-weight:700;display:block;margin-bottom:6px}input{background:#fff;color:#0f172a;border:1px solid #94a3b8;border-radius:9px;padding:9px;font-size:16px;max-width:100%}button,.file-button{cursor:pointer;background:#0284c7;color:white;border:0;border-radius:9px;padding:10px 14px;font-size:14px;font-weight:750;display:inline-flex;align-items:center;justify-content:center}button:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}button:hover,.file-button:hover{background:#0369a1}#pdfFileInput{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}.file-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.file-name{font-size:12px;color:var(--muted);overflow-wrap:anywhere}.stepper{display:flex;gap:8px;align-items:center}.stepper button{width:40px;height:40px;font-size:20px;padding:0}.stepper input{width:75px;text-align:center;font-weight:800}.light{display:flex;align-items:center;gap:9px}.lights{display:flex;gap:6px}.bulb{width:17px;height:17px;border-radius:50%;background:#475569;opacity:.4;border:1px solid #94a3b8}.bulb.active{opacity:1;box-shadow:0 0 0 3px #ffffff20}.bulb.red.active{background:var(--red)}.bulb.yellow.active{background:var(--yellow)}.bulb.green.active{background:var(--green)}.actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:12px}.primary{background:#0ea5e9;font-size:16px;padding:12px 26px}.dirty{color:var(--yellow);font-size:12px}.grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:14px}.stack{min-width:0}.results{background:var(--deep);padding:10px;border-radius:10px;margin-top:10px}.result{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 10px;border-left:4px solid;border-radius:7px;margin:6px 0;font-weight:800;font-variant-numeric:tabular-nums}.result.green{color:var(--green);border-color:var(--green);background:#064e3b45}.result.yellow{color:var(--yellow);border-color:var(--yellow);background:#78350f40}.result.red{color:var(--red);border-color:var(--red);background:#7f1d1d45}.tag{font-size:10px;color:#e2e8f0;font-weight:600}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:12px}.stat{background:var(--deep);border-radius:9px;padding:9px;text-align:center;font-size:11px}.stat strong{font-size:20px;display:block}.green-text{color:var(--green)}.yellow-text{color:var(--yellow)}.red-text{color:var(--red)}.priority{padding:10px;border-radius:10px;border-left:4px solid;margin-top:9px;background:var(--deep)}.priority.green{border-color:var(--green)}.priority.yellow{border-color:var(--yellow)}.priority.red{border-color:var(--red)}.priority-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.progress{background:#334155;border-radius:20px;height:7px;overflow:hidden;margin-top:8px}.progress span{display:block;height:100%;background:var(--cyan);border-radius:20px}.insight{font-size:11px;color:#cbd5e1;margin-top:5px}.table-wrap{overflow-x:auto;max-width:100%}table{width:100%;border-collapse:collapse;font-size:12px}th,td{padding:9px 8px;border-bottom:1px solid #334155;text-align:left}th{color:#cbd5e1;font-size:10px;text-transform:uppercase;white-space:nowrap}td{font-variant-numeric:tabular-nums}td input{width:76px;padding:7px;text-align:center;font-size:16px}.code{font-weight:800;font-size:13px}.rule{font-size:11px;color:#cbd5e1}.right{text-align:right}.center{text-align:center}.section-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:10px}.info{width:28px;height:28px;border-radius:50%;padding:0;background:#334155;border:1px solid #94a3b8}.gp-line{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.gp-line input{width:145px}.gp-number{font-size:22px;font-weight:800}.chart-wrap{position:relative;width:100%;height:205px}#shiftChart{width:100%;height:100%;display:block}.chart-legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:7px;font-size:11px;color:#cbd5e1}.chart-key{display:inline-flex;align-items:center;gap:4px}.chart-key i{display:inline-block;width:14px;height:3px}dialog{border:1px solid #475569;background:var(--navy);color:white;border-radius:15px;max-width:min(420px,calc(100vw - 28px));padding:22px}dialog::backdrop{background:#020617aa}dialog p{margin:12px 0}#toast{position:fixed;bottom:20px;right:15px;left:15px;margin:auto;max-width:430px;background:#020617;color:#fff;border:1px solid #475569;border-radius:12px;padding:12px;z-index:10;text-align:center;display:none}@media(max-width:760px){.setup{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.setup>div:first-child{grid-column:1/-1}.grid{grid-template-columns:1fr}.card{padding:13px}.header-inner{align-items:flex-start}}@media(max-width:380px){.setup{grid-template-columns:1fr}.setup>div:first-child{grid-column:auto}.stats{gap:4px}.stat{padding:6px}.result{font-size:14px}th,td{padding:7px 6px}}
+
+/* Colorful dark dashboard theme — presentation only; calculations and scripts unchanged. */
+:root{--navy:#101e39;--deep:#081329;--edge:#315780;--muted:#b9d3ee;--cyan:#45d7ff;--green:#38e5b1;--yellow:#ffd166;--red:#ff788e}
+body{background:radial-gradient(ellipse at 8% 0%,#183f77 0%,transparent 37%),radial-gradient(ellipse at 94% 26%,#25276a 0%,transparent 39%),linear-gradient(145deg,#081226,#102346 55%,#07172e);background-attachment:fixed;color:#f4faff}
+header{background:linear-gradient(112deg,#074e91 0%,#0a3d7e 38%,#292c80 76%,#103a65 100%);border-bottom:2px solid #36cfff;box-shadow:0 7px 28px #02061780}
+header h1{color:#fff;text-shadow:0 1px 12px #38bdf855}
+header .muted{color:#d7efff}
+.card{background:linear-gradient(145deg,#142b4c 0%,#101d39 65%,#142343 100%);border:1px solid #35638d;box-shadow:0 10px 26px #020b22a6,inset 0 1px #ffffff0c;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#36cfff,#7d8bff,#35e3c2)}
+.card h2{color:#7cddff;letter-spacing:.1px}
+main>.card:first-child{background:linear-gradient(120deg,#133e69,#182954 65%,#27316b);border-color:#4082b3}
+main>.card:first-child::before{height:4px;background:linear-gradient(90deg,#00b9f1,#43e4c5,#ffcb67)}
+.setup>div{background:linear-gradient(145deg,#0c274b,#112a4b);border:1px solid #37618d;box-shadow:inset 0 1px #ffffff0c}
+.setup>div:nth-child(2){background:linear-gradient(140deg,#10395b,#173456)}
+.setup>div:nth-child(3){background:linear-gradient(140deg,#1e285b,#152d55)}
+label{color:#c9eaff}
+button,.file-button{background:linear-gradient(120deg,#028bd1,#1674d5);box-shadow:0 3px 10px #02112455}
+button:hover,.file-button:hover{background:linear-gradient(120deg,#04a5e9,#327fe4)}
+.primary{background:linear-gradient(110deg,#009de0,#3268eb);box-shadow:0 5px 18px #008bff50;border:1px solid #62d8ff}
+.primary:hover{background:linear-gradient(110deg,#14b6fa,#4b7dff)}
+input{border-color:#71a6d1;background:#f5fbff;color:#0c2547}
+input:focus-visible,button:focus-visible{outline-color:#52e5ff}
+.results{background:linear-gradient(150deg,#08172e,#10274b);border:1px solid #24486d}
+.result.green{background:linear-gradient(90deg,#075b4b85,#0b354550)}
+.result.yellow{background:linear-gradient(90deg,#7c4a1685,#3c304850)}
+.result.red{background:linear-gradient(90deg,#802c4785,#38284b50)}
+.stat{background:linear-gradient(145deg,#173e61,#102647);border:1px solid #32557b}
+.stat:nth-child(1){border-top:3px solid var(--green)}
+.stat:nth-child(2){border-top:3px solid var(--yellow)}
+.stat:nth-child(3){border-top:3px solid var(--red)}
+.priority{background:linear-gradient(100deg,#0d2848,#152747);border:1px solid #284b70;border-left-width:4px}
+.priority.green{border-left-color:var(--green)}.priority.yellow{border-left-color:var(--yellow)}.priority.red{border-left-color:var(--red)}
+.progress{background:#0b1833;border:1px solid #365c7f;height:9px}
+.progress span{background:linear-gradient(90deg,#168fe1,#30ddcf)}
+.section-head h2{color:#a8b5ff}
+.table-wrap{background:#0d2240;border:1px solid #2b4e75;border-radius:10px}
+th{color:#88dfff;background:#15345b}th,td{border-bottom-color:#294b70}
+tr:hover td{background:#183a5b55}
+.info{background:#35468a;border-color:#9aafff;color:white}
+.gp-number{color:#65e5d2;text-shadow:0 0 18px #25d7c133}
+.chart-wrap{background:linear-gradient(160deg,#0b2140,#111c40);border:1px solid #294f7c;border-radius:10px;padding:4px}
+.chart-legend{color:#d5e6ff}
+dialog{background:linear-gradient(145deg,#18335a,#101c3b);border:1px solid #5385c1;box-shadow:0 18px 60px #020617b0}
+#toast{background:#163a66;border:1px solid #52bbeb}
+@media(max-width:760px){body{background-attachment:scroll}.card{box-shadow:0 6px 18px #020b2270}}
+
+.label-with-info{display:flex;align-items:center;gap:8px;margin-bottom:8px}.label-with-info label{margin:0}.pending-value{background:#123457;border:1px solid #3c719b;border-radius:8px;padding:9px;color:#effaff;font-size:15px;font-weight:700}.result{display:block;border:1px solid #284b70;border-left-width:4px;border-radius:10px;padding:10px;background:linear-gradient(100deg,#0d2848,#152747);font-weight:normal}.result.green{border-left-color:var(--green)}.result.yellow{border-left-color:var(--yellow)}.result.red{border-left-color:var(--red)}.result .priority-top{color:#f4faff}.result .muted{margin-top:5px}.chart-select{background:#132b4b;border:1px solid #365f87;color:#d9eaff;font-size:12px;padding:7px 10px;box-shadow:none}.chart-select.selected{background:#27579a;border-color:#77dfff;box-shadow:0 0 0 2px #4fcfff44}.chart-select i{width:17px;height:4px;border-radius:3px}.clear-chart{font-size:12px;margin-top:9px;padding:7px 12px}.clear-chart:disabled{opacity:.45;cursor:default}.section-head .info{flex-shrink:0}.upload-steps{padding-left:22px;margin:12px 0 18px}.upload-steps li{margin:0 0 9px;line-height:1.5}
+
+/* Overall Progress emphasis — visual presentation only. */
+.setup>div:nth-child(3){display:flex;flex-direction:column;justify-content:stretch;border:1px solid #6587d6;background:linear-gradient(145deg,#25376e,#142c57);box-shadow:inset 0 1px #ffffff16,0 5px 18px #06102655}
+.setup>div:nth-child(3) .label-with-info{justify-content:space-between;gap:8px}
+.setup>div:nth-child(3) .label-with-info label{font-size:14px;color:#e1efff}
+.setup>div:nth-child(3) .light{flex:1;min-height:105px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;border-radius:12px;padding:12px 7px;background:linear-gradient(150deg,#081d3d,#172c5c);border:1px solid #45669c}
+.setup>div:nth-child(3) .lights{gap:13px;justify-content:center}
+.setup>div:nth-child(3) .bulb{width:26px;height:26px;border-width:2px;opacity:.24;transition:opacity .2s,box-shadow .2s}
+.setup>div:nth-child(3) .bulb.active{opacity:1;box-shadow:0 0 0 4px #ffffff18,0 0 22px currentColor}
+.setup>div:nth-child(3) .bulb.red.active{color:var(--red)}
+.setup>div:nth-child(3) .bulb.yellow.active{color:var(--yellow)}
+.setup>div:nth-child(3) .bulb.green.active{color:var(--green)}
+#lightLabel{font-size:clamp(18px,2.5vw,24px)!important;line-height:1.15;font-weight:900;letter-spacing:.2px;white-space:normal;text-wrap:balance;color:#dceaff}
+#lightLabel.status-red{color:var(--red);text-shadow:0 0 18px #ff788e44}
+#lightLabel.status-yellow{color:var(--yellow);text-shadow:0 0 18px #ffd16644}
+#lightLabel.status-green{color:var(--green);text-shadow:0 0 18px #38e5b144}
+@media(max-width:760px){.setup>div:nth-child(3) .light{min-height:115px}.setup>div:nth-child(3) .bulb{width:24px;height:24px}#lightLabel{font-size:20px!important}}
+
+/* Admin and history navigation */
+header{position:relative}.hamburger{order:5;font-size:23px;min-width:46px;height:44px;background:#153e73;border:1px solid #7edcff}.app-menu{position:absolute;right:max(12px,env(safe-area-inset-right));top:calc(100% - 4px);z-index:30;background:#12284c;border:1px solid #4f8ac2;box-shadow:0 12px 30px #000a;border-radius:12px;padding:8px;min-width:190px}.app-menu button{display:flex;width:100%;margin:4px 0;justify-content:flex-start;background:#203b68}.app-menu[hidden],section[hidden]{display:none!important}.wide-dialog{width:min(680px,calc(100vw - 24px));max-width:min(680px,calc(100vw - 24px));max-height:85vh;overflow-y:auto}.wide-dialog .section-head button{padding:5px 10px}.admin-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:15px 0}.admin-field{border:1px solid #3c6489;background:#0c2443;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px}.admin-field strong{font-size:13px;color:#7cddff}.admin-field label{margin:2px 0 0}.admin-field input{width:100%}.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.history-entry{border:1px solid #315780;border-radius:10px;margin:10px 0;background:#0b2344;padding:10px}.history-entry summary{cursor:pointer;font-weight:750;color:#9be5ff}.history-metrics{margin-top:8px}.history-metric{display:flex;justify-content:space-between;gap:10px;border-top:1px solid #345170;padding:7px 2px;font-size:13px}.error-text{color:var(--red);font-size:13px}.wide-dialog input[type=password]{width:100%;margin-bottom:12px}
+
+/* Modern UI refresh: presentation-only overrides. */
+:root{--navy:#101b34;--deep:#0a1830;--edge:#344e77;--muted:#a9bfd9;--cyan:#63d8ff}
+body{background:radial-gradient(ellipse at 10% -12%,#23538a 0%,transparent 38%),radial-gradient(ellipse at 90% 30%,#242b60 0%,transparent 38%),#081325;letter-spacing:.005em}
+header{background:linear-gradient(120deg,#102e57ed,#13234deb);border-bottom:1px solid #4c88b588;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+header h1{font-weight:800;letter-spacing:-.045em;line-height:1.1}main{padding-top:20px}
+.card{background:linear-gradient(145deg,#172a49ed,#101e36f5);border:1px solid #45638b88;border-radius:21px;padding:20px;box-shadow:0 14px 35px #0208164d,inset 0 1px #ffffff12;transition:border-color .2s,transform .2s}
+.card::before{height:2px;opacity:.7}.card h2{letter-spacing:-.025em;font-size:18px;color:#b1e9ff}
+.setup>div{border-radius:15px;background:#102644bd;padding:15px}.setup>div:nth-child(2),.setup>div:nth-child(3){background:#102644bd}
+button,.file-button{border-radius:12px;min-height:40px;transition:filter .18s,transform .18s;box-shadow:none}button:active,.file-button:active{transform:scale(.98)}
+.primary{border-radius:13px;min-height:47px;box-shadow:0 8px 20px #0976e64a}
+input{border-radius:11px;min-height:40px}.results,.table-wrap{border-radius:15px}.result{border-radius:11px;padding:11px 12px}.stat{border-radius:13px;padding:13px 8px}.stat strong{font-size:25px;letter-spacing:-.04em}.priority{border-radius:13px;padding:13px}
+.app-menu{border-radius:16px;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:#152b4af5;min-width:220px}.app-menu button{padding:12px}
+dialog{border-radius:22px;box-shadow:0 28px 70px #0009}summary{color:#c4eaff}
+.feature-row{display:grid;grid-template-columns:minmax(170px,.9fr) minmax(0,2.1fr);gap:14px;margin-bottom:14px}.feature-row>.card{margin:0;min-height:150px}
+.htp-card{display:flex;flex-direction:column;justify-content:center;background:linear-gradient(140deg,#14385c,#142b4e)}.htp-title{font-size:13px;color:#9be8ff;font-weight:800;letter-spacing:.065em}.htp-value{font-size:clamp(37px,5vw,53px);font-weight:850;letter-spacing:-.06em;line-height:1.15;margin-top:12px;font-variant-numeric:tabular-nums}
+.fast-start{position:relative;isolation:isolate;min-height:150px}.fast-heading{display:flex;justify-content:space-between;gap:12px;font-weight:800;color:#b3e9ff;font-size:18px}.fast-dates{font-size:12px;color:#a2bbdb}.fast-caption{color:#a5b9d3;font-size:12px;margin-top:4px}.fast-placeholder{display:flex;align-items:center;gap:10px;margin-top:19px;font-size:11px;color:#93aac8}.fast-placeholder i{height:7px;background:linear-gradient(90deg,#18a8d5,#3de2ba);border-radius:20px;flex:1;opacity:.45}.fast-frost{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;background:#10203d91;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);text-align:center}.fast-frost strong{font-size:23px;letter-spacing:-.04em}.fast-frost span:last-child{font-size:12px;color:#d1e4f5}.fast-lock{color:#8ee7ff;font-size:24px}
+.fast-admin{margin:18px 0;padding:14px;border:1px solid #45658b;border-radius:15px;background:#0b1b34}.fast-admin h3{font-size:16px;margin:0 0 8px;color:#a7e9ff}.fast-admin .admin-field{min-width:0}
+@media(max-width:540px){.feature-row{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:10px}.feature-row>.card{padding:13px;min-height:142px}.htp-value{font-size:38px}.fast-frost strong{font-size:19px}.fast-heading{font-size:15px}.fast-dates{display:none}.fast-placeholder{gap:4px}.card{border-radius:17px;padding:15px}.identity input{width:132px}}
+@media(max-width:360px){.feature-row{grid-template-columns:1fr}.feature-row>.card{min-height:115px}}
+@media(prefers-reduced-motion:reduce){.card,button,.file-button{transition:none}}
+
+/* Navigation and circular info-button fixes */
+header{position:relative;z-index:1000;isolation:isolate;overflow:visible}
+main{position:relative;z-index:0}
+.header-inner{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:12px}
+.header-inner>.identity{min-width:0;justify-content:flex-end}
+.header-inner>.hamburger{grid-column:3;justify-self:end;order:unset;flex:none;width:46px;min-width:46px;height:46px}
+.app-menu{z-index:1001;right:max(12px,env(safe-area-inset-right));top:calc(100% - 2px)}
+.info{display:inline-flex;flex:0 0 28px;align-items:center;justify-content:center;width:28px;min-width:28px;max-width:28px;height:28px;min-height:28px;max-height:28px;aspect-ratio:1/1;padding:0;border-radius:50%;line-height:1}
+@media(max-width:640px){.header-inner{grid-template-columns:minmax(0,1fr) auto;align-items:start}.header-inner>.identity{grid-column:1;grid-row:2;justify-content:flex-start}.header-inner>.hamburger{grid-column:2;grid-row:1 / span 2;align-self:start}.header-inner>div:first-child{grid-column:1;grid-row:1}}
+
+/* Liquid Glass-inspired visual layer: no KPI logic changes. */
+:root{color-scheme:dark;--glass-line:rgba(195,231,255,.24);--glass-shine:rgba(255,255,255,.14)}
+body{background:radial-gradient(ellipse 85% 60% at 4% -8%,#296ab0 0%,transparent 66%),radial-gradient(ellipse 80% 60% at 103% 36%,#5b3a9d 0%,transparent 68%),radial-gradient(ellipse 65% 55% at 25% 95%,#0b747e 0%,transparent 72%),#071326;background-attachment:fixed}
+header{background:linear-gradient(135deg,rgba(48,98,155,.68),rgba(35,46,104,.63))!important;border-bottom:1px solid rgba(199,235,255,.35);box-shadow:0 10px 38px #02081980,inset 0 1px rgba(255,255,255,.22);-webkit-backdrop-filter:blur(30px) saturate(175%);backdrop-filter:blur(30px) saturate(175%)}
+.card{background:linear-gradient(135deg,rgba(56,101,155,.37),rgba(17,34,70,.67) 56%,rgba(45,48,107,.38))!important;border:1px solid var(--glass-line);box-shadow:0 14px 36px #0006,inset 0 1px rgba(255,255,255,.22),inset 0 -1px rgba(255,255,255,.035);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);overflow:hidden}
+.card::before{height:1px;background:linear-gradient(90deg,transparent,rgba(235,250,255,.78),rgba(100,209,255,.4),transparent);opacity:1}
+.setup>div,.results,.table-wrap,.stat,.priority,.chart-wrap,.history-entry,.admin-field,.fast-admin{background:linear-gradient(140deg,rgba(132,185,241,.12),rgba(5,23,51,.33))!important;border-color:rgba(172,215,249,.20);box-shadow:inset 0 1px rgba(255,255,255,.09)}
+button,.file-button{background:linear-gradient(145deg,rgba(52,155,234,.91),rgba(34,92,184,.87));border:1px solid rgba(206,241,255,.28);box-shadow:inset 0 1px rgba(255,255,255,.25),0 5px 14px #00142e50;border-radius:14px}
+button:hover,.file-button:hover{background:linear-gradient(145deg,#3eb8ed,#3b75d9)}
+.hamburger{background:linear-gradient(135deg,rgba(159,214,255,.25),rgba(66,113,189,.3))!important;border:1px solid rgba(226,246,255,.5);border-radius:15px;box-shadow:inset 0 1px rgba(255,255,255,.24),0 5px 20px #00132b55}
+.app-menu{background:linear-gradient(145deg,rgba(42,76,127,.90),rgba(18,33,71,.94))!important;border:1px solid rgba(212,240,255,.38);box-shadow:0 22px 60px #000b,inset 0 1px rgba(255,255,255,.2);-webkit-backdrop-filter:blur(34px) saturate(175%);backdrop-filter:blur(34px) saturate(175%);z-index:1001}
+.app-menu button{background:rgba(151,205,255,.13);border:1px solid rgba(215,239,255,.14);box-shadow:inset 0 1px rgba(255,255,255,.08)}
+.info{display:inline-flex!important;align-items:center;justify-content:center;flex:0 0 28px!important;box-sizing:border-box;width:28px!important;min-width:28px!important;max-width:28px!important;height:28px!important;min-height:28px!important;max-height:28px!important;aspect-ratio:1/1!important;border-radius:999px!important;padding:0!important;font-size:14px;line-height:1!important;background:linear-gradient(145deg,rgba(151,210,255,.35),rgba(56,91,171,.55));border:1px solid rgba(229,248,255,.6)}
+input{background:rgba(239,248,255,.95);border:1px solid rgba(215,238,255,.8);box-shadow:inset 0 1px 3px #17315b1a}
+.fast-frost{background:rgba(13,30,64,.57);-webkit-backdrop-filter:blur(15px) saturate(145%);backdrop-filter:blur(15px) saturate(145%)}
+dialog{background:linear-gradient(140deg,rgba(39,77,125,.97),rgba(14,28,61,.98));border:1px solid rgba(218,244,255,.35);-webkit-backdrop-filter:blur(24px);backdrop-filter:blur(24px)}
+@media(max-width:760px){body{background-attachment:scroll}.card{-webkit-backdrop-filter:blur(13px);backdrop-filter:blur(13px)}}
+@media(prefers-reduced-transparency:reduce){.card,header,.app-menu,dialog{backdrop-filter:none;-webkit-backdrop-filter:none;background:#132747!important}}
+
+/* Stronger Liquid Glass visual treatment; functional JavaScript unchanged. */
+:root{--glass-line:rgba(224,247,255,.48);--glass-shine:rgba(255,255,255,.30)}
+body{background:radial-gradient(ellipse 70% 56% at 4% 7%,rgba(0,195,255,.53),transparent 72%),radial-gradient(ellipse 70% 55% at 96% 30%,rgba(162,72,255,.50),transparent 75%),radial-gradient(ellipse 80% 58% at 25% 95%,rgba(0,221,195,.34),transparent 75%),linear-gradient(135deg,#06152d,#142c57 48%,#090d30)!important;background-attachment:fixed!important}
+header{background:linear-gradient(115deg,rgba(102,184,255,.34),rgba(80,105,197,.28),rgba(36,74,148,.36))!important;border-bottom:1px solid rgba(240,251,255,.63)!important;box-shadow:0 18px 50px rgba(0,6,28,.40),inset 0 1px 0 rgba(255,255,255,.55),inset 0 -1px 0 rgba(255,255,255,.16)!important;-webkit-backdrop-filter:blur(44px) saturate(210%)!important;backdrop-filter:blur(44px) saturate(210%)!important;overflow:visible!important;z-index:1000!important}
+.card{position:relative;background:linear-gradient(128deg,rgba(181,222,255,.27),rgba(88,144,219,.17) 38%,rgba(37,68,141,.32) 72%,rgba(177,124,255,.18))!important;border:1px solid rgba(235,250,255,.48)!important;border-radius:24px!important;box-shadow:0 22px 54px rgba(0,5,33,.36),inset 0 1.5px 0 rgba(255,255,255,.49),inset 1px 0 rgba(255,255,255,.16),inset 0 -1px rgba(255,255,255,.12)!important;-webkit-backdrop-filter:blur(38px) saturate(205%) brightness(1.12)!important;backdrop-filter:blur(38px) saturate(205%) brightness(1.12)!important}
+.card::before{height:2px!important;background:linear-gradient(90deg,transparent 3%,rgba(255,255,255,.93) 23%,rgba(144,238,255,.58) 66%,transparent 97%)!important}
+.setup>div,.results,.table-wrap,.stat,.priority,.chart-wrap,.history-entry,.admin-field,.fast-admin{background:linear-gradient(145deg,rgba(190,229,255,.19),rgba(32,64,128,.19))!important;border:1px solid rgba(215,244,255,.27)!important;box-shadow:inset 0 1px rgba(255,255,255,.26),0 5px 20px rgba(0,10,38,.14)!important;-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%)}
+.hamburger,.info{background:linear-gradient(145deg,rgba(208,239,255,.45),rgba(93,147,235,.30))!important;border:1px solid rgba(255,255,255,.74)!important;box-shadow:inset 0 1px rgba(255,255,255,.55),0 8px 20px rgba(0,15,49,.28)!important}
+.app-menu{background:linear-gradient(145deg,rgba(94,147,211,.69),rgba(28,51,115,.78))!important;border:1px solid rgba(243,252,255,.64)!important;box-shadow:0 26px 70px rgba(0,6,33,.60),inset 0 1px rgba(255,255,255,.46)!important;-webkit-backdrop-filter:blur(48px) saturate(210%)!important;backdrop-filter:blur(48px) saturate(210%)!important;z-index:1005!important}
+#clock{display:inline-flex!important;align-items:center;justify-content:center;white-space:nowrap;min-height:34px;padding:7px 12px!important;border-radius:13px;background:linear-gradient(120deg,rgba(204,239,255,.32),rgba(90,144,232,.20));border:1px solid rgba(243,251,255,.58);box-shadow:inset 0 1px rgba(255,255,255,.40),0 5px 16px rgba(0,8,37,.16);color:#f5fcff!important;font-size:12px!important;font-weight:750;letter-spacing:.015em;font-variant-numeric:tabular-nums;-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.identity{flex-wrap:wrap;gap:8px!important}
+.fast-frost{background:rgba(80,126,185,.29)!important;-webkit-backdrop-filter:blur(24px) saturate(170%)!important;backdrop-filter:blur(24px) saturate(170%)!important}
+@media(max-width:640px){.header-inner{gap:10px!important}.identity{min-width:0;flex-wrap:wrap}.identity #clock{width:max-content;max-width:100%;font-size:11px!important;padding:6px 9px!important}.card{border-radius:21px!important}body{background-attachment:scroll!important}}
+@media(prefers-reduced-transparency:reduce){header,.card,.app-menu{background:#1c3863!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}}
+
+/* Final requested visual refinement — official KPI compute() and status rules unchanged. */
+.setup>div:nth-child(3) .light{padding:12px 7px!important;gap:4px!important;min-height:142px!important}
+.setup>div:nth-child(3) .lights{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:8px!important;align-items:start}
+.light-unit{min-width:0;display:flex;flex-direction:column;align-items:center;gap:9px}
+.setup>div:nth-child(3) .bulb{display:flex!important;align-items:center;justify-content:center;width:clamp(48px,6vw,68px)!important;height:clamp(48px,6vw,68px)!important;min-width:0!important;aspect-ratio:1;border-radius:50%!important;opacity:1!important;font-weight:850;font-size:clamp(13px,2.1vw,18px);font-variant-numeric:tabular-nums;color:transparent;border:1.5px solid rgba(255,255,255,.12)!important;box-shadow:inset 0 1px 7px rgba(255,255,255,.045)!important;text-shadow:none!important;transition:background .2s,border-color .2s}
+.setup>div:nth-child(3) .bulb.red{background:radial-gradient(circle at 35% 25%,rgba(115,37,55,.45),rgba(35,11,24,.84))!important;border-color:rgba(229,95,114,.22)!important}
+.setup>div:nth-child(3) .bulb.yellow{background:radial-gradient(circle at 35% 25%,rgba(114,83,27,.43),rgba(37,29,13,.84))!important;border-color:rgba(250,197,76,.22)!important}
+.setup>div:nth-child(3) .bulb.green{background:radial-gradient(circle at 35% 25%,rgba(22,102,82,.40),rgba(9,36,32,.86))!important;border-color:rgba(68,209,162,.22)!important}
+.setup>div:nth-child(3) .bulb.red.active{background:radial-gradient(circle at 35% 22%,#ff9aa7,#ed586e 68%,#ad304b)!important;color:#2b0a16!important;border-color:#ffbdc6!important;box-shadow:inset 0 1px 3px rgba(255,255,255,.24)!important}
+.setup>div:nth-child(3) .bulb.yellow.active{background:radial-gradient(circle at 35% 22%,#fff1ac,#f7c64b 68%,#aa781c)!important;color:#362509!important;border-color:#fff1b8!important;box-shadow:inset 0 1px 3px rgba(255,255,255,.25)!important}
+.setup>div:nth-child(3) .bulb.green.active{background:radial-gradient(circle at 35% 22%,#a1ffe1,#39dba7 68%,#158568)!important;color:#073426!important;border-color:#b2ffe7!important;box-shadow:inset 0 1px 3px rgba(255,255,255,.24)!important}
+.light-caption{font-size:clamp(9px,1.8vw,11px);font-weight:750;text-align:center;white-space:nowrap}
+.light-unit:nth-child(1) .light-caption{color:var(--red)}.light-unit:nth-child(2) .light-caption{color:var(--yellow)}.light-unit:nth-child(3) .light-caption{color:var(--green)}
+#lightLabel.light-summary{font-size:11px!important;min-height:15px;color:#aac2df;text-shadow:none}
+.results{display:grid;grid-template-columns:minmax(0,1fr);gap:9px;background:transparent;border:0;padding:0}
+.results .result{margin:0;min-height:98px;padding:12px;border:1px solid rgba(175,213,255,.22);border-left-width:4px;border-radius:12px;background:linear-gradient(120deg,rgba(25,58,99,.58),rgba(19,38,78,.54));display:flex;flex-direction:column;justify-content:center;gap:4px;font-weight:normal;box-shadow:inset 0 1px rgba(255,255,255,.08);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+.results .result.red{border-left-color:var(--red)}.results .result.yellow{border-left-color:var(--yellow)}.results .result.green{border-left-color:var(--green)}
+.results .priority-top{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;width:100%;flex-wrap:nowrap}
+.results .result-name{font-size:13px;overflow-wrap:anywhere;line-height:1.3;color:#f2f8ff}
+.results .result-target{text-align:right;font-size:12px;white-space:nowrap;color:#f4faff;font-variant-numeric:tabular-nums}
+.results .muted{font-size:11px}
+.results .progress{margin-top:3px}
+@media(max-width:420px){.setup>div:nth-child(3) .lights{gap:5px!important}.setup>div:nth-child(3) .bulb{width:clamp(43px,12vw,56px)!important;height:clamp(43px,12vw,56px)!important}.results .result-target{font-size:11px}.results .result-name{font-size:12px}}
+
+
+/* Overall Progress background correction — preserve the existing traffic lights. */
+.setup>div:nth-child(3) .light{
+  background:linear-gradient(140deg,rgba(132,185,241,.12),rgba(5,23,51,.33))!important;
+  border:1px solid rgba(172,215,249,.20)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.09)!important;
+  -webkit-backdrop-filter:blur(22px) saturate(160%);
+  backdrop-filter:blur(22px) saturate(160%);
+}
+
+/* Fast Start: active, glassy, responsive eight-metric dashboard */
+.fast-start{min-height:0}.fast-heading{align-items:center}.fast-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:13px}
+.fast-metric{border:1px solid rgba(200,231,255,.21);border-radius:16px;background:linear-gradient(145deg,rgba(156,210,255,.14),rgba(16,42,84,.25));padding:12px;min-width:0;box-shadow:inset 0 1px rgba(255,255,255,.15)}
+.fast-metric-top{display:flex;justify-content:space-between;gap:7px;align-items:center}.fast-metric-top strong{font-size:13px;color:#ecf7ff}.fast-metric-pct{font-size:15px;font-weight:800;font-variant-numeric:tabular-nums}.fast-metric-sub{font-size:11px;color:#b5cce6;margin:6px 0 9px;overflow-wrap:anywhere}.fast-track{position:relative;height:11px;border-radius:99px;background:rgba(8,23,51,.7);overflow:visible;border:1px solid rgba(255,255,255,.15)}.fast-fill{height:100%;border-radius:99px;max-width:100%;transition:width .3s}.fast-marker{position:absolute;top:-4px;height:17px;width:2px;background:#f8d05e;left:66%;z-index:2;box-shadow:0 0 3px #000}.fast-marker.preferred{left:calc(100% - 2px);background:#5ff4b7}.fast-scale{display:flex;gap:8px;margin-top:7px;font-size:10px;color:#bdd0e7}.fast-scale span:last-child{margin-left:auto}.fast-note{font-size:11px;color:#b7cce4;margin:10px 0 0}.fast-empty{color:#a7b8cd}.fast-metric.red .fast-fill{background:linear-gradient(90deg,#b92d50,#f36b79)}.fast-metric.yellow .fast-fill{background:linear-gradient(90deg,#b97818,#f6ce54)}.fast-metric.green .fast-fill{background:linear-gradient(90deg,#168e7a,#58edb4)}.fast-metric.red .fast-metric-pct{color:#ff8997}.fast-metric.yellow .fast-metric-pct{color:#ffe08a}.fast-metric.green .fast-metric-pct{color:#6af1c1}
+@media(max-width:530px){.fast-metrics{grid-template-columns:1fr}.fast-metric{padding:11px}}
+
+/* Fast Start milestone labels embedded in the progress track. */
+.fast-track{height:23px;overflow:visible;margin-top:16px}
+.fast-fill{position:relative}
+.fast-marker{top:0;height:100%;width:2px;box-shadow:none}
+.fast-marker::after{content:"33%";position:absolute;bottom:calc(100% + 3px);left:50%;transform:translateX(-50%);color:#f8d05e;font-size:10px;font-weight:800;white-space:nowrap}
+.fast-marker.preferred::after{content:"100%";left:auto;right:0;transform:none;color:#5ff4b7}
+/* Compact KPI summary and Fast Start layout; no calculation changes. */
+.kpi-summary-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:0 0 14px}
+.kpi-summary-row>.card{margin:0;min-width:0;min-height:168px;aspect-ratio:1/1;max-height:260px;display:flex;flex-direction:column;justify-content:center}
+.kpi-summary-row .gp-card{background:linear-gradient(145deg,rgba(31,76,124,.55),rgba(20,43,79,.72))}
+.kpi-summary-row .gp-card h2{font-size:clamp(14px,2vw,18px);margin:0 0 15px}
+.kpi-summary-row .gp-number{font-size:clamp(25px,4.1vw,42px);overflow-wrap:anywhere}
+.kpi-summary-row .htp-card{align-items:flex-start}
+.kpi-summary-row .htp-title{font-size:clamp(13px,2vw,18px)}
+.fast-section-row{margin:0 0 14px}
+.fast-section-row>.fast-start{margin:0;padding:17px 19px}
+.fast-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:10px}
+.fast-metric{padding:10px 9px;border-radius:13px}
+.fast-metric-top{gap:4px;align-items:flex-start;flex-wrap:wrap}
+.fast-metric-top strong{font-size:12px;line-height:1.2}
+.fast-metric-pct{font-size:13px}
+.fast-metric-sub{font-size:10px;line-height:1.3;margin:5px 0 8px}
+.fast-scale{font-size:9px;gap:4px;line-height:1.2}
+.fast-track{height:9px}
+.fast-marker{height:15px;top:-4px}
+@media(max-width:600px){
+ .kpi-summary-row{gap:10px}
+ .kpi-summary-row>.card{min-height:0;max-height:none;aspect-ratio:1/1;padding:13px}
+ .kpi-summary-row .gp-card h2{font-size:13px;margin-bottom:9px}
+ .kpi-summary-row .gp-number{font-size:clamp(22px,6vw,33px)}
+ .kpi-summary-row .gp-card .muted{font-size:10px}
+ .kpi-summary-row .htp-value{font-size:clamp(32px,9vw,48px)}
+ .fast-section-row>.fast-start{padding:13px 10px}
+ .fast-metrics{grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;margin-top:9px}
+ .fast-metric{padding:8px 5px;border-radius:10px}
+ .fast-metric-top strong{font-size:10px;overflow-wrap:anywhere}
+ .fast-metric-pct{font-size:12px}
+ .fast-metric-sub{font-size:9px;overflow-wrap:anywhere;line-height:1.25}
+ .fast-scale{font-size:8px;display:flex;flex-direction:column;gap:2px}
+ .fast-scale span:last-child{margin-left:0}
+ .fast-heading{font-size:16px}
+}
+
+/* Mobile readability repair: no overlapping Fast Start labels or squashed KPI cards. */
+.fast-metrics{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
+.fast-metric{display:flex;flex-direction:column;min-width:0;padding:13px 12px;gap:0}
+.fast-metric-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:5px}
+.fast-metric-top strong{font-size:14px;line-height:1.25}
+.fast-metric-pct{font-size:15px;line-height:1.25;white-space:nowrap}
+.fast-metric-sub{font-size:11px;line-height:1.4;overflow-wrap:break-word;word-break:normal;margin:7px 0 14px;min-height:3em}
+.fast-track{height:24px;margin-top:auto;overflow:hidden;border-radius:10px}
+.fast-marker{top:0;height:100%;width:2px;left:66%;box-shadow:none}
+.fast-marker.preferred{left:auto;right:0;width:3px}
+.fast-marker::after{content:"33%";position:absolute;left:auto;right:5px;top:50%;bottom:auto;transform:translateY(-50%);font-size:9px;line-height:1;color:#ffe18b;text-shadow:0 1px 2px #06162d;font-weight:900}
+.fast-marker.preferred::after{content:"100%";position:absolute;left:auto;right:3px;top:50%;bottom:auto;transform:translateY(-50%);font-size:9px;line-height:1;color:#a2ffe0;text-shadow:0 1px 2px #06162d;font-weight:900}
+/* Position 33% just to the left of its marker, and 100% just inside the right end. */
+.fast-marker::after{right:5px}
+.fast-marker.preferred::after{right:4px}
+@media(max-width:760px){
+ .fast-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .fast-metric{padding:12px;min-height:130px;border-radius:14px}
+ .fast-metric-top strong{font-size:14px}
+ .fast-metric-pct{font-size:15px}
+ .fast-metric-sub{font-size:11px;min-height:0}
+ .fast-section-row>.fast-start{padding:16px}
+}
+@media(max-width:360px){.fast-metric{padding:10px}.fast-metric-top strong{font-size:12px}.fast-metric-pct{font-size:13px}}
+/* Align the official result cards to Daily Shift Priority card geometry. */
+.results .result{background:linear-gradient(115deg,rgba(94,163,222,.27),rgba(58,86,174,.27))!important;border:1px solid rgba(190,223,255,.36);border-left:4px solid transparent;border-radius:17px;min-height:118px;padding:16px;justify-content:space-between;gap:10px;box-shadow:inset 0 1px rgba(255,255,255,.16)}
+.results .result.red{border-left-color:var(--red)}
+.results .result.yellow{border-left-color:var(--yellow)}
+.results .result.green{border-left-color:var(--green)}
+.results .priority-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.results .result-name{font-size:15px;line-height:1.3;flex:1 1 130px}
+.results .result-target{font-size:14px;line-height:1.3;text-align:right;white-space:normal;flex:0 1 auto;max-width:100%}
+.results .muted{font-size:13px;line-height:1.25;margin:0}
+.results .progress{display:block;height:10px;margin-top:0;background:#09192e;border-radius:99px;overflow:hidden;flex-shrink:0}
+.results .progress span{display:block;height:100%;min-height:100%;border-radius:99px}
+@media(max-width:430px){.results .result{padding:14px;min-height:124px}.results .result-name{font-size:14px}.results .result-target{font-size:13px}}
+
+
+/* Unified AGT/ADT and Shift Priority: presentation-only. */
+.unified-panel{background:linear-gradient(125deg,#0e83c55e,#253abf75 60%,#6d32ed55),linear-gradient(150deg,#123b6c,#1d2876);border-color:#a2d9ff9c}
+.unified-panel .section-head{align-items:flex-start;margin-bottom:14px}
+.unified-panel h2{color:#d8f0ff;font-size:clamp(20px,3vw,26px)}
+.unified-intro{font-size:13px;line-height:1.45;margin:6px 0 0}
+.unified-list{display:grid;gap:12px}
+.unified-kpi{min-width:0;border:1px solid #b6d6ff6b;border-radius:18px;padding:16px;background:linear-gradient(120deg,#ffffff28,#a3b5ff13);box-shadow:inset 0 1px 0 #ffffff38,0 6px 16px #041d4a20;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.unified-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-width:0}
+.unified-name{display:flex;align-items:flex-start;gap:9px;min-width:0;flex:1}
+.unified-rank{display:inline-flex;flex:0 0 28px;width:28px;height:28px;align-items:center;justify-content:center;border:1px solid #c7e8ff70;background:#d4eaff20;border-radius:9px;font-weight:800;color:#f5fbff;font-size:14px;font-variant-numeric:tabular-nums}
+.unified-title{font-size:clamp(15px,2.5vw,18px);line-height:1.35;color:#f5fbff;min-width:0}
+.unified-target{font-size:clamp(13px,2.2vw,17px);line-height:1.35;color:#f7fbff;text-align:right;max-width:47%;flex:0 1 auto}
+.unified-pct{font-size:15px;color:#d2e4fa;margin:7px 0 8px;font-variant-numeric:tabular-nums}
+.unified-progress{height:11px;border-radius:20px;background:#061b39;border:1px solid #a0c4e15e;overflow:hidden}
+.unified-progress span{display:block;height:100%;border-radius:20px}
+.unified-insight{font-size:12px;line-height:1.5;color:#d1e0f4;margin-top:10px}
+.unified-stats{margin-top:16px}.unified-stats .stat{background:#ffffff15;border:1px solid #a3c8ff45}
+.unified-legend{font-size:12px;line-height:1.5;margin:13px 0 0}
+@media(max-width:540px){.unified-kpi{padding:14px}.unified-head{gap:8px}.unified-name{gap:7px}.unified-target{max-width:49%;font-size:13px}.unified-title{font-size:15px}.unified-rank{width:25px;height:25px;flex-basis:25px}.unified-panel .section-head{gap:10px}}
+
+/* Consistent compact cards: purely visual, preserving official calculations and rankings. */
+.unified-list{grid-auto-rows:1fr}
+.unified-kpi{min-height:132px;display:flex;flex-direction:column;justify-content:space-between;gap:9px;box-sizing:border-box}
+.unified-head{align-items:center}
+.unified-name{align-items:center}
+.unified-title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.unified-target{white-space:nowrap;max-width:none;flex:0 0 auto;font-variant-numeric:tabular-nums}
+.unified-pct{margin:0}
+.unified-progress{width:100%;margin:0}
+@media(max-width:540px){.unified-kpi{min-height:120px;gap:8px}.unified-title{font-size:15px}.unified-target{font-size:clamp(11px,3vw,13px)}.unified-head{gap:5px}}
+
+/* Fast Start compact Liquid Glass cards — visual-only overrides. */
+.fast-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:13px}
+.fast-metric{display:flex;flex-direction:column;min-width:0;min-height:136px;padding:13px 12px 18px;border-radius:17px;background:linear-gradient(135deg,rgba(131,200,255,.25),rgba(69,84,191,.25));border:1px solid rgba(206,229,255,.38);box-shadow:inset 0 1px rgba(255,255,255,.16)}
+.fast-metric-top{display:flex;flex-wrap:nowrap;align-items:baseline;justify-content:space-between;gap:5px}
+.fast-metric-top strong{font-size:clamp(13px,3.7vw,18px);line-height:1.2;white-space:nowrap}
+.fast-metric-pct{font-size:clamp(14px,3.9vw,19px);white-space:nowrap;font-weight:800}
+.fast-metric-sub{font-size:clamp(10px,2.9vw,13px);line-height:1.35;margin:7px 0 13px;overflow-wrap:anywhere;color:#d3e2f8}
+.fast-track{position:relative;height:9px;flex-shrink:0;margin-top:auto;margin-bottom:13px;border-radius:999px;background:#081b39;border:1px solid rgba(160,198,240,.45);overflow:visible}
+.fast-fill{height:100%;border-radius:999px;max-width:100%;transition:width .3s}
+.fast-marker{position:absolute;left:66%;top:-3px;height:15px;width:2px;background:#f8d05e;z-index:2;box-shadow:none}
+.fast-marker.preferred{left:auto;right:0;background:#64f2bb}
+.fast-marker::after{content:"33%";position:absolute;top:calc(100% + 2px);bottom:auto;left:50%;transform:translateX(-50%);font-size:10px;color:#ffe07a;font-weight:800}
+.fast-marker.preferred::after{content:"50%";left:auto;right:0;transform:none;color:#94ffd5}
+.fast-metric.red .fast-fill{background:#fb7088}.fast-metric.yellow .fast-fill{background:#ffd15c}.fast-metric.green .fast-fill{background:#3ce7b0}
+.fast-metric.red .fast-metric-pct{color:#ff8197}.fast-metric.yellow .fast-metric-pct{color:#ffe27c}.fast-metric.green .fast-metric-pct{color:#68efb8}
+@media(min-width:850px){.fast-metrics{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:390px){.fast-metric{padding:11px 9px 18px;min-height:128px}.fast-metric-top strong{font-size:13px}.fast-metric-pct{font-size:14px}}
+
+/* Fast Start milestone polish: gray ticks, white labels, split above/below. */
+.fast-metric{padding-bottom:20px}
+.fast-track{height:9px;margin-top:auto;margin-bottom:17px;overflow:visible}
+.fast-marker,.fast-marker.preferred{background:#9eabbc;box-shadow:none;width:3px;top:-4px;height:17px;border-radius:2px}
+.fast-marker{left:66%}
+.fast-marker.preferred{left:auto;right:0}
+.fast-marker::after,.fast-marker.preferred::after{font-size:11px;font-weight:800;line-height:1;color:#ffffff;text-shadow:0 1px 2px rgba(0,0,0,.5);white-space:nowrap}
+.fast-marker::after{content:"33%";top:calc(100% + 3px);bottom:auto;left:50%;right:auto;transform:translateX(-50%)}
+.fast-marker.preferred::after{content:"50%";top:auto;bottom:calc(100% + 6px);left:auto;right:0;transform:none}
+.fast-metric.red .fast-metric-pct,.fast-metric.yellow .fast-metric-pct,.fast-metric.green .fast-metric-pct{color:#ffffff}
+@media(max-width:390px){.fast-metric{padding-bottom:21px}}
+</style><style id="copy-priority-style">.priority-heading-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}.copy-priority{padding:8px 12px;font-size:12px;white-space:nowrap;border-radius:9px;background:rgba(68,155,234,.32);border:1px solid rgba(194,224,255,.5);color:#fff}.copy-priority:disabled{opacity:.45;cursor:not-allowed}.copy-priority:not(:disabled):hover{background:rgba(68,155,234,.55)}</style><style id="cloud-fast-markers">.fast-marker,.fast-marker.preferred{background:#aab3c0!important}.fast-marker::after{color:#fff!important}.fast-marker.preferred::after{color:#fff!important}.fast-metric-pct{color:#fff!important}</style><style id="copy-circle-final">.unified-panel .section-head{display:block}.unified-panel .priority-heading-actions{display:flex;align-items:center;gap:9px;margin-top:14px}.unified-panel .copy-priority{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;min-width:28px;min-height:28px;max-width:28px;max-height:28px;aspect-ratio:1;border-radius:50%!important;padding:0!important;color:#fff;background:linear-gradient(145deg,rgba(208,239,255,.45),rgba(93,147,235,.30))!important;border:1px solid rgba(255,255,255,.74)!important;box-shadow:inset 0 1px rgba(255,255,255,.55),0 8px 20px rgba(0,15,49,.28)!important}.unified-panel .copy-priority svg{display:block;flex:none}.unified-panel .copy-priority:disabled{opacity:.55}.unified-panel .copy-priority:not(:disabled):active{transform:scale(.94)}</style><style id="employee-auth-style">
+#employeeGate{position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at 20% 0%,#183c65,#071329 70%);display:flex;justify-content:center;align-items:center;padding:20px;color:#f8fbff;font-family:system-ui}
+#employeeGate[hidden]{display:none!important}.authCard{width:min(100%,430px);background:#122747;border:1px solid #46688a;border-radius:22px;padding:27px;box-shadow:0 22px 60px #0008}.authCard h2{font-size:25px;margin:0 0 8px}.authCard p{color:#b6cde6}.authCard input:not([type=checkbox]){display:block;width:100%;margin:9px 0 15px;background:#eaf4ff;color:#071329}.authCard label{font-size:14px}.authCard button{width:100%;margin-top:14px;padding:13px}.authCard .checkrow{display:flex;gap:12px;align-items:center;background:#1c385b;padding:13px;border-radius:12px}.authCard .checkrow input{width:20px;height:20px}.authCard small{display:block;color:#b9d4ec;margin-top:14px}
+#employeeBanner{background:#102b4b;color:white;padding:12px 18px;display:none;align-items:center;gap:10px;flex-wrap:wrap}#employeeBanner button{padding:7px 10px}#employeeBanner .grow{flex:1}#employeeUndo{display:none;background:#144d51;border:1px solid #47bbac;border-radius:12px;padding:12px;margin:8px 16px;color:#fff}#employeeUndo button{margin-left:12px}
+body.employeeMode #employeeBanner{display:flex}body.employeeMode #openAdmin,body.employeeMode #adminDialog,body.employeeMode #openBackup,body.employeeMode #openHistory{display:none!important}
+body.employeeMode .setup>div:nth-child(1),body.employeeMode .setup>div:nth-child(2),body.employeeMode #calculate,body.employeeMode #employeeName{display:none!important}
+body.employeeMode .setup{grid-template-columns:1fr!important}body.employeeMode #pendingNotice{display:none!important}
+body.employeeMode #whatIfBody input{pointer-events:none;opacity:.7}
+body.employeeMode #gpInput{pointer-events:none}
+#employeeWaiting{display:none;margin:14px;padding:15px;border-radius:12px;background:#1c385b;color:#fff}body.employeeMode #employeeWaiting{display:block}
+</style></head><body>
+<div id="employeeGate"><div class="authCard"><div style="color:#7cdaff;font-size:12px;font-weight:800">AT&amp;T · CHERRYDALE POINT OWS306</div><h2>Employee Sign In</h2><p>Your personal performance dashboard</p><form id="employeeLogin"><label>Email<input id="loginEmail" type="email" autocomplete="username" required></label><label>Password<input id="loginPassword" type="password" autocomplete="current-password" required></label><div class="checkrow"><input id="loginShift" type="checkbox"><label for="loginShift" style="margin:0">Log today's shift <span style="font-weight:400">(optional)</span></label></div><button type="submit">Sign In</button></form><small id="loginMessage">Checking your session…</small></div></div>
+<div id="employeeBanner"><strong id="employeeGreeting">Employee</strong><span class="grow"></span><span id="employeeShiftCount">— shifts MTD</span><button id="employeeLogShift" type="button">Log Today's Shift</button><button id="employeeSignOut" type="button">Sign Out</button></div><div id="employeeUndo" role="status"><span id="employeeUndoMessage"></span><button id="employeeUndoButton" type="button">Undo Shift</button></div><div id="employeeWaiting">Waiting for Admin KPI Report. Your dashboard will populate after the Admin publishes a report.</div><header><div class="header-inner"><div><h1>Daily Progress &amp; Breakdown</h1><div class="muted">Cherrydale Point OWS306</div><div id="cloudStatus" class="muted" style="font-size:11px" role="status">Connecting shared goals…</div></div><div class="identity"><label for="employeeName">Name</label><input id="employeeName" autocomplete="name" placeholder="Employee name"><span id="clock" class="muted"></span></div><button id="menuButton" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="appMenu" class="hamburger">☰</button></div><nav id="appMenu" class="app-menu" hidden><button type="button" id="openAdmin">🔒 Admin</button><button type="button" id="openHistory">◷ History</button><button type="button" id="openBackup">↧ Backup &amp; Restore</button><button type="button" id="installApp">▣ Install App</button></nav></header>
+<main><section class="card"><div class="setup"><div><div class="label-with-info"><label for="pdfFileInput">Upload KPI PDF</label><button type="button" class="info" id="uploadInfo" aria-label="Instructions for downloading your KPI PDF" title="How to get your KPI PDF">i</button></div><div class="file-row"><label for="pdfFileInput" class="file-button">Upload</label><input id="pdfFileInput" type="file" accept=".pdf,application/pdf,.txt,.csv"><span id="fileName" class="file-name">No file selected</span></div><p id="fileStatus" class="muted">PDF, TXT or CSV • Confirm actual shifts worked manually; the report date range is not shift count.</p></div><div><label for="shiftsWorkedInput">MTD Shifts Worked</label><div class="stepper"><button type="button" id="minus" aria-label="Decrease shifts">−</button><input id="shiftsWorkedInput" type="number" min="0" max="60" step="0.5"><button type="button" id="plus" aria-label="Increase shifts">+</button></div></div><div><div class="label-with-info"><label>Overall Progress</label><button type="button" class="info" id="overallInfo" aria-label="Explain overall progress">i</button></div><div class="light"><div class="lights" role="img" aria-label="Overall KPI progress"><div class="light-unit"><span id="lightRed" class="bulb red"></span><span class="light-caption">Not Met</span></div><div class="light-unit"><span id="lightYellow" class="bulb yellow"></span><span class="light-caption">Almost There</span></div><div class="light-unit"><span id="lightGreen" class="bulb green"></span><span class="light-caption">Met</span></div></div><strong id="lightLabel" class="light-summary" style="font-size:12px">Not calculated</strong></div></div></div><details style="margin-top:12px"><summary style="cursor:pointer;font-size:13px;font-weight:700">Review PDF KPI actuals (read-only)</summary><div id="pendingKpis" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:9px;padding-top:12px"></div></details><div class="actions"><button type="button" id="calculate" class="primary">Calculate</button><span id="pendingNotice" class="dirty" aria-live="polite"></span></div></section>
+<div class="kpi-summary-row"><section class="card gp-card"><h2>Employee Gross Profit</h2><div class="gp-line"><div><span id="gpActual" class="gp-number">—</span><div id="gpPct" class="muted">Goal: $15,000</div></div></div><div class="progress"><span id="gpBar" style="width:0%"></span></div></section><section class="card htp-card" aria-label="MTD HTP"><div class="htp-title">⌂ &nbsp;MTD HTP</div><div id="htpValue" class="htp-value" aria-live="polite">—</div></section></div><div class="fast-section-row"><section class="card fast-start" aria-label="Fast Start progress"><div class="fast-heading"><span>⚡ Fast Start</span><button type="button" id="fastInfo" class="info" aria-label="Explain Fast Start">i</button></div><div class="fast-dates" id="fastPeriod">Days 1–7 · Monthly kickoff</div><p class="fast-caption">33% minimum · 50% goal (max)</p><div id="fastMetrics" class="fast-metrics" aria-live="polite"></div><p id="fastNote" class="fast-note"></p></section></div><section class="card unified-panel" aria-label="AGT ADT Results and Daily Shift Priority"><div class="section-head"><div><h2>AGT / ADT Results &amp; Priority</h2><p class="muted unified-intro">Official daily targets, progress, and shift priority in one view. Ranked from highest to lowest priority.</p><div class="priority-heading-actions"><button type="button" class="info" id="priorityInfo" aria-label="Explain Daily Shift Priority">i</button><button type="button" id="copyPriorityAdt" class="copy-priority" aria-label="Copy adjusted daily targets in priority order" title="Copy ADT in priority order" disabled><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><rect x="8" y="8" width="13" height="13" rx="2.2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button><button type="button" id="sharePriorityAdt" class="copy-priority share-priority" aria-label="Share adjusted daily targets in priority order" title="Share ADT in priority order" disabled><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V3m0 0L7.5 7.5M12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button></div></div></div><div id="priorities" class="unified-list" aria-live="polite"></div><div class="stats unified-stats"><div class="stat">Met<strong id="greenCount" class="green-text">0</strong></div><div class="stat">Almost There<strong id="yellowCount" class="yellow-text">0</strong></div><div class="stat">Not Met<strong id="redCount" class="red-text">0</strong></div></div><p class="muted unified-legend">Met = 0 · Almost There = ≥75% or within one base unit · Not Met = otherwise</p></section><section class="card"><div class="section-head"><div><h2>What if…?</h2><p class="muted">Experiment freely. Official results will not change.</p></div><button type="button" id="info" class="info" aria-label="What If instructions">i</button></div><div class="table-wrap"><table><thead><tr><th>KPI</th><th>Rule</th><th class="center">What if…?</th><th class="right">Actual ADT</th><th class="right">Variance</th><th class="right">Projected ADT</th></tr></thead><tbody id="whatIfBody"></tbody></table></div></section><section class="card"><div class="section-head"><h2>Shift Progress Tracker</h2><button type="button" class="info" id="trackerInfo" aria-label="Explain Shift Progress Tracker">i</button></div><div class="chart-wrap"><svg id="shiftChart" role="img" aria-label="Shift progress chart" viewBox="0 0 800 205" preserveAspectRatio="none"></svg></div><div id="chartLegend" class="chart-legend"></div><button type="button" id="clearChartSelection" class="clear-chart">Clear selection</button></section></main>
+<dialog id="backupDialog" class="wide-dialog"><h2>Backup &amp; Restore</h2><p class="muted">Save a private copy of this phone’s KPI results, history, and Fast Start progress. Backups do not include Supabase accounts or shared Admin goals.</p><div class="admin-actions"><button type="button" id="exportBackup" class="primary">↧ Export Backup</button><button type="button" id="chooseBackup">↥ Restore Backup</button><input type="file" id="backupFile" accept=".json,application/json" hidden></div><p id="backupMessage" class="muted" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">Keep the file private: it may contain employee performance information. Restoring replaces saved local data for this app on this phone. Existing Supabase data is not changed.</p><button type="button" class="close-dialog">Close</button></dialog>
+<dialog id="uploadDialog"><h2>How to get your KPI PDF</h2><ol class="upload-steps"><li>Go to <strong>apps.cellularworld.net</strong> and log in.</li><li>Open <strong>Opus X</strong> and log in.</li><li>From the dropdown menu, select <strong>Reports &gt; Sales &gt; Sales Performance Report</strong>.</li><li>Under <strong>Report Type</strong>, choose <strong>By Employee</strong>.</li><li>Under <strong>Employees</strong>, select <strong>Unselect All</strong>, then choose your name.</li><li>Select <strong>View Report</strong> and wait for it to load.</li><li>Click the <strong>💾 Save</strong> icon, then choose <strong>PDF</strong>.</li><li><strong>On iPhone:</strong> tap <strong>Open &gt; Share &gt; Save to Files</strong>.</li><li>Return to this app and tap <strong>Upload</strong> to select the saved PDF.</li></ol><button type="button" class="close-dialog">OK</button></dialog>
+<dialog id="overallDialog"><h2>Overall Progress</h2><p><strong style="color:var(--green)">Green — Met:</strong> All seven KPIs meet their current month-to-date targets.</p><p><strong style="color:var(--yellow)">Yellow — Almost There:</strong> No KPI is red, but at least one is within 75% of target or within one base unit.</p><p><strong style="color:var(--red)">Red — Not Met:</strong> At least one KPI is below the Almost There threshold.</p><p>Based only on the latest confirmed calculation; shift history and Employee GP do not affect this status. The number inside the active light is the equal-weight average of each KPI’s progress toward its current MTD target, capped at 100% per KPI. The light color continues to use the existing official status rules.</p><button type="button" class="close-dialog">OK</button></dialog>
+<dialog id="priorityDialog"><h2>How Daily Shift Priority works</h2><p>Uses your latest confirmed month-to-date KPI actuals and manually entered shifts worked. Each KPI is compared with its cumulative target.</p><p>When behind, the next-shift recovery requirement is the MTD shortfall plus the KPI's base target (one whole unit for grouped KPIs). KPIs already at or above target show zero recovery needed.</p><p>Red KPIs appear first, then yellow, then green. Within a color, larger requirements come first. History notes are informational only and never change ranking, official calculations, or status.</p><button type="button" class="close-dialog">OK</button></dialog>
+<dialog id="trackerDialog"><h2>How Shift Progress Tracker works</h2><p>Upload one cumulative KPI PDF after each worked shift, enter that shift number, and press Calculate. For consecutive shift snapshots, the app subtracts the previous MTD total from the latest to find sales during that shift, then subtracts the normal per-shift KPI target.</p><p>The horizontal axis is shift number; the vertical axis is sales above (+) or below (−) target. Zero means exactly on target. If a shift is missing, the app does not invent its results. Shift 1 can be calculated directly when its first report contains only that shift's sales.</p><p>Select a KPI below the chart to show only its line; Clear selection shows all seven. History resets each calendar month and never affects AGT/ADT or overall progress.</p><button type="button" class="close-dialog">OK</button></dialog>
+<dialog id="helpDialog"><h2>How What If works</h2><p>Change the values in the What if…? column to explore possible adjusted daily targets. The What If table updates immediately using the same formulas as the official calculator.</p><p>These changes do not affect your official results, Daily Shift Priority, traffic light, Employee GP, or saved shift history. Press Calculate to commit pending upload values, shift count, and PDF-extracted Employee GP—not What If values.</p><button id="closeHelp" type="button">OK</button></dialog>
+<dialog id="fastDialog" class="wide-dialog"><div class="section-head"><h2>About Fast Start</h2><button type="button" class="close-dialog" aria-label="Close">✕</button></div><p>Fast Start measures your month-to-date PDF results against separate monthly goals during the first seven calendar days of each month.</p><p><strong>Yellow:</strong> at least 33% of a goal. <strong>Green:</strong> at least 50%. <strong>Red:</strong> below 33%. Each progress bar is scaled so 50% of the monthly goal fills the bar (100% Fast Start progress). The gray marker at 66% of the bar represents the 33% minimum; the gray end marker represents the 50% preferred goal.</p><p>Dollar-based GP and APO use dollar amounts. Sales KPIs use whole-number counts. The percentage is actual divided by monthly goal; reaching 33% or 50% is evaluated using the unrounded percentage.</p><p>Progress persists on this device and starts a new period on the first of each month. A report covering the 7th or earlier can lock in your deadline result. If no qualifying report was saved, later MTD values are shown as provisional and cannot prove the day-7 result.</p><p><strong>Volume-based metrics only:</strong> This Fast Start section tracks only volume-based performance metrics. For percentage-based Fast Start metrics, including Protection and Premium Mix, refer to the board.</p><p>Fast Start goals are separate from official AGT/ADT targets. No official calculation is affected.</p></dialog>
+<dialog id="adminDialog" class="wide-dialog"><div class="section-head"><h2>Admin · KPI Goals &amp; Formulas</h2><button type="button" id="closeAdmin" aria-label="Close Admin">✕</button></div>
+<section id="adminLocked"><p class="muted">Sign in with your Supabase Admin email and password to change shared KPI targets.</p><label for="adminEmail">Admin email</label><input id="adminEmail" type="email" autocomplete="username" placeholder="Admin email"><label for="adminPassword">Admin password</label><input id="adminPassword" type="password" autocomplete="off" placeholder="Password"><button type="button" id="unlockAdmin">Unlock</button><p id="adminError" role="alert" class="error-text"></p></section>
+<section id="adminUnlocked" hidden><p class="muted">Edit the existing target parameters. Daily KPIs use target per shift. Grouped KPIs use units per number of shifts. Changes to these parameters alter future AGT/ADT calculations only after Save Changes.</p><div id="adminFields" class="admin-fields"></div><div class="fast-admin"><h3>Fast Start · Monthly Sales Goals</h3><p class="muted">33% minimum, 50% preferred. Set monthly goals for the eight Fast Start metrics, including dollar-based GP and APO. Changes are saved to Supabase and shared across devices.</p><div id="fastAdminFields" class="admin-fields"></div><button type="button" id="saveFastGoals">Save Fast Start Goals</button><p id="fastAdminMessage" class="muted" role="status"></p></div><div class="admin-actions"><button type="button" id="saveAdmin" class="primary">Save Changes</button><button type="button" id="resetAdmin">Reset to Original Defaults</button><button type="button" id="lockAdmin">Lock</button></div><p id="adminMessage" role="status" class="muted"></p></section></dialog>
+<dialog id="installDialog"><h2>Install App</h2><p id="installInstructions">On iPhone, open this website in Safari, tap the Share icon, then choose <strong>Add to Home Screen</strong> and tap Add. On Android, use your browser menu and choose <strong>Install app</strong> or <strong>Add to Home screen</strong>.</p><p class="muted">After the app is published at its Cloudflare Pages web address, use that address to create your shortcut. A website cannot add the shortcut without your permission.</p><button type="button" class="close-dialog">OK</button></dialog><dialog id="historyDialog" class="wide-dialog"><div class="section-head"><h2>ADT History</h2><button type="button" id="closeHistory" aria-label="Close History">✕</button></div><p class="muted">Saved Calculate results across all months on this browser. Older entries retain their original saved ADT values even when goals change later.</p><div id="historyList"></div></dialog>
+<div id="toast" role="status"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+window.addEventListener("error",function(e){var t=document.getElementById("toast");if(t){t.style.display="block";t.textContent="App error: "+(e.message||"Please reopen in a browser.");}});
+"use strict";
+if(window.pdfjsLib)window.pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+    let KPI_CONFIG = [
+      { key: 'VGA', name: 'Voice Gross Adds', type: 'daily', dailyTarget: 1.25, groupSpan: 1, groupTarget: 1.25, ruleText: '1.25 / shift' },
+      { key: 'UP', name: 'Upgrades', type: 'daily', dailyTarget: 1.1, groupSpan: 1, groupTarget: 1.1, ruleText: '1.1 / shift' },
+      { key: 'CRU', name: 'Corporate Responsibility User', type: 'grouped', dailyTarget: 0.25, groupSpan: 4, groupTarget: 1, ruleText: '1 per 4 shifts' },
+      { key: 'FN', name: 'FirstNet', type: 'grouped', dailyTarget: 1 / 6, groupSpan: 6, groupTarget: 1, ruleText: '1 per 6 shifts' },
+      { key: 'INT', name: 'Internet (Internet Air + HSI)', type: 'grouped', dailyTarget: 0.5, groupSpan: 2, groupTarget: 1, ruleText: '1 per 2 shifts' },
+      { key: 'OPPS', name: 'Opportunities', type: 'daily', dailyTarget: 2.35, groupSpan: 1, groupTarget: 2.35, ruleText: '2.35 / shift' },
+      { key: 'EVENTS', name: 'Premium Out-of-Store Events', type: 'grouped', dailyTarget: 0.25, groupSpan: 4, groupTarget: 1, ruleText: '1 per 4 shifts' }
+    ];
+const CURRENT_KEY="ows306_official_v4",HISTORY_KEY="ows306_month_history_v1",OLD_KEY="att_ows306_simple_v3";
+const ORIGINAL_KPI_CONFIG=JSON.parse(JSON.stringify(KPI_CONFIG));
+const ADMIN_CONFIG_KEY="ows306_admin_config_v1",ARCHIVE_KEY="ows306_adt_history_all_v1";
+let adtArchive=[],adminUnlocked=false;
+function loadAdminConfig(){return;const saved=readJSON(ADMIN_CONFIG_KEY);if(!Array.isArray(saved)||saved.length!==ORIGINAL_KPI_CONFIG.length)return;const validated=validateConfig(saved);if(validated.ok)KPI_CONFIG=validated.config}
+function validateConfig(candidate){if(!Array.isArray(candidate)||candidate.length!==ORIGINAL_KPI_CONFIG.length)return{ok:false,message:"Invalid KPI configuration."};const config=[];for(let i=0;i<ORIGINAL_KPI_CONFIG.length;i++){const original=ORIGINAL_KPI_CONFIG[i],item=candidate[i];if(!item||item.key!==original.key||item.type!==original.type)return{ok:false,message:"KPI keys or types cannot be changed."};const amount=Number(item.type==="daily"?item.dailyTarget:item.groupTarget),span=Number(item.groupSpan);if(!Number.isFinite(amount)||amount<=0||amount>100000||!Number.isInteger(span)||span<1||span>365)return{ok:false,message:"Targets must be positive and shift spans must be whole numbers from 1 to 365."};const m={...original};if(m.type==="daily"){m.dailyTarget=amount;m.groupTarget=amount;m.groupSpan=1;m.ruleText=fmt(amount)+" / shift"}else{m.groupTarget=amount;m.groupSpan=span;m.dailyTarget=amount/span;m.ruleText=fmt(amount)+" per "+span+" shift"+(span===1?"":"s")}config.push(m)}return{ok:true,config}}
+
+function renderAdminFields(){const root=$("adminFields");root.replaceChildren();for(const m of KPI_CONFIG){const row=make("div","admin-field"),title=make("strong","",m.key+" · "+m.name),lbl=make("label","",m.type==="daily"?"Target per shift":"Units per group"),amount=make("input");amount.type="number";amount.min="0.000001";amount.step="any";amount.value=m.type==="daily"?m.dailyTarget:m.groupTarget;amount.dataset.key=m.key;amount.dataset.field="amount";row.append(title,lbl,amount);if(m.type==="grouped"){const l=make("label","","Number of shifts"),n=make("input");n.type="number";n.min="1";n.max="365";n.step="1";n.value=m.groupSpan;n.dataset.key=m.key;n.dataset.field="span";row.append(l,n)}root.append(row)}}
+function closeAdmin(){adminUnlocked=false;$("adminPassword").value="";$("adminLocked").hidden=false;$("adminUnlocked").hidden=true;$("adminError").textContent="";$("adminDialog").close()}
+async function saveAdminConfig(){if(!adminUnlocked)return;const candidate=clone(KPI_CONFIG);for(const input of $("adminFields").querySelectorAll("input")){const item=candidate.find(m=>m.key===input.dataset.key);if(!item)return;if(input.value.trim()===""){$("adminMessage").textContent="All targets are required.";return}if(input.dataset.field==="amount"){if(item.type==="daily")item.dailyTarget=Number(input.value);else item.groupTarget=Number(input.value)}else item.groupSpan=Number(input.value)}const result=validateConfig(candidate);if(!result.ok){$("adminMessage").textContent=result.message;return}if(!confirm("Apply these KPI target/formula settings to future calculations? Existing saved ADT History will remain unchanged."))return;if(!await cloudWriteKpis(result.config,$("adminMessage")))return;KPI_CONFIG=result.config;$("adminMessage").textContent="Shared KPI settings saved to Supabase.";renderOfficial();renderWhatIf(true);renderChart();notify("Admin KPI settings saved.")}
+function archiveSnapshot(record){const saved={date:record.date,savedAt:new Date().toISOString(),shiftsWorked:record.shiftsWorked,actuals:clone(record.actuals),gp:record.gp,results:compute(record.shiftsWorked,record.actuals).map(r=>({key:r.key,actual:r.actual,adjusted:r.adjusted,status:r.status.code})),config:clone(KPI_CONFIG)};const idx=adtArchive.findIndex(r=>r.date===saved.date&&Number(r.shiftsWorked)===Number(saved.shiftsWorked));if(idx>=0)adtArchive[idx]=saved;else adtArchive.push(saved);adtArchive.sort((a,b)=>a.date.localeCompare(b.date)||a.shiftsWorked-b.shiftsWorked);writeJSON(ARCHIVE_KEY,adtArchive)}
+function loadArchive(){const data=readJSON(ARCHIVE_KEY);adtArchive=Array.isArray(data)?data.filter(r=>r&&typeof r.date==="string"&&Array.isArray(r.results)):[];const monthData=readJSON(HISTORY_KEY);if(monthData&&Array.isArray(monthData.records)){let changed=false;for(const r of monthData.records){if(r&&r.date&&r.actuals&&!adtArchive.some(a=>a.date===r.date&&Number(a.shiftsWorked)===Number(r.shiftsWorked))){adtArchive.push({date:r.date,savedAt:null,shiftsWorked:r.shiftsWorked,actuals:clone(r.actuals),gp:r.gp,results:compute(r.shiftsWorked,r.actuals).map(x=>({key:x.key,actual:x.actual,adjusted:x.adjusted,status:x.status.code})),config:clone(KPI_CONFIG),migrated:true});changed=true}}if(changed){adtArchive.sort((a,b)=>a.date.localeCompare(b.date));writeJSON(ARCHIVE_KEY,adtArchive)}}}
+function renderHistory(){const root=$("historyList");root.replaceChildren();if(!adtArchive.length){root.append(make("p","muted","No saved calculations yet. Upload a report and press Calculate to start your history."));return}for(const record of adtArchive.slice().reverse()){const details=make("details","history-entry"),summary=make("summary","",record.date+" · Shift "+fmt(record.shiftsWorked)),table=make("div","history-metrics");for(const r of record.results){const row=make("div","history-metric"),left=make("strong","",r.key),right=make("span","", "ADT "+fmt(r.adjusted)+" · "+(r.status==="green"?"Met":r.status==="yellow"?"Almost There":"Not Met"));right.className=r.status+"-text";row.append(left,right);table.append(row)}details.append(summary,table);root.append(details)}}
+const KEYS=KPI_CONFIG.map(m=>m.key),DEFAULT_ACTUALS={VGA:null,UP:null,CRU:null,FN:null,INT:null,OPPS:null,EVENTS:null};
+let selectedChartKpi=null;
+const COLORS={VGA:"#38bdf8",UP:"#a78bfa",CRU:"#fbbf24",FN:"#fb7185",INT:"#34d399",OPPS:"#f97316",EVENTS:"#e879f9"};
+const $=id=>document.getElementById(id);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const validNum=v=>v!==null&&v!==undefined&&v!==""&&Number.isFinite(Number(v))&&Number(v)>=0;
+const fmt=v=>{const n=Math.round(Number(v)*100)/100;return Math.abs(n)<1e-9?"0":String(n)};
+const money=v=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(v);
+const localDate=(d=new Date())=>[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-");
+const monthKey=()=>localDate().slice(0,7);
+let pendingVerified=new Set(),pdfUploaded=false;let official=null,pending={shiftsWorked:0,actuals:clone(DEFAULT_ACTUALS),gp:null},whatIf=clone(DEFAULT_ACTUALS),history={month:monthKey(),records:[]},uploadBusy=false,toastTimer;
+function statusFor(target,actual,variance,base){if(variance<=1e-9)return{code:"green",label:"Met"};const ratio=target>0?actual/target:0;if(ratio>=.75||variance<=base)return{code:"yellow",label:"Almost There"};return{code:"red",label:"Not Met"}}
+// Original KPI target, variance, and ADT formulas intentionally unchanged.
+function compute(shifts,actuals){const s=Math.max(0,Number(shifts)||0);return KPI_CONFIG.map(m=>{const actual=Math.max(0,Number(actuals[m.key])||0);let target,base;if(m.type==="daily"){target=m.dailyTarget*s;base=m.dailyTarget}else{target=m.groupTarget*(s/m.groupSpan);base=m.groupTarget}const variance=target-actual,adjusted=variance>1e-9?variance+base:0;return{key:m.key,name:m.name,rule:m.ruleText,actual,target,variance,adjusted,status:statusFor(target,actual,variance,base)}})}
+function readJSON(key){try{return JSON.parse(localStorage.getItem(key)||"null")}catch{return null}}
+function writeJSON(key,value){try{localStorage.setItem(key,JSON.stringify(value))}catch{notify("Browser storage is unavailable; progress may not persist.")}}
+function pruneHistory(){const m=monthKey();if(!history||history.month!==m||!Array.isArray(history.records)){history={month:m,records:[]}}history.records=history.records.filter(r=>r&&typeof r.date==="string"&&r.date.startsWith(m+"-")&&r.date<=localDate()&&validNum(r.shiftsWorked)&&r.actuals&&KEYS.every(k=>validNum(r.actuals[k])));writeJSON(HISTORY_KEY,history)}
+function load(){loadAdminConfig();loadArchive();const saved=readJSON(CURRENT_KEY);const base=saved&&saved.month===monthKey()?saved:null;
+if(base&&base.official&&Number.isFinite(Number(base.official.shiftsWorked))&&base.official.actuals&&KEYS.every(k=>validNum(base.official.actuals[k]))){official=base.official;pending=clone(official);if(pending.gp===undefined)pending.gp=null;pendingVerified=new Set(KEYS)}
+if(base&&typeof base.name==="string")$("employeeName").value=base.name;
+const h=readJSON(HISTORY_KEY);if(h&&typeof h==="object")history=h;pruneHistory();whatIf=clone(official?official.actuals:pending.actuals);syncInputs();renderPending()}
+function persist(){writeJSON(CURRENT_KEY,{month:monthKey(),official,name:$("employeeName").value})}
+function notify(message){const el=$("toast");el.textContent=message;el.style.display="block";clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.style.display="none",3100)}
+function renderPending(){const root=$("pendingKpis");root.replaceChildren();for(const m of KPI_CONFIG){const wrap=make("div"),label=make("label","",m.key+" MTD Actual"),value=make("div","pending-value",validNum(pending.actuals[m.key])?fmt(pending.actuals[m.key]):"Not found");label.append(value);wrap.append(label);root.append(wrap)}}
+function markDirty(){ $("pendingNotice").textContent="Pending changes — press Calculate to update official results." }
+function syncInputs(){$("shiftsWorkedInput").value=pending.shiftsWorked}
+function make(tag,cls,text){const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el}
+let priorityCopyRows=[];
+function renderOfficial(){
+const priorities=$("priorities");priorities.replaceChildren();
+const counts={green:0,yellow:0,red:0};
+for(const c of ["red","yellow","green"])$("light"+c[0].toUpperCase()+c.slice(1)).classList.remove("active");
+if(!official){priorityCopyRows=[];$("copyPriorityAdt").disabled=true;$("sharePriorityAdt").disabled=true;priorities.append(make("p","muted","Press Calculate to generate official results."));$("lightLabel").textContent="Not calculated";$("lightLabel").className="light-summary";for(const c of ["red","yellow","green"])$("light"+c[0].toUpperCase()+c.slice(1)).textContent="";for(const c of Object.keys(counts))$(c+"Count").textContent="0";renderGP();return}
+const results=compute(official.shiftsWorked,official.actuals);
+for(const r of results)counts[r.status.code]++;
+for(const c of Object.keys(counts))$(c+"Count").textContent=counts[c];
+const overall=counts.red?"red":counts.yellow?"yellow":"green";
+$("light"+overall[0].toUpperCase()+overall.slice(1)).classList.add("active");
+// Display-only percentage; the official status and adjusted requirements are unchanged.
+const overallPct=results.reduce((sum,r)=>sum+(r.target>0?Math.min(1,Math.max(0,r.actual/r.target)):1),0)/results.length*100;
+for(const c of ["red","yellow","green"]){const bulb=$("light"+c[0].toUpperCase()+c.slice(1));bulb.textContent=c===overall?Math.round(overallPct)+"%":""}
+$("lightLabel").textContent="";$("lightLabel").className="light-summary";
+// Preserve existing Daily Shift Priority ranking: red, yellow, green; then highest adjusted target first.
+const rank={red:0,yellow:1,green:2};
+results.sort((a,b)=>rank[a.status.code]-rank[b.status.code]||b.adjusted-a.adjusted);
+priorityCopyRows=results.map(r=>({key:r.key,adjusted:r.adjusted}));
+$("copyPriorityAdt").disabled=false;$("sharePriorityAdt").disabled=false;
+for(const [index,r] of results.entries()){
+const box=make("div","unified-kpi "+r.status.code);
+const head=make("div","unified-head"),name=make("div","unified-name"),number=make("span","unified-rank",String(index+1)),title=make("strong","unified-title",r.key),target=make("strong","unified-target",r.status.code==="green"?"0 (Goal Met)":"Target Today: "+fmt(r.adjusted));
+name.append(number,title);head.append(name,target);box.append(head);
+const pct=r.target>0?Math.min(100,Math.max(0,r.actual/r.target*100)):100;
+box.append(make("div","unified-pct",Math.round(pct)+"%"));
+const track=make("div","progress unified-progress"),fill=make("span");fill.style.width=pct+"%";fill.style.background={red:"var(--red)",yellow:"var(--yellow)",green:"var(--green)"}[r.status.code];track.append(fill);box.append(track);
+priorities.append(box)
+}
+renderGP()
+}
+async function sharePriorityAdt(){
+if(!priorityCopyRows.length){notify("Press Calculate first to generate official ADT results.");return}
+const content=priorityCopyRows.map(r=>r.key+": "+fmt(r.adjusted)).join("\n");
+if(typeof navigator.share!=="function"){notify("Sharing is unavailable here. Use Copy ADT instead.");return}
+try{await navigator.share({text:content})}catch(error){if(error?.name!=="AbortError")notify("Unable to open Share. Use Copy ADT instead.")}
+}
+async function copyPriorityAdt(){
+if(!priorityCopyRows.length){notify("Press Calculate first to generate official ADT results.");return}
+const content=priorityCopyRows.map(r=>r.key+": "+fmt(r.adjusted)).join("\n");
+try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(content)}else{const area=document.createElement("textarea");area.value=content;area.setAttribute("readonly","");area.style.position="fixed";area.style.opacity="0";document.body.append(area);area.select();const ok=document.execCommand("copy");area.remove();if(!ok)throw Error("Copy unavailable")};notify("ADT targets copied in priority order.")}catch{notify("Could not copy. Please allow clipboard access and try again.")}
+}
+function renderGP(){const gp=official?.gp;$("gpActual").textContent=gp===null||gp===undefined?"Not available":money(gp);const pct=gp===null||gp===undefined?0:gp/15000*100;$("gpPct").textContent=gp===null||gp===undefined?"Goal: $15,000":fmt(pct)+"% of $15,000 goal";$("gpBar").style.width=Math.max(0,Math.min(100,pct))+"%";$("gpBar").style.background=gp===null||gp===undefined?"#64748b":pct>=100?"var(--green)":pct>=75?"var(--yellow)":"var(--red)";$("gpActual").style.color=gp===null||gp===undefined?"var(--muted)":pct>=100?"var(--green)":pct>=75?"var(--yellow)":"var(--red)"}
+function renderWhatIf(rebuild=false){const tbody=$("whatIfBody");if(rebuild){tbody.replaceChildren();for(const m of KPI_CONFIG){const tr=make("tr");const name=make("td");name.append(make("div","code",m.key),make("div","rule",m.name));const rule=make("td","rule",m.ruleText),cell=make("td","center"),input=make("input");input.type="number";input.min="0";input.step="0.5";input.dataset.key=m.key;input.setAttribute("aria-label",m.key+" What If actual");input.value=whatIf[m.key];cell.append(input);tr.append(name,rule,cell,make("td","right"),make("td","right"),make("td","right"));tbody.append(tr)}}const rows=compute(official?.shiftsWorked??pending.shiftsWorked,whatIf);[...tbody.children].forEach((tr,i)=>{const r=rows[i];const baseline=official?compute(official.shiftsWorked,official.actuals)[i].adjusted:null;tr.children[3].textContent=baseline===null?"—":fmt(baseline);tr.children[4].textContent=(r.variance>0?"+":"")+fmt(r.variance);tr.children[5].textContent=fmt(r.adjusted);tr.children[5].style.color={red:"var(--red)",yellow:"var(--yellow)",green:"var(--green)"}[r.status.code]})}
+function saveSnapshot(){pruneHistory();const date=localDate(),shifts=Number(official.shiftsWorked);const record={date,shiftsWorked:shifts,actuals:clone(official.actuals),gp:official.gp};const idx=history.records.findIndex(r=>r.date===date&&Number(r.shiftsWorked)===shifts);if(idx>=0)history.records[idx]=record;else history.records.push(record);history.records.sort((a,b)=>a.date.localeCompare(b.date)||a.shiftsWorked-b.shiftsWorked);writeJSON(HISTORY_KEY,history);archiveSnapshot(record)}
+function renderChart(){
+ const svg=$("shiftChart"),legend=$("chartLegend");svg.replaceChildren();legend.replaceChildren();
+ for(const m of KPI_CONFIG){const b=make("button","chart-key chart-select"+(selectedChartKpi===m.key?" selected":""));b.type="button";b.setAttribute("aria-pressed",String(selectedChartKpi===m.key));const line=make("i");line.style.background=COLORS[m.key];b.append(line,document.createTextNode(m.key));b.addEventListener("click",()=>{selectedChartKpi=m.key;renderChart()});legend.append(b)}
+ $("clearChartSelection").disabled=!selectedChartKpi;
+ const records=history.records.slice().filter(r=>validNum(r.shiftsWorked)&&r.actuals&&KEYS.every(k=>validNum(r.actuals[k]))).sort((a,b)=>Number(a.shiftsWorked)-Number(b.shiftsWorked)||a.date.localeCompare(b.date));
+ const unique=records.filter((r,i,a)=>!a.slice(i+1).some(v=>Number(v.shiftsWorked)===Number(r.shiftsWorked)));
+ const shiftPoints=[];
+ for(let i=0;i<unique.length;i++){
+   const cur=unique[i],shift=Number(cur.shiftsWorked),prev=i?unique[i-1]:null;
+   // A first-shift report is a valid baseline; otherwise two consecutive shift reports are required.
+   if(shift!==1&&(!prev||Number(prev.shiftsWorked)!==shift-1))continue;
+   const deltas={};let valid=true;
+   for(const m of KPI_CONFIG){const sold=Number(cur.actuals[m.key])-(prev?Number(prev.actuals[m.key]):0);if(sold<0){valid=false;break}deltas[m.key]=sold-m.dailyTarget}
+   if(valid)shiftPoints.push({shift,deltas});
+ }
+ const maxShift=Math.max(2,...unique.map(r=>Number(r.shiftsWorked)),...shiftPoints.map(r=>r.shift));
+ const visible=KPI_CONFIG.filter(m=>!selectedChartKpi||selectedChartKpi===m.key);
+ const values=shiftPoints.flatMap(p=>visible.map(m=>p.deltas[m.key]));
+ const bound=Math.max(1,...values.map(v=>Math.abs(v)))*1.16;
+ const left=52,right=780,top=14,bottom=172,x=v=>left+(right-left)*(v-1)/Math.max(1,maxShift-1),y=v=>bottom-(v+bound)*(bottom-top)/(2*bound);
+ for(let i=0;i<=4;i++){const v=-bound+2*bound*i/4,yy=y(v);svg.append(svgNode("line",{x1:left,y1:yy,x2:right,y2:yy,stroke:Math.abs(v)<1e-9?"#d7e8fa":"#36516f","stroke-width":Math.abs(v)<1e-9?2:1}));const t=svgNode("text",{x:left-7,y:yy+4,fill:"#d7e8fa","font-size":11,"text-anchor":"end"});t.textContent=(v>0?"+":"")+fmt(v);svg.append(t)}
+ for(let i=1;i<=maxShift;i++){if(maxShift>16&&i!==1&&i!==maxShift&&i%Math.ceil(maxShift/12)!==0)continue;const t=svgNode("text",{x:x(i),y:192,fill:"#cbd5e1","font-size":11,"text-anchor":"middle"});t.textContent=i;svg.append(t)}
+ for(const m of visible){const pts=shiftPoints.map(p=>[p.shift,p.deltas[m.key]]);for(let i=0;i<pts.length;i++){if(i&&pts[i][0]===pts[i-1][0]+1)svg.append(svgNode("line",{x1:x(pts[i-1][0]),y1:y(pts[i-1][1]),x2:x(pts[i][0]),y2:y(pts[i][1]),stroke:COLORS[m.key],"stroke-width":3}));svg.append(svgNode("circle",{cx:x(pts[i][0]),cy:y(pts[i][1]),r:4,fill:COLORS[m.key]}))}}
+ if(!shiftPoints.length){const t=svgNode("text",{x:400,y:80,fill:"#d7e8fa","font-size":14,"text-anchor":"middle"});t.textContent="Upload consecutive shift PDFs to plot performance.";svg.append(t)}
+}
+function svgNode(tag,attrs){const n=document.createElementNS("http://www.w3.org/2000/svg",tag);for(const [k,v]of Object.entries(attrs))n.setAttribute(k,String(v));return n}
+function commit(){const missing=KEYS.filter(k=>!pendingVerified.has(k)||!validNum(pending.actuals[k]));if(missing.length){notify("Missing KPI actuals: "+missing.join(", ")+". Upload a supported report.");$("pendingNotice").textContent="Cannot calculate: verify "+missing.join(", ")+".";return}if(uploadBusy){notify("Wait for file processing to finish.");return}const v=Number($("shiftsWorkedInput").value);if(!validNum($("shiftsWorkedInput").value)||v<=0||v>60){notify("Enter shifts actually worked (greater than 0). The PDF does not provide this count.");return}pending.shiftsWorked=v;official=clone(pending);whatIf=clone(official.actuals);persist();saveSnapshot();$("pendingNotice").textContent="Official results updated.";renderOfficial();renderWhatIf(true);renderChart();notify("Official calculation saved.")}
+
+function extractSalesPerformance(pages){
+ const out={};
+ const row=(items,y)=>items.filter(i=>Math.abs(i.y-y)<4&&String(i.text).trim()).sort((a,b)=>a.x-b.x);
+ const values=(items)=>{const ys=items.filter(i=>String(i.text).trim()).map(i=>i.y);if(!ys.length)return[];const y=Math.min(...ys);return row(items,y).map(i=>String(i.text).trim())};
+ const numeric=t=>{const v=String(t||"").replace(/[$,\s]/g,"");return /^\d+(?:\.\d+)?$/.test(v)?Number(v):null};
+ for(const items of pages){
+   const all=items.map(i=>i.text).join(" ").replace(/\s+/g," ").toLowerCase();
+   const ys=items.filter(i=>String(i.text).trim()).map(i=>i.y);
+   if(!ys.length)continue;
+   const headerY=Math.max(...ys), headers=row(items,headerY);
+   const lowerYs=ys.filter(y=>y<headerY-4);if(!lowerYs.length)continue;
+   const dataY=Math.max(...lowerYs), cells=row(items,dataY);
+   const nums=cells.map(c=>numeric(c.text));
+   // Page 2: Employee GP, PSTPD Acts, FN PSTPD Acts, PSTPD / 50%PPD, PSTPD Voice Acts, CRU Acts.
+   if(all.includes("employee gp")&&all.includes("pstpd voice acts")&&all.includes("fn pstpd acts")&&nums.length===6){
+     if(nums[0]!==null)out.gp=nums[0];
+     if(nums[2]!==null)out.FN=nums[2];
+     if(nums[4]!==null)out.VGA=nums[4];
+   }
+   // Page 3: CRU Voice Acts, Ups, PSTPD Opps, Prepaid Acts, Wearables, Tablets, WHP, MiFi.
+   if(all.includes("cru voice acts")&&all.includes("pstpd opps")&&all.includes("ups")&&nums.length>=3){
+     if(nums[0]!==null)out.CRU=nums[0];
+     if(nums[1]!==null)out.UP=nums[1];
+     if(nums[2]!==null)out.OPPS=nums[2];
+   }
+   // Page 4: Strategics, Internet Air, Prem TV, HSI, Entertainment, Hometech, Accy GP, APO.
+   if(all.includes("hometech")&&all.includes("internet air")&&all.includes("strategics")&&cells.length>=6){
+     // Page 4 has the Hometech column in position 6, between Entertainment and Accy GP.
+     const hometech=numeric(cells[5].text);
+     if(hometech!==null)out.HTP=hometech;
+     if(cells.length>=8){const apo=numeric(cells[7].text);if(apo!==null)out.APO=apo;}
+   }
+   if(all.includes("internet air")&&all.includes("hsi")&&all.includes("strategics")){
+     // Values are positioned at the same x coordinates as their column headings.
+     const air=cells.find(c=>Math.abs(c.x-131.6)<12),hsi=cells.find(c=>Math.abs(c.x-254)<12);
+     if(air&&hsi&&numeric(air.text)!==null&&numeric(hsi.text)!==null)out.INT=numeric(air.text)+numeric(hsi.text);
+   }
+   if(all.includes("event sales")&&cells.length===1&&nums[0]!==null)out.EVENTS=nums[0];
+ }
+ return out;
+}
+
+function applyExtracted(text,structured=[]){const normalized=text.replace(/\s+/g," ");const rules=[
+["VGA",/(?:voice\s*gross\s*adds?|ppvga|\bvga\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
+["UP",/(?:elite\s*upgrades?|upgrades?|\bup\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
+["CRU",/(?:corporate\s*responsibility(?:\s*user)?|\bcru\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
+["FN",/(?:first\s*net|firstnet|\bfn\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
+["INT",/(?:internet(?:\s*air)?(?:\s*\+\s*hsi)?|\bint\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
+["OPPS",/(?:opportunities|total\s*opp\s*cnt|\bopps\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
+["EVENTS",/(?:premium\s*out-of-store\s*events?|out\s*of\s*store\s*events?|\bevents?\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i]];
+const extracted={};const shift=normalized.match(/(?:shifts?\s*worked|mtd\s*shifts?|total\s*shifts?|shifts?)\s*[:=-]?\s*(\d+(?:\.\d+)?)/i);if(shift)extracted.shiftsWorked=Number(shift[1]);for(const [key,regex]of rules){const m=normalized.match(regex);if(m)extracted[key]=Number(m[1])}const aia=normalized.match(/(?:internet\s*air|aia(?:-c)?)\s*(?:gross\s*submit|actual|cnt)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i),hsi=normalized.match(/(?:fiber|hsi|broadband)\s*(?:100mb\+)?\s*(?:gross\s*submit|actual|cnt)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i);if(aia&&hsi)extracted.INT=Number(aia[1])+Number(hsi[1]);
+// Only exact Employee GP labels qualify; do not substitute unrelated profit or revenue.
+const gp=normalized.match(/(?:\bemployee\s*(?:gross\s*profit|gp)\b)\s*(?:\(\s*actual\s*\)|actual|mtd)?\s*[:=\-]?\s*\$?\s*([\d,]+(?:\.\d{1,2})?)/i);if(gp)extracted.gp=Number(gp[1].replace(/,/g,""));
+pendingVerified.clear();pdfUploaded=true;pending.actuals=clone(DEFAULT_ACTUALS);// This report places all headings on a row above their values. Parse by page and column,
+// not by concatenated label/value regex, which misreads table reports.
+const report=extractSalesPerformance(structured);
+for(const [key,value] of Object.entries(report))extracted[key]=value;
+if(!validNum(extracted.APO)){const apo=normalized.match(/\bAPO\b\s*[:=\-]?\s*\$?\s*([\d,]+(?:\.\d{1,2})?)/i);if(apo)extracted.APO=Number(apo[1].replace(/,/g,""));}
+// Hometech is display-only and does not enter any official KPI calculation.
+const htp=validNum(extracted.HTP)?extracted.HTP:(()=>{const m=normalized.match(/\bhometech\b\s*[:=\-]?\s*(\d+(?:\.\d+)?)/i);return m?Number(m[1]):null})();
+const htpState={month:monthKey(),value:htp};writeJSON("ows306_htp_display_v1",htpState);$("htpValue").textContent=htp===null?"—":fmt(htp);
+if(validNum(extracted.shiftsWorked))pending.shiftsWorked=extracted.shiftsWorked;for(const key of KEYS)if(validNum(extracted[key])){pending.actuals[key]=extracted[key];pendingVerified.add(key)}pending.gp=validNum(extracted.gp)?extracted.gp:null;fastSnapshot(text,extracted);syncInputs();renderPending();markDirty();const missing=KEYS.filter(key=>extracted[key]===undefined);return{count:Object.keys(extracted).length,missing,gpFound:extracted.gp!==undefined}}
+async function upload(file){if(!file)return;uploadBusy=true;$("fileName").textContent=file.name;$("fileStatus").textContent="Reading file…";try{let text="",structured=[];if(/\.(txt|csv)$/i.test(file.name)||file.type==="text/plain"||file.type==="text/csv"){text=await file.text()}else if(/\.pdf$/i.test(file.name)||file.type==="application/pdf"){if(!window.pdfjsLib)throw Error("PDF.js is unavailable. Connect to the internet and try again.");const pdf=await window.pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;for(let page=1;page<=pdf.numPages;page++){const content=await(await pdf.getPage(page)).getTextContent();structured.push(content.items.map(i=>({text:i.str,x:i.transform[4],y:i.transform[5]})));text+=content.items.map(i=>i.str).join(" ")+"\n"}}else throw Error("Choose a PDF, TXT, or CSV file.");const result=applyExtracted(text,structured);$("fileStatus").textContent=result.count+" fields found. "+(result.missing.length?"Verify missing KPIs: "+result.missing.join(", ")+". ":"")+(result.gpFound?"":"Employee GP not found in this file; no value was assumed.");notify("Report read. Confirm shifts worked, then Calculate.")}catch(err){$("fileStatus").textContent="Could not extract file: "+err.message;notify("File processing failed.")}finally{uploadBusy=false;$("pdfFileInput").value=""}}
+function clock(){const now=new Date();renderHtp();$("clock").textContent=now.toLocaleString("en-US",{month:"short",day:"numeric",year:"numeric",hour:"numeric",minute:"2-digit"});if(history.month!==monthKey()){loadFast();pruneHistory();official=null;pending={shiftsWorked:0,actuals:clone(DEFAULT_ACTUALS),gp:null};pendingVerified.clear();pdfUploaded=false;whatIf=clone(pending.actuals);syncInputs();renderPending();persist();renderOfficial();renderWhatIf(true);renderChart();$("pendingNotice").textContent="New month — enter current-month results and press Calculate."}}
+
+const FAST_GOALS_KEY="ows306_fast_start_draft_v1", FAST_STATE_KEY="ows306_fast_start_progress_v2";
+const FAST_ITEMS=[
+ {key:"GP",label:"GP",pdf:"Employee GP",goal:12000,money:true},
+ {key:"VGA",label:"VGA",pdf:"PSTPD Voice Acts",goal:25},
+ {key:"INT",label:"INT",pdf:"Internet Air + HSI",goal:9},
+ {key:"FN",label:"FN",pdf:"FN PSTPD Acts",goal:3},
+ {key:"CRU",label:"CRU",pdf:"CRU Voice Acts",goal:5},
+ {key:"OPPS",label:"OPPS",pdf:"PSTPD Opps",goal:50},
+ {key:"UP",label:"UPG",pdf:"Ups",goal:25},
+ {key:"APO",label:"APO",pdf:"APO",goal:35,money:true}
+];
+let fastLatest=null,fastDeadline=null;
+function fastGoals(){const data=cloudFastGoals||{};return Object.fromEntries(FAST_ITEMS.map(item=>[item.key,Number(data[item.key])>0?Number(data[item.key]):item.goal]))}
+function loadFast(){const state=readJSON(FAST_STATE_KEY);if(state&&state.month===monthKey()){fastLatest=state.latest||null;fastDeadline=state.deadline||null}else{fastLatest=null;fastDeadline=null}renderFast()}
+function saveFast(){writeJSON(FAST_STATE_KEY,{month:monthKey(),latest:fastLatest,deadline:fastDeadline})}
+function fastReportDate(text){const m=text.match(/Sales\s+Performance\s+Report\s*:\s*\d{1,2}\/\d{1,2}\/\d{4}\s*[-–]\s*(\d{1,2})\/(\d{1,2})\/(\d{4})/i);if(!m)return null;const date=[m[3],m[1].padStart(2,"0"),m[2].padStart(2,"0")].join("-");return date.startsWith(monthKey()+"-")?date:null}
+function fastSnapshot(text,report){const vals={GP:validNum(report.gp)?report.gp:null,VGA:validNum(report.VGA)?report.VGA:null,INT:validNum(report.INT)?report.INT:null,FN:validNum(report.FN)?report.FN:null,CRU:validNum(report.CRU)?report.CRU:null,OPPS:validNum(report.OPPS)?report.OPPS:null,UP:validNum(report.UP)?report.UP:null,APO:validNum(report.APO)?report.APO:null};const date=fastReportDate(text);fastLatest={date,values:vals};if(date&&Number(date.slice(-2))<=7&&(!fastDeadline||!fastDeadline.date||date>=fastDeadline.date))fastDeadline={date,values:clone(vals)};saveFast();renderFast()}
+// Display-only section ordering: Fast Start moves below the rest of the dashboard on the 8th.
+// It returns to its original position on the 1st of the following month.
+function positionFastStart(){
+ const row=document.querySelector(".fast-section-row"), main=document.querySelector("main.main-container")||document.querySelector("main");
+ if(!row||!main)return;
+ const day=Number(localDate().slice(-2));
+ if(day>=8){if(main.lastElementChild!==row)main.appendChild(row);}
+ else {const unified=document.querySelector(".unified-panel");if(unified&&row.nextElementSibling!==unified)main.insertBefore(row,unified);}
+}
+function renderFast(){positionFastStart();const root=$("fastMetrics");if(!root)return;root.replaceChildren();const goals=fastGoals(),today=Number(localDate().slice(-2)),source=today>7&&fastDeadline?fastDeadline:fastLatest;$("fastPeriod").textContent="Days 1–7 · "+new Date().toLocaleString("en-US",{month:"long",year:"numeric"});for(const item of FAST_ITEMS){const goal=goals[item.key],actual=source?.values?.[item.key],known=validNum(actual),pct=known?actual/goal*100:0,status=!known?"":pct>=50?"green":pct>=33?"yellow":"red";const card=make("div","fast-metric "+status),top=make("div","fast-metric-top"),name=make("strong","",item.label),percentage=make("span","fast-metric-pct",known?Math.round(pct)+"%":"—");top.append(name,percentage);const display=n=>item.money?money(n):fmt(n);const sub=make("div","fast-metric-sub",(known?display(actual):"No PDF value")+" / "+display(goal)),track=make("div","fast-track"),fill=make("div","fast-fill");fill.style.width=Math.min(100,pct*2)+"%";track.append(fill,make("span","fast-marker"),make("span","fast-marker preferred"));track.setAttribute("aria-label","Fast Start progress: 33% of monthly goal is the minimum at 66% of bar; 50% of monthly goal fills the bar");card.append(top,sub,track);root.append(card)}let note="Upload a KPI PDF to see Fast Start progress. ";if(source){if(today>7&&fastDeadline)note="Day-7 result saved from report ending "+fastDeadline.date+". ";else if(today>7)note="Past day 7: showing latest MTD values only; day-7 achievement is unverified. ";else note="Current MTD progress"+(source.date?" through "+source.date:"")+". ";}$("fastNote").textContent=note+"Goals reset monthly on the 1st; "+(cloudReady?"goals are shared via Supabase.":"cloud settings not yet connected.")}
+function renderFastAdmin(){const root=$("fastAdminFields");root.replaceChildren();const saved=fastGoals();for(const metric of FAST_ITEMS){const box=make("div","admin-field"),label=make("label","",metric.label+" · "+metric.pdf),input=make("input");input.type="number";input.min="0.01";input.max="10000000";input.step=metric.money?"0.01":"1";input.dataset.fastKey=metric.key;input.value=saved[metric.key];box.append(label,input);root.append(box)}}
+async function saveFastAdmin(){if(!adminUnlocked)return;const data={};for(const input of $("fastAdminFields").querySelectorAll("input")){const item=FAST_ITEMS.find(m=>m.key===input.dataset.fastKey),n=Number(input.value);if(!item||!Number.isFinite(n)||n<=0||n>10000000||(!item.money&&!Number.isInteger(n))){$("fastAdminMessage").textContent="Enter valid positive goals (whole sales counts; GP/APO allow dollars and cents).";return}data[item.key]=n}if(!await cloudWriteFast(data,$("fastAdminMessage")))return;cloudFastGoals=data;$("fastAdminMessage").textContent="Shared Fast Start goals saved to Supabase.";renderFast()}
+function renderHtp(){const saved=readJSON("ows306_htp_display_v1");$("htpValue").textContent=saved&&saved.month===monthKey()&&validNum(saved.value)?fmt(saved.value):"—"}
+// Supabase stores shared goal settings ONLY. Employee PDFs, history and results stay in localStorage.
+const CLOUD_URL='https://nrysdyykkqpsxefmoibt.supabase.co',CLOUD_PUBLISHABLE_KEY='sb_publishable_wfZmj5HeN1gbmlAYIBR8tw_M1GEH1Hk';
+const cloudClient=window.supabase?.createClient(CLOUD_URL,CLOUD_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}})||null;
+let cloudReady=false,cloudFastGoals=null,cloudBusy=false;
+function cloudNotice(message){const el=document.getElementById("cloudStatus");if(el)el.textContent=message}
+async function cloudRefresh(){
+ if(!cloudClient||cloudBusy)return;cloudBusy=true;
+ try{
+  const [kpi,fast]=await Promise.all([cloudClient.from("kpi_settings").select("kpi_key,target_type,daily_target,group_span,group_target"),cloudClient.from("fast_start_goals").select("metric_key,monthly_goal")]);
+  if(kpi.error)throw kpi.error;if(fast.error)throw fast.error;
+  const byKey=new Map(kpi.data.map(x=>[x.kpi_key,x]));
+  if(!ORIGINAL_KPI_CONFIG.every(x=>byKey.has(x.key)))throw Error("Cloud KPI settings are incomplete.");
+  const proposed=ORIGINAL_KPI_CONFIG.map(x=>{const r=byKey.get(x.key);return {...x,type:r.target_type,dailyTarget:Number(r.daily_target),groupSpan:Number(r.group_span),groupTarget:Number(r.group_target)}});
+  const validated=validateConfig(proposed);if(!validated.ok)throw Error(validated.message);
+  const fastMap=Object.fromEntries(fast.data.map(x=>[x.metric_key,Number(x.monthly_goal)]));
+  if(!FAST_ITEMS.every(x=>Number.isFinite(fastMap[x.key])&&fastMap[x.key]>0))throw Error("Cloud Fast Start goals are incomplete.");
+  KPI_CONFIG=validated.config;cloudFastGoals=fastMap;cloudReady=true;
+  renderOfficial();renderWhatIf(true);renderChart();renderFast();
+  if(adminUnlocked){renderAdminFields();renderFastAdmin()}
+  cloudNotice("Shared goals connected · Supabase");
+ }catch(err){cloudReady=false;cloudNotice("Cloud sync unavailable: "+(err.message||"check database setup"));}
+ finally{cloudBusy=false}
+}
+async function cloudInit(){cloudNotice("Connecting shared goals…");await cloudRefresh();setInterval(cloudRefresh,60000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)cloudRefresh()})}
+async function cloudWriteKpis(config,feedback){
+ if(!cloudClient||!cloudReady){feedback.textContent="Cloud is not connected. No changes were saved.";return false}
+ const rows=config.map(m=>({kpi_key:m.key,kpi_name:m.name,target_type:m.type,daily_target:m.dailyTarget,group_span:m.groupSpan,group_target:m.groupTarget}));
+ // Update existing rows only. RLS permits UPDATE solely for authorized Admins.
+ for(const r of rows){const {data,error}=await cloudClient.from("kpi_settings").update({daily_target:r.daily_target,group_span:r.group_span,group_target:r.group_target}).eq("kpi_key",r.kpi_key).select("kpi_key");if(error||!data?.length){feedback.textContent="Save failed: "+(error?.message||"permission denied");await cloudRefresh();return false}}
+ await cloudRefresh();return true
+}
+async function cloudWriteFast(goals,feedback){
+ if(!cloudClient||!cloudReady){feedback.textContent="Cloud is not connected. No changes were saved.";return false}
+ for(const item of FAST_ITEMS){const {data,error}=await cloudClient.from("fast_start_goals").update({monthly_goal:goals[item.key]}).eq("metric_key",item.key).select("metric_key");if(error||!data?.length){feedback.textContent="Save failed: "+(error?.message||"permission denied");await cloudRefresh();return false}}
+ await cloudRefresh();return true
+}
+
+// Local-only, versioned backup. Never export Supabase auth/session tokens or shared cloud settings.
+const BACKUP_KEYS=["ows306_official_v4","ows306_month_history_v1","ows306_adt_history_all_v1","ows306_fast_start_progress_v2","ows306_htp_display_v1","ows306_fast_start_draft_v1","ows306_admin_config_v1","att_ows306_simple_v3"];
+function backupMessage(message){$("backupMessage").textContent=message}
+function collectBackup(){const data={};for(const key of BACKUP_KEYS){const value=localStorage.getItem(key);if(value!==null)data[key]=value}return{format:"ows306-local-backup",version:1,createdAt:new Date().toISOString(),data}}
+function exportLocalBackup(){try{const payload=collectBackup();if(!Object.keys(payload.data).length){backupMessage("No locally saved data was found on this phone.");return}const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Cherrydale-OWS306-backup-"+localDate()+".json";document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);backupMessage("Backup prepared. On iPhone, use the download prompt or Share → Save to Files, then confirm the file is saved.")}catch(e){backupMessage("Backup failed: "+e.message)}}
+async function restoreLocalBackup(file){if(!file)return;backupMessage("Checking backup file…");try{if(file.size>5*1024*1024)throw Error("File is too large (5 MB maximum).");const payload=JSON.parse(await file.text());if(!payload||payload.format!=="ows306-local-backup"||payload.version!==1||!payload.data||typeof payload.data!=="object"||Array.isArray(payload.data))throw Error("Not a supported Cherrydale backup file.");const keys=Object.keys(payload.data);if(!keys.length||keys.some(k=>!BACKUP_KEYS.includes(k)||typeof payload.data[k]!=="string"))throw Error("Backup contains unsupported data.");for(const key of keys){JSON.parse(payload.data[key])}const date=payload.createdAt&&Number.isFinite(Date.parse(payload.createdAt))?new Date(payload.createdAt).toLocaleString():"unknown date";if(!confirm("Restore backup from "+date+"?\n\nThis will REPLACE the backed-up local data on this phone ("+keys.length+" data categories). It will not change shared Supabase goals.\n\nExport a current backup first if you need to preserve newer progress.")){backupMessage("Restore canceled; no data changed.");return}const previous={};for(const key of keys)previous[key]=localStorage.getItem(key);try{for(const key of keys)localStorage.setItem(key,payload.data[key])}catch(e){for(const key of keys){try{if(previous[key]===null)localStorage.removeItem(key);else localStorage.setItem(key,previous[key])}catch{}}throw Error("Unable to save backup. Check available browser storage.")}backupMessage("Restored successfully. Reloading dashboard…");location.reload()}catch(e){backupMessage("Restore failed: "+e.message)}finally{$("backupFile").value=""}}
+
+function init(){load();$("copyPriorityAdt").addEventListener("click",copyPriorityAdt);$("sharePriorityAdt").addEventListener("click",sharePriorityAdt);renderHtp();loadFast();cloudInit();
+$("openBackup").addEventListener("click",()=>{$("appMenu").hidden=true;$("menuButton").setAttribute("aria-expanded","false");backupMessage("");$("backupDialog").showModal()});$("exportBackup").addEventListener("click",exportLocalBackup);$("chooseBackup").addEventListener("click",()=>$("backupFile").click());$("backupFile").addEventListener("change",e=>restoreLocalBackup(e.target.files?.[0]));
+$("menuButton").addEventListener("click",()=>{const menu=$("appMenu");menu.hidden=!menu.hidden;$("menuButton").setAttribute("aria-expanded",String(!menu.hidden))});
+$("installApp").addEventListener("click",()=>{$("appMenu").hidden=true;$("menuButton").setAttribute("aria-expanded","false");$("installDialog").showModal()});
+$("openHistory").addEventListener("click",()=>{$("appMenu").hidden=true;$("menuButton").setAttribute("aria-expanded","false");renderHistory();$("historyDialog").showModal()});
+$("closeHistory").addEventListener("click",()=>$("historyDialog").close());
+$("openAdmin").addEventListener("click",()=>{$("appMenu").hidden=true;$("menuButton").setAttribute("aria-expanded","false");$("adminDialog").showModal();$("adminPassword").focus()});
+$("closeAdmin").addEventListener("click",closeAdmin);
+$("adminDialog").addEventListener("close",()=>{adminUnlocked=false;$("adminLocked").hidden=false;$("adminUnlocked").hidden=true;$("adminPassword").value=""});
+$("unlockAdmin").addEventListener("click",async()=>{const error=$("adminError");error.textContent="Signing in…";if(!cloudClient){error.textContent="Cloud connection unavailable. Check internet access.";return}const email=$("adminEmail").value.trim(),password=$("adminPassword").value;if(!email||!password){error.textContent="Enter your Admin email and password.";return}try{const {error:loginError}=await cloudClient.auth.signInWithPassword({email,password});if(loginError)throw loginError;const {data, error:checkError}=await cloudClient.from("kpi_admins").select("user_id").limit(1);if(checkError)throw checkError;if(!data?.length){await cloudClient.auth.signOut();throw Error("This account is not authorized as an Admin.")}adminUnlocked=true;error.textContent="";$("adminPassword").value="";$("adminLocked").hidden=true;$("adminUnlocked").hidden=false;renderAdminFields();renderFastAdmin()}catch(err){error.textContent=err.message||"Unable to sign in."}});
+$("adminPassword").addEventListener("keydown",e=>{if(e.key==="Enter")$("unlockAdmin").click()});
+$("saveAdmin").addEventListener("click",saveAdminConfig);$("saveFastGoals").addEventListener("click",saveFastAdmin);
+$("resetAdmin").addEventListener("click",async()=>{if(!adminUnlocked||!confirm("Restore the original shared KPI targets for all phones? Saved ADT History will not change."))return;if(!await cloudWriteKpis(ORIGINAL_KPI_CONFIG,$("adminMessage")))return;KPI_CONFIG=clone(ORIGINAL_KPI_CONFIG);renderAdminFields();renderOfficial();renderWhatIf(true);renderChart();$("adminMessage").textContent="Shared KPI defaults restored."});
+$("lockAdmin").addEventListener("click",closeAdmin);
+$("employeeName").addEventListener("input",persist);$("shiftsWorkedInput").addEventListener("input",e=>{if(validNum(e.target.value)){pending.shiftsWorked=Number(e.target.value);markDirty()}});for(const [id,delta]of [["minus",-1],["plus",1]])$(id).addEventListener("click",()=>{pending.shiftsWorked=Math.max(0,Math.min(60,(Number(pending.shiftsWorked)||0)+delta));syncInputs();markDirty()});$("calculate").addEventListener("click",commit);$("pdfFileInput").addEventListener("change",e=>upload(e.target.files?.[0]));$("whatIfBody").addEventListener("input",e=>{const key=e.target.dataset.key;if(KEYS.includes(key)&&validNum(e.target.value)){whatIf[key]=Number(e.target.value);renderWhatIf()}});$("info").addEventListener("click",()=>$("helpDialog").showModal());$("fastInfo").addEventListener("click",()=>$("fastDialog").showModal());$("closeHelp").addEventListener("click",()=>$("helpDialog").close());for(const [id,dialog] of [["uploadInfo","uploadDialog"],["overallInfo","overallDialog"],["priorityInfo","priorityDialog"],["trackerInfo","trackerDialog"]])$(id).addEventListener("click",()=>$(dialog).showModal());document.querySelectorAll(".close-dialog").forEach(b=>b.addEventListener("click",()=>b.closest("dialog").close()));$("clearChartSelection").addEventListener("click",()=>{selectedChartKpi=null;renderChart()});renderOfficial();renderWhatIf(true);renderChart();clock();setInterval(()=>{clock();positionFastStart();renderFast()},60000);document.addEventListener("visibilitychange",()=>{if(!document.hidden){positionFastStart();renderFast()}})}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
+</script><script id="employee-cloud-bridge">
+(()=>{
+const $=id=>document.getElementById(id),client=window.supabase?.createClient('https://nrysdyykkqpsxefmoibt.supabase.co','sb_publishable_wfZmj5HeN1gbmlAYIBR8tw_M1GEH1Hk',{auth:{persistSession:true,autoRefreshToken:true}});
+let current=null,undoDeadline=0,undoTimer=null;
+const msg=t=>$('loginMessage').textContent=t;
+function wait(t){$('employeeWaiting').textContent=t;}
+async function countShifts(){const month=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit'}).format(new Date());const {data,error}=await client.from('shift_logs').select('shift_date').eq('employee_id',current.user_id).eq('state','active').gte('shift_date',month+'-01').lt('shift_date',month.slice(0,4)+'-'+String(Number(month.slice(5))+1).padStart(2,'0')+'-01');if(error)throw error;return data.length;}
+async function refresh(){if(!current)return;
+ try{
+ const shifts=await countShifts();$('employeeShiftCount').textContent=shifts+' shifts MTD';
+ const {data:rows,error}=await client.from('employee_kpis').select('actuals,gp,apo,htp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(1);
+ if(error)throw error;
+ if(!rows?.length){wait('Waiting for Admin KPI Report. No approved report is assigned to your account yet.');return}
+ const r=rows[0],actuals=r.actuals;
+ if(!['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].every(k=>Number.isFinite(Number(actuals[k])))){wait('Admin report needs correction: one or more official KPI values are missing.');return}
+ if(!shifts){wait('Approved KPI report received. Log a worked shift to calculate official AGT/ADT results.');return}
+ official={shiftsWorked:shifts,actuals,gp:r.gp};pending=clone(official);whatIf=clone(actuals);pendingVerified=new Set(KEYS);syncInputs();renderOfficial();renderGP();renderWhatIf(true);renderChart();
+ if(r.htp!=null)writeJSON('ows306_htp_display_v1',{month:monthKey(),value:r.htp});renderHtp();
+ if(r.apo!=null){fastLatest={date:r.kpi_reports?.report_end||'',values:{GP:r.gp,VGA:actuals.VGA,INT:actuals.INT,FN:actuals.FN,CRU:actuals.CRU,OPPS:actuals.OPPS,UP:actuals.UP,APO:r.apo}};renderFast()}
+ wait('Approved report synced · '+(r.kpi_reports?.report_end||'Latest report')+' · '+shifts+' logged shifts.');
+ }catch(e){wait('Unable to load employee data: '+e.message)}
+}
+async function logShift(){try{const {data,error}=await client.rpc('log_my_shift');if(error)throw error;await refresh();undoDeadline=Date.parse(data.undo_deadline);clearInterval(undoTimer);$('employeeUndo').style.display='block';undoTimer=setInterval(()=>{const seconds=Math.max(0,Math.ceil((undoDeadline-Date.now())/1000));$('employeeUndoMessage').textContent=seconds?'Shift logged. Undo within '+seconds+'s.':'Shift finalized for today.';$('employeeUndoButton').hidden=!seconds;if(!seconds)clearInterval(undoTimer)},250); }catch(e){alert(e.message||'Could not log shift')}}
+async function activate(user,shouldLog=false){const {data,error}=await client.from('team_profiles').select('user_id,full_name,role,active').eq('user_id',user.id).single();if(error||!data?.active){await client.auth.signOut();msg('Account is not active. Ask Admin to activate it.');return}current=data;document.body.classList.add('employeeMode');$('employeeGate').hidden=true;$('employeeGreeting').textContent=data.full_name;$('employeeName').value=data.full_name;
+ // Clear legacy local-only official data to avoid leaking the prior phone user's KPI data.
+ official=null;pending={shiftsWorked:0,actuals:clone(DEFAULT_ACTUALS),gp:null};whatIf=clone(DEFAULT_ACTUALS);renderOfficial();renderGP();renderWhatIf(true);
+ if(shouldLog)await logShift();else await refresh();
+}
+$('employeeLogin').addEventListener('submit',async e=>{e.preventDefault();msg('Signing in…');const {data,error}=await client.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});if(error){msg(error.message);return}await activate(data.user,$('loginShift').checked);$('loginPassword').value='';$('loginShift').checked=false});
+$('employeeSignOut').onclick=async()=>{await client.auth.signOut();current=null;document.body.classList.remove('employeeMode');$('employeeGate').hidden=false;location.reload()};
+$('employeeLogShift').onclick=logShift;
+$('employeeUndoButton').onclick=async()=>{const {data,error}=await client.rpc('undo_my_shift');if(error||!data){alert(error?.message||'Undo window has expired');return}clearInterval(undoTimer);$('employeeUndo').style.display='none';await refresh()};
+if(!client){msg('Supabase library unavailable. Check internet access.');return}
+(async()=>{const {data}=await client.auth.getUser();if(data.user)await activate(data.user);else msg('Sign in to view your private dashboard.')})();
+setInterval(()=>{if(current)refresh()},60000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&current)refresh()});
+})();
+</script></body></html>
