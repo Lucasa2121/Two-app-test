@@ -431,7 +431,26 @@ $('logout').onclick=async()=>{if(db)await db.auth.signOut();location.reload()};
 $('saveSettings').onclick=async()=>{const {error}=await db.rpc('admin_set_uploads',{p_allow:$('individual').checked});flash(error?.message||'Employee upload setting saved.')};
 async function callAccounts(body){const {data:{session}}=await db.auth.getSession();if(!session)throw Error('Sign in again');const r=await fetch(SUPABASE_URL+'/functions/v1/manage-team',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token,apikey:KEY},body:JSON.stringify(body)});const data=await r.json();if(!r.ok)throw Error(data.error||'Request failed');return data}
 $('inviteForm').onsubmit=async e=>{e.preventDefault();try{await callAccounts({action:'invite',name:$('newName').value,uid:$('newUid').value,email:$('newEmail').value,role:$('newRole').value});flash('Invitation sent.');e.target.reset();await load()}catch(e){flash(e.message)}};
-async function changeAccount(id,field){const p=profiles.find(x=>x.user_id===id);if(!p||!confirm('Change permissions for '+p.full_name+'?'))return;try{await callAccounts({action:'update',user_id:id,...(field==='role'?{role:p.role==='admin'?'employee':'admin'}:{active:!p.active})});await load();flash('Account updated.')}catch(e){flash(e.message)}}
+async function changeAccount(id,field){
+ const p=profiles.find(x=>x.user_id===id);if(!p)return;
+ if(field==='active'&&p.active){
+  // Do not silently disable login while leaving sensitive records behind.
+  // The final destructive workflow must run server-side after verification.
+  try{
+   const {data,error}=await db.rpc('management_employee_deactivation_preflight',{p_employee_id:id});
+   if(error)throw error;
+   const note='Preflight complete for '+p.full_name+'. Store months: '+data.store_months+
+    '; employee months: '+data.employee_months+'. Full purge and login removal are NOT yet enabled.';
+   alert(note);flash('Deactivation blocked until secure purge workflow is complete.');
+  }catch(e){alert('Deactivation is not available yet. '+e.message);flash('No employee data was changed.')}
+  return;
+ }
+ if(!confirm('Change permissions for '+p.full_name+'?'))return;
+ try{
+  await callAccounts({action:'update',user_id:id,...(field==='role'?{role:p.role==='admin'?'employee':'admin'}:{active:!p.active})});
+  await load();flash('Account updated.');
+ }catch(e){flash(e.message)}
+}
 // Extract PDF text using page positions; do NOT automatically publish unverified values.
 
 
