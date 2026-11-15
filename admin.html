@@ -577,6 +577,7 @@ $('publish').onclick=async()=>{
  const fields=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
  if(reviewRows.some(r=>fields.some(k=>r[k]===''||!Number.isFinite(Number(r[k]))||Number(r[k])<0)))return flash('Verify every KPI value, including Hometech. Do not guess missing values.');
  const real=reviewRows.filter(r=>!r.testing),testing=reviewRows.filter(r=>r.testing),localOnly=$('localOnly').checked;
+ if($('cloudHistory').checked&&!localOnly)return flash('Cloud history and official Employee App publishing must be approved separately. Keep local-only publishing checked for cloud history.');
  updateReplaceWarning();
  if(!confirm('WARNING: '+(compactHistory.some(x=>x.s===start&&x.e===end)?'This will REPLACE the previously saved KPI values for this period.':'This will save a new KPI snapshot.')+' '+reviewRows.length+' employee rows. '+(localOnly?'Local testing changes can be undone once. No official records will be changed.':'Official employee data will ALSO be published and CANNOT be undone with the local Undo button.')+( $('cloudHistory').checked?' Approved values will also be stored in Supabase monthly history.':'')+' Continue?'))return;
  const rows=real.map(r=>({uid:r.uid,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))}));
