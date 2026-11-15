@@ -60,3 +60,25 @@ for each row execute function public.management_backup_store_snapshot();
 -- Explicitly deny browser modifications. Backup rows are append-only by application design.
 -- Database owners and service-role operations remain privileged: deletion protections
 -- and independent restoration drills are required before enabling employee purge.
+
+-- Fail closed against accidental or routine privileged UPDATE/DELETE/TRUNCATE.
+-- A database owner can still remove triggers; off-database backups are not replaced.
+create or replace function public.management_reject_store_backup_mutation()
+returns trigger language plpgsql security definer set search_path='' as $$
+begin
+ raise exception 'Store snapshot backups are immutable; use an audited recovery procedure'
+   using errcode='42501';
+end $$;
+revoke all on function public.management_reject_store_backup_mutation()
+ from public,anon,authenticated;
+drop trigger if exists management_store_backup_no_mutation on public.store_snapshot_backups;
+create trigger management_store_backup_no_mutation
+before update or delete on public.store_snapshot_backups
+for each row execute function public.management_reject_store_backup_mutation();
+drop trigger if exists management_store_backup_no_truncate on public.store_snapshot_backups;
+create trigger management_store_backup_no_truncate
+before truncate on public.store_snapshot_backups
+for each statement execute function public.management_reject_store_backup_mutation();
+
+-- Backups are not a substitute for a separate Supabase PITR/off-project recovery copy.
+-- Before employee purge: test restoring totals in an isolated database.
