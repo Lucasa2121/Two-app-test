@@ -79,6 +79,15 @@ Deno.serve(async req => {
    return respond({ ok: true });
   }
 
+  // Account retirement is deliberately not a simple active=false toggle.
+  // It requires a verified independent store backup, scrubbing individual
+  // history/snapshot rows, revoking sessions and deleting the Auth identity.
+  // Block both the old update path and any direct retirement request until
+  // that privileged, audited workflow is deployed.
+  if (body.action === 'deactivate' || body.action === 'delete') {
+    return respond({ error: 'Employee retirement is unavailable until secure purge verification is complete' }, 409);
+  }
+
   if (body.action === 'update') {
    if (body.user_id === user.id)
     return respond({ error: 'Cannot change your own access' }, 400);
@@ -87,6 +96,8 @@ Deno.serve(async req => {
     .select('role,active').eq('user_id', body.user_id).single();
 
    if (!target) return respond({ error: 'Account not found' }, 404);
+   if (body.active === false)
+    return respond({ error: 'Deactivation requires the verified permanent-purge workflow; no account was changed' }, 409);
 
    if (target.role === 'admin' &&
        (body.role === 'employee' || body.active === false)) {
