@@ -72,7 +72,7 @@ input,select,button{min-width:0}
 </section>
 <section id="overview" class="section"><div class="overview-intro"><h2>Store MTD Performance</h2><div id="storeBreakdown" class="subtle"></div><button type="button" id="refreshStore" class="refresh-action">↻ Refresh Store Data</button><small id="storeRefreshStatus" class="muted" role="status"></small></div><div class="grid store-kpi-grid" id="storeMetrics"></div><div class="card"><h2>Team Snapshot</h2><div id="overviewStaff"></div></div></section>
 <section id="team" class="section"><div class="card"><h2>Employee Performance · GP / Voice / INT / HTP</h2><div id="staffList"></div></div><div id="employeeDetail" class="card hidden"><div class="row space"><h2 id="detailName">Employee Dashboard</h2><button id="closeDetail">Close</button></div><div class="row refresh-row"><button type="button" id="refreshEmployee" class="refresh-action">↻ Refresh Employee Data</button><small id="employeeRefreshStatus" class="muted" role="status"></small></div><div id="detailMetrics"></div><p class="muted">Management detail view: official AGT/ADT calculations are preserved. The full pixel-identical Employee App preview is not implemented in this build.</p><div id="detailOfficial"></div><h3>Shift history</h3><div id="detailShifts"></div><div class="row"><label>Correct shift date <input id="fixDate" type="date"></label><button id="markWorked">Mark Worked</button><button id="markMissed">Remove Shift</button></div></div></section>
-<section id="reports" class="section"><div class="card"><h2>Collective KPI Report</h2><p class="muted">Upload updated store-wide KPI PDFs as often as needed. Each approved MTD snapshot replaces earlier values for matching testing employees; totals are never added together. The extracted KPI numbers are saved compactly, not the original PDF.</p><label class="field">PDF report<input type="file" id="pdf" accept=".pdf,application/pdf"></label><p id="parseStatus" class="muted"></p><div class="row"><label>Report start <input type="date" id="start"></label><label>Report end <input type="date" id="end"></label></div><div id="review" hidden><h3>Review and correct extracted employee rows</h3><p class="warning">Verify names, UIDs and every KPI against the PDF. If extraction is incomplete, enter missing values manually. Do not publish until verified.</p><div class="table-scroll"><table><thead><tr><th>UID</th><th>Name</th><th>GP</th><th>Voice</th><th>UP</th><th>CRU</th><th>FN</th><th>INT</th><th>OPPS</th><th>Events</th><th>APO</th><th>HTP</th></tr></thead><tbody id="reviewRows"></tbody></table></div><label class="field"><input type="checkbox" id="localOnly" checked> Save locally for Management calculations only (do not republish official employee records)</label><button id="publish">Approve &amp; Save KPI Snapshot</button><p class="muted">Uncheck only when intentionally publishing an official employee report. Repeat imports for testing should stay checked.</p></div></div><div class="card"><h2>Published Reports</h2><div id="reportHistory"></div><h3>Saved compact KPI snapshots (this device)</h3><div id="localSnapshotHistory" class="muted"></div></div></section>
+<section id="reports" class="section"><div class="card"><h2>Collective KPI Report</h2><p class="muted">Upload updated store-wide KPI PDFs as often as needed. Each approved MTD snapshot replaces earlier values for matching testing employees; totals are never added together. The extracted KPI numbers are saved compactly, not the original PDF.</p><label class="field">PDF report<input type="file" id="pdf" accept=".pdf,application/pdf"></label><p id="parseStatus" class="muted"></p><div class="row"><label>Report start <input type="date" id="start"></label><label>Report end <input type="date" id="end"></label></div><div id="review" hidden><h3>Review and correct extracted employee rows</h3><p class="warning">Verify names, UIDs and every KPI against the PDF. If extraction is incomplete, enter missing values manually. Do not publish until verified.</p><div class="table-scroll"><table><thead><tr><th>UID</th><th>Name</th><th>GP</th><th>Voice</th><th>UP</th><th>CRU</th><th>FN</th><th>INT</th><th>OPPS</th><th>Events</th><th>APO</th><th>HTP</th></tr></thead><tbody id="reviewRows"></tbody></table></div><label class="field"><input type="checkbox" id="localOnly" checked> Save locally for Management calculations only (do not republish official employee records)</label><button id="publish">Approve &amp; Save KPI Snapshot</button><p id="replaceWarning" class="warning" hidden></p><p class="muted">Uncheck only when intentionally publishing an official employee report. Repeat imports for testing should stay checked.</p></div></div><div class="card"><h2>Published Reports</h2><div id="reportHistory"></div><h3>Saved compact KPI snapshots (this device)</h3><div id="localSnapshotHistory" class="muted"></div><button id="undoSnapshot" type="button" disabled>Undo Last Local KPI Import</button><p id="undoStatus" class="muted" role="status">Undo restores the previous saved KPI snapshot and testing calculations on this device. Official Supabase publications cannot be undone here.</p></div></section>
 <section id="accounts" class="section"><div class="card"><h2>Testing Employees · No Invitation</h2><p class="muted">Create management-only test profiles without an email, invitation, or Employee App login. These profiles and their PDF sales data are saved in this browser on this device, not in Supabase. Their approved local PDF totals are included in this device’s Store Overview without changing official employee records.</p><form id="testEmployeeForm"><div class="grid"><label class="field">Full name<input id="testEmployeeName" required maxlength="100" autocomplete="off"></label><label class="field">AT&amp;T UID<input id="testEmployeeUid" required maxlength="30" autocomplete="off" autocapitalize="characters"></label></div><button type="submit">Add Testing Employee</button></form><h3>Management Testing Profiles</h3><div id="testEmployeeList"></div></div><div class="card"><h2>User Account Management</h2><p class="muted">Admin or Employee role. Create logins using a secure Edge Function. No service-role secret is ever included in this website.</p><div id="accountList"></div><h3>Invite team member</h3><form id="inviteForm"><div class="grid"><label class="field">Full name<input id="newName" required></label><label class="field">AT&amp;T UID<input id="newUid" required></label><label class="field">Email<input id="newEmail" type="email" required></label><label class="field">Permission<select id="newRole"><option value="employee">Employee</option><option value="admin">Admin</option></select></label></div><button type="submit">Send Invitation</button></form></div></section>
 <section id="settings" class="section"><div class="card"><h2>Employee App Controls</h2><label class="row"><input id="individual" type="checkbox"> Allow Individual PDF Uploads</label><p class="muted">OFF by default. Employee submissions must be reviewed by Admin; they cannot overwrite locked official KPI values.</p><button id="saveSettings">Save Setting</button></div><div class="card"><h2>Shared KPI Targets and Fast Start Goals</h2><p class="muted">Your existing Supabase tables remain authoritative. To avoid changing official calculation behavior, this first build does not add an unverified target-editing interface.</p></div></section>
 <section id="payouts" class="section"><div class="card"><h2>Payout Center</h2><p class="warning">Not enabled yet.</p><p>Commission PDF importing, payroll mapping, and bonus calculations need a verified implementation against the commission rule PDFs before any earnings are published. This placeholder does not fabricate payouts.</p></div></section>
@@ -121,8 +121,11 @@ const testKpiKey='cherrydale-management-test-kpis-v1';
 const testReportKey='cherrydale-management-test-report-meta-v1';
 const savedPdfKey='cherrydale-management-approved-pdf-snapshot-v1';
 const compactHistoryKey='cherrydale-management-compact-kpi-history-v2';
+const compactUndoKey='cherrydale-management-kpi-undo-v1';
 const compactKeys=['VGA','UP','CRU','FN','INT','OPPS','EVENTS'];
 let savedPdfRows=[],compactHistory=[];
+function canUndoSnapshot(){try{return !!localStorage.getItem(compactUndoKey)}catch{return false}}
+function syncUndoButton(){if($('undoSnapshot'))$('undoSnapshot').disabled=!canUndoSnapshot()}
 function compactRow(r){return [String(r.uid).trim().toUpperCase(),Number(r.gp),Number(r.apo),Number(r.htp),...compactKeys.map(k=>Number(r.actuals?.[k]))]}
 function expandRow(row,start,end){return {uid:row[0],report_start:start,report_end:end,gp:row[1],apo:row[2],htp:row[3],actuals:Object.fromEntries(compactKeys.map((k,i)=>[k,row[i+4]]))}}
 function readSavedPdf(){
@@ -137,7 +140,7 @@ function readSavedPdf(){
     try{localStorage.setItem(compactHistoryKey,JSON.stringify(compactHistory))}catch{}
    }
   }
-  savedPdfRows=compactHistory.flatMap(x=>x.r.map(r=>expandRow(r,x.s,x.e)));
+  savedPdfRows=compactHistory.flatMap(x=>x.r.map(r=>expandRow(r,x.s,x.e)));syncUndoButton();
  }catch{compactHistory=[];savedPdfRows=[]}
 }
 function storeSavedPdf(rows){
@@ -145,11 +148,39 @@ function storeSavedPdf(rows){
  const start=rows[0].report_start,end=rows[0].report_end;
  const next=[...compactHistory.filter(x=>x.s!==start||x.e!==end),{s:start,e:end,r:rows.map(compactRow)}].sort((a,b)=>a.e.localeCompare(b.e));
  try{
-  localStorage.setItem(compactHistoryKey,JSON.stringify(next));
-  compactHistory=next;savedPdfRows=next.flatMap(x=>x.r.map(r=>expandRow(r,x.s,x.e)));
+  const previous=localStorage.getItem(compactHistoryKey);
+  const backup=JSON.stringify({history:previous,testing:localStorage.getItem(testKpiKey),meta:localStorage.getItem(testReportKey)});
+  localStorage.setItem(compactUndoKey,backup);
+  try{localStorage.setItem(compactHistoryKey,JSON.stringify(next))}catch(e){if(previous===null)localStorage.removeItem(compactHistoryKey);else localStorage.setItem(compactHistoryKey,previous);throw e}
+  compactHistory=next;savedPdfRows=next.flatMap(x=>x.r.map(r=>expandRow(r,x.s,x.e)));syncUndoButton();
   return true;
  }catch(e){flash('Snapshot storage full or unavailable: '+e.message);return false}
 }
+
+$('undoSnapshot').onclick=()=>{
+ if(!canUndoSnapshot())return flash('No previous local KPI import is available to undo.');
+ if(!confirm('Undo the most recent local KPI import and restore the prior saved KPI snapshots? This does not reverse official Supabase publications.'))return;
+ try{
+  const backup=JSON.parse(localStorage.getItem(compactUndoKey));
+  const changes=[[compactHistoryKey,backup.history],[testKpiKey,backup.testing],[testReportKey,backup.meta]];
+  const current=changes.map(([key])=>[key,localStorage.getItem(key)]);
+  try{
+   for(const [key,value] of changes){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}
+  }catch(e){for(const [key,value] of current){if(value===null)localStorage.removeItem(key);else localStorage.setItem(key,value)}throw e}
+  localStorage.removeItem(compactUndoKey);
+  readSavedPdf();readLocalTestData();render();
+  $('undoStatus').textContent='Last local KPI import undone. Previous snapshots and testing values restored.';
+  flash('Last local KPI import undone.');
+ }catch(e){flash('Undo failed: '+e.message)}
+};
+function updateReplaceWarning(){
+ const end=$('end').value,start=$('start').value;
+ const prior=compactHistory.find(x=>x.s===start&&x.e===end);
+ const msg=prior?'Warning: This reporting period already has '+prior.r.length+' saved employee KPI rows. Approving replaces that snapshot. You can undo the last local import.':'Warning: Approving stores a new compact KPI snapshot. Later imports for the same period replace, not add to, existing MTD values.';
+ $('replaceWarning').textContent=msg;$('replaceWarning').hidden=false;
+}
+$('start').addEventListener('change',updateReplaceWarning);
+$('end').addEventListener('change',updateReplaceWarning);
 function latestSavedForUid(uid){
  return savedPdfRows.filter(r=>r.uid===uid).sort((a,b)=>b.report_end.localeCompare(a.report_end))[0];
 }
@@ -168,7 +199,7 @@ function reconcileTestingFromPublished(){
  if(changed)saveLocalTestData();
  return changed;
 }
-function renderCompactHistory(){
+function renderCompactHistory(){syncUndoButton();
  const el=$('localSnapshotHistory');if(!el)return;
  el.textContent=compactHistory.length?compactHistory.slice().reverse().map(x=>x.e+' · '+x.r.length+' employee KPI rows').join(' | '):'No saved compact KPI snapshots yet.';
 }
@@ -475,7 +506,7 @@ async function parsePDF(file){
   const keys=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
   const found=reviewRows.reduce((sum,r)=>sum+keys.filter(k=>r[k]!=='').length,0);
   $('parseStatus').textContent='Extracted '+found+'/'+(reviewRows.length*keys.length)+' fields for '+order.length+' employee(s). '+warnings.join(' ')+' Review all figures against the PDF before approving. Testing rows will stay local to this device.';
-  $('review').hidden=false;drawReview();
+  $('review').hidden=false;drawReview();updateReplaceWarning();
  }catch(e){$('parseStatus').textContent='PDF extraction failed: '+e.message;}
 }
 $('pdf').onchange=e=>parsePDF(e.target.files?.[0]);
@@ -486,7 +517,8 @@ $('publish').onclick=async()=>{
  const fields=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
  if(reviewRows.some(r=>fields.some(k=>r[k]===''||!Number.isFinite(Number(r[k]))||Number(r[k])<0)))return flash('Verify every KPI value, including Hometech. Do not guess missing values.');
  const real=reviewRows.filter(r=>!r.testing),testing=reviewRows.filter(r=>r.testing),localOnly=$('localOnly').checked;
- if(!confirm('Save '+reviewRows.length+' verified employee KPI rows as a compact MTD snapshot? '+(localOnly?'No official records will be changed.':'Official registered employee data will ALSO be published.')+' Repeated MTD snapshots replace prior values, never add them.'))return;
+ updateReplaceWarning();
+ if(!confirm('WARNING: '+(compactHistory.some(x=>x.s===start&&x.e===end)?'This will REPLACE the previously saved KPI values for this period.':'This will save a new KPI snapshot.')+' '+reviewRows.length+' employee rows. '+(localOnly?'Local testing changes can be undone once. No official records will be changed.':'Official employee data will ALSO be published and CANNOT be undone with the local Undo button.')+' Continue?'))return;
  const rows=real.map(r=>({uid:r.uid,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))}));
  if(real.length&&!localOnly){const {error}=await db.rpc('publish_collective_report',{p_start:start,p_end:end,p_rows:rows});if(error)return flash('Official publishing failed: '+error.message);}
  const prior=JSON.stringify(testKpis),priorMeta=JSON.stringify(testReportMeta);
