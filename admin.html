@@ -76,7 +76,7 @@ input,select,button{min-width:0}
 <section id="accounts" class="section"><div class="card"><h2>Testing Employees · No Invitation</h2><p class="muted">Create management-only test profiles without an email, invitation, or Employee App login. These profiles and their PDF sales data are saved in this browser on this device, not in Supabase. Their approved local PDF totals are included in this device’s Store Overview without changing official employee records.</p><form id="testEmployeeForm"><div class="grid"><label class="field">Full name<input id="testEmployeeName" required maxlength="100" autocomplete="off"></label><label class="field">AT&amp;T UID<input id="testEmployeeUid" required maxlength="30" autocomplete="off" autocapitalize="characters"></label></div><button type="submit">Add Testing Employee</button></form><h3>Management Testing Profiles</h3><div id="testEmployeeList"></div></div><div class="card"><h2>User Account Management</h2><p class="muted">Admin or Employee role. Create logins using a secure Edge Function. No service-role secret is ever included in this website.</p><div id="accountList"></div><h3>Invite team member</h3><form id="inviteForm"><div class="grid"><label class="field">Full name<input id="newName" required></label><label class="field">AT&amp;T UID<input id="newUid" required></label><label class="field">Email<input id="newEmail" type="email" required></label><label class="field">Permission<select id="newRole"><option value="employee">Employee</option><option value="admin">Admin</option></select></label></div><button type="submit">Send Invitation</button></form></div></section>
 <section id="settings" class="section"><div class="card"><h2>Employee App Controls</h2><label class="row"><input id="individual" type="checkbox"> Allow Individual PDF Uploads</label><p class="muted">OFF by default. Employee submissions must be reviewed by Admin; they cannot overwrite locked official KPI values.</p><button id="saveSettings">Save Setting</button></div><div class="card"><h2>Shared KPI Targets and Fast Start Goals</h2><p class="muted">Your existing Supabase tables remain authoritative. To avoid changing official calculation behavior, this first build does not add an unverified target-editing interface.</p></div></section>
 <section id="payouts" class="section"><div class="card"><h2>Payout Center</h2><p class="warning">Not enabled yet.</p><p>Commission PDF importing, payroll mapping, and bonus calculations need a verified implementation against the commission rule PDFs before any earnings are published. This placeholder does not fabricate payouts.</p></div></section>
-<section id="salesHistory" class="section"><div class="card"><h2>Historical Sales</h2><p class="muted">Monthly MTD KPI totals from approved Supabase snapshots. Store sales include all PDF employees, including unregistered staff. Comparisons use recorded months only.</p><div class="row"><label>View <select id="historyScope"><option value="store">Store Overview</option><option value="employee">Employee</option></select></label><label>Employee <select id="historyEmployee" disabled><option value="">Select employee</option></select></label><label>KPI <select id="historyMetric"><option value="gp">Gross Profit</option><option value="voice">Voice</option><option value="upgrades">Upgrades</option><option value="cru">CRU</option><option value="firstnet">FirstNet</option><option value="internet">Internet</option><option value="opportunities">Opportunities</option><option value="events">Event Sales</option><option value="hometech">Hometech</option><option value="apo">APO (employee only)</option></select></label></div><p id="historyStatus" class="muted" role="status">Open Historical Sales to load monthly data.</p><div class="table-scroll"><table><thead><tr><th>Month</th><th>MTD Total</th><th>MoM</th><th>YoY</th><th>Through</th></tr></thead><tbody id="historyRows"></tbody></table></div></div></section>
+<section id="salesHistory" class="section"><div class="card"><h2>Historical Sales</h2><p class="muted">Approved monthly MTD KPI totals from Supabase. Missing comparisons show N/A.</p><div class="row"><label>Scope <select id="historyScope"><option value="store">Store Overview</option><option value="employee">Employee</option></select></label><label>Employee <select id="historyEmployee" disabled><option value="">Select employee</option></select></label><label>KPI <select id="historyMetric"><option value="gp">Gross Profit</option><option value="voice">Voice</option><option value="upgrades">Upgrades</option><option value="cru">CRU</option><option value="firstnet">FirstNet</option><option value="internet">Internet</option><option value="opportunities">Opportunities</option><option value="events">Events</option><option value="hometech">Hometech</option><option value="apo">APO</option></select></label></div><p id="historyStatus" class="muted" role="status"></p><div class="table-scroll"><table><thead><tr><th>Month</th><th>MTD</th><th>MoM</th><th>YoY</th><th>Report End</th></tr></thead><tbody id="historyRows"></tbody></table></div></div></section>
 <div id="notice" role="status"></div></main>
 <script>
 'use strict';
@@ -282,7 +282,7 @@ function renderHome(){
  {id:'accounts',title:'Employee Management',desc:'Add, edit and manage employee accounts',foot:people.length+' active · '+testEmployees.length+' testing'},
  {id:'settings',title:'App Settings',desc:'Store details and system preferences'},
  {id:'sync',title:'Sync & Data',desc:'Shared Supabase data and report status',foot:'Latest loaded data · '+esc(reportDate),page:'settings'},
- {id:'salesHistory',title:'Historical Sales',desc:'18-month store and employee KPI trends',foot:'Month-over-month and year-over-year comparisons'},
+ {id:'salesHistory',title:'Historical Sales',desc:'18-month store and employee KPI trends',foot:'MoM and YoY comparisons'},
  {id:'payouts',title:'Payout Center',desc:'Commission, incentives and payout tracking',chip:'Not enabled'}
  ];
  $('homeGrid').innerHTML=tiles.map(t=>'<button type="button" class="home-tile" data-home="'+esc(t.id)+'" '+(t.disabled?'aria-disabled="true"':'')+'><span class="tile-icon"><svg viewBox="0 0 24 24" aria-hidden="true">'+(homeIcons[t.id]||homeIcons.history)+'</svg></span><span class="tile-title">'+esc(t.title)+'</span><span class="tile-desc">'+esc(t.desc)+'</span>'+(t.chip?'<span class="tile-chip">'+esc(t.chip)+'</span>':'')+(t.disabled?'':'<span class="tile-arrow" aria-hidden="true">›</span>')+'<span class="tile-foot">'+(t.foot||'')+'</span></button>').join('');
@@ -321,258 +321,32 @@ $('closeDetail').onclick=()=>$('employeeDetail').classList.add('hidden');
 async function fixShift(worked){if(!selected||!confirm('Update this employee shift record?'))return;const {error}=await db.rpc('admin_set_shift',{p_employee:selected,p_date:$('fixDate').value,p_worked:worked});if(error)return flash(error.message);await load();openEmployee(selected);flash('Shift corrected and audited.')}
 $('markWorked').onclick=()=>fixShift(true);$('markMissed').onclick=()=>fixShift(false);
 
-const historyFields=['gp','voice','upgrades','cru','firstnet','internet','opportunities','events','hometech','apo'];
 let storeHistory=[],employeeHistory=[],historyError='';
-const historyMonth=(date,offset)=>{const [y,m]=date.split('-').map(Number);const d=new Date(Date.UTC(y,m-1+offset,1));return d.toISOString().slice(0,7)+'-01'};
-const historyValue=(row,key)=>row&&row[key]!==null&&row[key]!==undefined&&Number.isFinite(Number(row[key]))?Number(row[key]):null;
-const historyChange=(current,prior)=>current===null||prior===null||prior===0?'N/A':((current-prior)/Math.abs(prior)*100).toFixed(1)+'%';
+function monthOffset(month,delta){const parts=month.split('-').map(Number);return new Date(Date.UTC(parts[0],parts[1]-1+delta,1)).toISOString().slice(0,7)+'-01'}
+function metricValue(row,key){return row&&row[key]!==null&&row[key]!==undefined&&Number.isFinite(Number(row[key]))?Number(row[key]):null}
+function percentChange(a,b){return a===null||b===null||b===0?'N/A':((a-b)/Math.abs(b)*100).toFixed(1)+'%'}
 function renderSalesHistory(){
- const scope=$('historyScope').value,employee=$('historyEmployee').value,key=$('historyMetric').value;
+ const scope=$('historyScope').value,key=$('historyMetric').value,employee=$('historyEmployee').value;
  $('historyEmployee').disabled=scope!=='employee';
- const rows=(scope==='store'?storeHistory:employeeHistory.filter(x=>x.employee_id===employee))
-  .slice().sort((a,b)=>b.month.localeCompare(a.month));
- const map=new Map(rows.map(x=>[x.month,x]));
- const recent=rows.slice(0,18);
- $('historyRows').innerHTML=recent.map(r=>{
-   const v=historyValue(r,key),prev=historyValue(map.get(historyMonth(r.month,-1)),key),year=historyValue(map.get(historyMonth(r.month,-12)),key);
-   const formatted=v===null?'N/A':key==='gp'?'await Promise.all([db.from('team_profiles').select('*'),db.from('employee_kpis').select('*'),db.from('shift_logs').select('*'),db.from('kpi_reports').select('*'),db.from('app_options').select('*')]);for(const q of queries)if(q.error)throw q.error;[profiles,kpis,shifts,reports]=queries.slice(0,4).map(x=>x.data);$('individual').checked=queries[4].data.find(x=>x.key==='allow_individual_uploads')?.value===true;render()}
-
-let refreshBusy=false;
-async function refreshManagementData(scope){
- if(refreshBusy)return;
- refreshBusy=true;
- const button=$(scope==='store'?'refreshStore':'refreshEmployee');
- const status=$(scope==='store'?'storeRefreshStatus':'employeeRefreshStatus');
- const employeeId=selected,testId=selectedTestId;
- button.disabled=true;status.textContent='Recalculating from saved KPI and shift records…';
- try{
-  // Re-fetch authoritative Supabase snapshots; render() recomputes all KPI cards.
-  // Local test snapshots are read again without re-importing or double-counting PDFs.
-  testEmployees=readTestEmployees();readLocalTestData();
-  await load();
-  const restored=reconcileTestingFromPublished();
-  if(restored)render();
-  if(scope==='employee'){
-   if(testId&&testEmployees.some(p=>p.id===testId))openTestEmployee(testId);
-   else if(employeeId&&profiles.some(p=>p.user_id===employeeId))openEmployee(employeeId);
-   else throw Error('The selected employee is no longer available.');
-  }
-  const updated=$(scope==='store'?'storeRefreshStatus':'employeeRefreshStatus');
-  updated.textContent='Calculated '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+' · '+testEmployees.filter(p=>!!testKpis[p.att_uid]).length+' testing employees with KPI data';
-  flash(scope==='store'?'Store totals recalculated. No new PDF required.':'Employee performance recalculated. No new PDF required.');
- }catch(e){status.textContent='Refresh failed: '+e.message;flash('Refresh failed: '+e.message)}
- finally{refreshBusy=false;button.disabled=false}
-}
-$('refreshStore').onclick=()=>refreshManagementData('store');
-$('refreshEmployee').onclick=()=>refreshManagementData('employee');
-async function activate(user){
-  if(!user?.id){loginMessage('Sign-in did not return a user. Please try again.');return;}
-  let result;
-  try{
-    result=await db.from('team_profiles').select('*').eq('user_id',user.id).maybeSingle();
-  }catch(e){loginMessage('Profile request failed: '+e.message);return;}
-  const {data,error}=result;
-  if(error){loginMessage('Profile lookup failed: '+error.message);return;}
-  if(!data){loginMessage('No team profile is linked to this email account.');return;}
-  if(data.active!==true||data.role!=='admin'){
-    loginMessage('This account is not an active Admin account.');
-    return;
-  }
-  me=data;
-  testEmployees=readTestEmployees();
-  readLocalTestData();readSavedPdf();
-  $('identity').textContent=data.full_name+' · Admin';
-  $('login').hidden=true;
-  showPage('home');
-  $('password').value='';
-  try{await load()}catch(e){flash('Database setup incomplete: '+e.message);}
-}
-$('loginForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  if(!db){loginMessage('Supabase connection is unavailable. Refresh this page.');return;}
-  const email=$('email').value.trim(),password=$('password').value;
-  const button=$('loginForm').querySelector('button[type="submit"]');
-  button.disabled=true;
-  loginMessage('Signing in…');
-  try{
-    const {data,error}=await db.auth.signInWithPassword({email,password});
-    if(error){loginMessage('Sign-in failed: '+error.message);return;}
-    await activate(data?.user);
-  }catch(e){loginMessage('Sign-in error: '+e.message);}
-  finally{button.disabled=false;}
-});
-$('logout').onclick=async()=>{if(db)await db.auth.signOut();location.reload()};
-(async()=>{
-  if(!db)return;
-  try{
-    const {data,error}=await db.auth.getUser();
-    if(error && !/session missing/i.test(error.message||'')){loginMessage('Session check: '+error.message);}
-    if(data?.user)await activate(data.user);
-  }catch(e){loginMessage('Session restore error: '+e.message);}
-})();
-$('saveSettings').onclick=async()=>{const {error}=await db.rpc('admin_set_uploads',{p_allow:$('individual').checked});flash(error?.message||'Employee upload setting saved.')};
-async function callAccounts(body){const {data:{session}}=await db.auth.getSession();if(!session)throw Error('Sign in again');const r=await fetch(SUPABASE_URL+'/functions/v1/manage-team',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token,apikey:KEY},body:JSON.stringify(body)});const data=await r.json();if(!r.ok)throw Error(data.error||'Request failed');return data}
-$('inviteForm').onsubmit=async e=>{e.preventDefault();try{await callAccounts({action:'invite',name:$('newName').value,uid:$('newUid').value,email:$('newEmail').value,role:$('newRole').value});flash('Invitation sent.');e.target.reset();await load()}catch(e){flash(e.message)}};
-async function changeAccount(id,field){const p=profiles.find(x=>x.user_id===id);if(!p||!confirm('Change permissions for '+p.full_name+'?'))return;try{await callAccounts({action:'update',user_id:id,...(field==='role'?{role:p.role==='admin'?'employee':'admin'}:{active:!p.active})});await load();flash('Account updated.')}catch(e){flash(e.message)}}
-// Extract PDF text using page positions; do NOT automatically publish unverified values.
-
-
-function reportNumber(text){
- const v=String(text??'').replace(/[$,\s]/g,'');
- return /^\d+(?:\.\d+)?$/.test(v)?Number(v):null;
-}
-function pdfRows(items){
- const rows=[];
- for(const cell of items.filter(c=>String(c.text).trim()).sort((a,b)=>b.y-a.y||a.x-b.x)){
-  let row=rows.find(r=>Math.abs(r.y-cell.y)<3.5);
-  if(!row){row={y:cell.y,cells:[]};rows.push(row)}
-  row.cells.push(cell);
- }
- return rows.sort((a,b)=>b.y-a.y).map(r=>({y:r.y,cells:r.cells.sort((a,b)=>a.x-b.x)}));
-}
-function reportTable(items,expectedCount,minimumColumns,headingWords){
- const rows=pdfRows(items);
- const header=rows.findIndex(r=>headingWords.every(word=>r.cells.map(c=>c.text).join(' ').toLowerCase().includes(word)));
- if(header<0)return {rows:[],reason:'expected column headings not found'};
- const candidates=rows.slice(header+1).map(r=>r.cells.filter(c=>reportNumber(c.text)!==null)).filter(c=>c.length>=minimumColumns);
- if(candidates.length!==expectedCount)return {rows:[],reason:'expected '+expectedCount+' numeric employee rows, found '+candidates.length};
- return {rows:candidates,reason:''};
-}
-function extractSingleText(text){
- // Fallback patterns retained from the live app. Only safe for a single employee report.
- const normalized=text.replace(/\s+/g,' ');
- const rules=[
- ['VGA',/(?:voice\s*gross\s*adds?|ppvga|\bvga\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
- ['UP',/(?:elite\s*upgrades?|upgrades?|\bup\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
- ['CRU',/(?:corporate\s*responsibility(?:\s*user)?|\bcru\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
- ['FN',/(?:first\s*net|firstnet|\bfn\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
- ['INT',/(?:internet(?:\s*air)?(?:\s*\+\s*hsi)?|\bint\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
- ['OPPS',/(?:opportunities|total\s*opp\s*cnt|\bopps\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i],
- ['EVENTS',/(?:premium\s*out-of-store\s*events?|out\s*of\s*store\s*events?|\bevents?\b)\s*(?:actual|mtd|cnt|count)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i]
- ];
- const out={};
- for(const [key,regex] of rules){const m=normalized.match(regex);if(m)out[key]=Number(m[1]);}
- const air=normalized.match(/(?:internet\s*air|aia(?:-c)?)\s*(?:gross\s*submit|actual|cnt)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i);
- const hsi=normalized.match(/(?:fiber|hsi|broadband)\s*(?:100mb\+)?\s*(?:gross\s*submit|actual|cnt)?\s*[:=-]?\s*(\d+(?:\.\d+)?)/i);
- if(air&&hsi)out.INT=Number(air[1])+Number(hsi[1]);
- const gp=normalized.match(/(?:\bemployee\s*(?:gross\s*profit|gp)\b)\s*(?:\(\s*actual\s*\)|actual|mtd)?\s*[:=\-]?\s*\$?\s*([\d,]+(?:\.\d{1,2})?)/i);
- if(gp)out.gp=Number(gp[1].replace(/,/g,''));
- const apo=normalized.match(/\bAPO\b\s*[:=\-]?\s*\$?\s*([\d,]+(?:\.\d{1,2})?)/i);
- if(apo)out.APO=Number(apo[1].replace(/,/g,''));
- const htp=normalized.match(/\bhometech\b\s*[:=\-]?\s*(\d+(?:\.\d+)?)/i);
- if(htp)out.HTP=Number(htp[1]);
- return out;
-}
-async function parsePDF(file){
- if(!file)return;
- $('review').hidden=true;
- $('parseStatus').textContent='Reading PDF and matching KPI columns…';
- try{
-  if(!window.pdfjsLib)throw Error('PDF reader unavailable.');
-  const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
-  if(pdf.numPages<5)throw Error('Expected a five-page Sales Performance Report.');
-  const pages=[];
-  for(let page=1;page<=pdf.numPages;page++){
-   const content=await(await pdf.getPage(page)).getTextContent();
-   pages.push(content.items.map(i=>({text:String(i.str||'').trim(),x:i.transform[4],y:i.transform[5]})).filter(i=>i.text));
-  }
-  const registered=profiles.filter(p=>p.att_uid&&p.active);
-  const matchedProfiles=[...registered,...testEmployees.map(p=>({...p,testing:true}))];
-  // Capture ALL employees listed in the PDF, not just accounts already registered.
-  // Their order is the row order on every subsequent KPI page.
-  const pdfUIDs=[];
-  for(const row of pdfRows(pages[0])){
-   for(const cell of row.cells){
-    const uid=cell.text.trim().toUpperCase();
-    if(/^[A-Z]{2}[0-9]{3,6}[A-Z0-9]*$/.test(uid)&&!pdfUIDs.includes(uid))pdfUIDs.push(uid);
-   }
-  }
-  if(!pdfUIDs.length)throw Error('No AT&T UIDs found on the report identity page.');
-  const order=pdfUIDs.map(uid=>matchedProfiles.find(p=>p.att_uid.toUpperCase()===uid)||{att_uid:uid,full_name:'PDF Employee '+uid,testing:true,unmatched:true});
-  if(!order.length)throw Error('No registered or testing AT&T UIDs matched the PDF.');
-  const tables=[
-   {page:2,min:6,headers:['employee gp','pstpd voice acts','fn pstpd acts'],keys:['gp',null,'FN',null,'VGA',null]},
-   {page:3,min:8,headers:['cru voice acts','ups','pstpd opps'],keys:['CRU','UP','OPPS',null,null,null,null,null]},
-   {page:4,min:8,headers:['strategics','internet air','hometech','apo'],keys:[null,'InternetAir',null,'HSI',null,'HTP',null,'APO']},
-   {page:5,min:1,headers:['event sales'],keys:['EVENTS']}
-  ];
-  const extracted=Object.fromEntries(order.map(p=>[p.att_uid,{}]));
-  const warnings=[];
-  for(const spec of tables){
-   const table=reportTable(pages[spec.page-1],pdfUIDs.length,spec.min,spec.headers);
-   if(table.reason){warnings.push('Page '+spec.page+': '+table.reason+'.');continue;}
-   for(let i=0;i<pdfUIDs.length;i++){
-    const cells=table.rows[i],uid=pdfUIDs[i];
-    const profile=order.find(p=>p.att_uid.toUpperCase()===uid);
-    if(!profile)continue;
-    if(cells.length!==spec.keys.length){warnings.push('Page '+spec.page+' employee '+uid+': unexpected column count.');continue;}
-    for(let j=0;j<spec.keys.length;j++)if(spec.keys[j])extracted[profile.att_uid][spec.keys[j]]=reportNumber(cells[j].text);
-   }
-  }
-  // The live app uses header positions to identify Internet Air and HSI;
-  // this collective layout uses their verified column positions for each employee.
-  reviewRows=order.map(p=>{
-   const v=extracted[p.att_uid];
-   if(pdfUIDs.length===1){
-    const text=pages.flat().map(i=>i.text).join(' ');
-    const fallback=extractSingleText(text);
-    for(const [key,value] of Object.entries(fallback))if(v[key]===undefined)v[key]=value;
-   }
-   return {uid:p.att_uid,name:p.full_name,testing:!!p.testing,unmatched:!!p.unmatched,gp:v.gp??'',VGA:v.VGA??'',UP:v.UP??'',CRU:v.CRU??'',FN:v.FN??'',INT:v.InternetAir!=null&&v.HSI!=null?v.InternetAir+v.HSI:(v.INT??''),OPPS:v.OPPS??'',EVENTS:v.EVENTS??'',APO:v.APO??'',HTP:v.HTP??''};
-  });
-  const keys=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
-  const found=reviewRows.reduce((sum,r)=>sum+keys.filter(k=>r[k]!=='').length,0);
-  $('parseStatus').textContent='Extracted '+found+'/'+(reviewRows.length*keys.length)+' fields for '+order.length+' employee(s). '+warnings.join(' ')+' Review all figures against the PDF before approving. Testing rows will stay local to this device.';
-  $('review').hidden=false;drawReview();updateReplaceWarning();
- }catch(e){$('parseStatus').textContent='PDF extraction failed: '+e.message;}
-}
-$('pdf').onchange=e=>parsePDF(e.target.files?.[0]);
-function drawReview(){const fields=['uid','name','gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];$('reviewRows').innerHTML=reviewRows.map((r,i)=>'<tr>'+fields.map(f=>`<td>${['uid','name'].includes(f)?esc(r[f])+(f==='name'&&r.testing?' (Testing)':''):`<input type="number" min="0" step="any" aria-label="${esc(r.name)} ${f}" data-i="${i}" data-f="${f}" value="${esc(r[f])}" required>`}</td>`).join('')+'</tr>').join('');document.querySelectorAll('#reviewRows input').forEach(x=>x.oninput=()=>reviewRows[Number(x.dataset.i)][x.dataset.f]=x.value)}
-$('publish').onclick=async()=>{
- const start=$('start').value,end=$('end').value;
- if(!start||!end||start>end)return flash('Enter a valid report start and end date.');
- const fields=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
- if(reviewRows.some(r=>fields.some(k=>r[k]===''||!Number.isFinite(Number(r[k]))||Number(r[k])<0)))return flash('Verify every KPI value, including Hometech. Do not guess missing values.');
- const real=reviewRows.filter(r=>!r.testing),testing=reviewRows.filter(r=>r.testing),localOnly=$('localOnly').checked;
- updateReplaceWarning();
- if(!confirm('WARNING: '+(compactHistory.some(x=>x.s===start&&x.e===end)?'This will REPLACE the previously saved KPI values for this period.':'This will save a new KPI snapshot.')+' '+reviewRows.length+' employee rows. '+(localOnly?'Local testing changes can be undone once. No official records will be changed.':'Official employee data will ALSO be published and CANNOT be undone with the local Undo button.')+' Continue?'))return;
- const rows=real.map(r=>({uid:r.uid,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))}));
- if(real.length&&!localOnly){const {error}=await db.rpc('publish_collective_report',{p_start:start,p_end:end,p_rows:rows});if(error)return flash('Official publishing failed: '+error.message);}
- const prior=JSON.stringify(testKpis),priorMeta=JSON.stringify(testReportMeta);
- // Replace the MTD snapshot for each matching test UID, never add consecutive MTD PDFs.
- for(const r of testing)testKpis[r.uid]={uid:r.uid,report_start:start,report_end:end,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))};
- testReportMeta={start,end,approvedAt:new Date().toISOString()};
- const snapshot=reviewRows.map(r=>({uid:r.uid,report_start:start,report_end:end,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))}));
- const snapshotSaved=storeSavedPdf(snapshot);
- if(!snapshotSaved)return flash('Could not save the compact KPI snapshot. Nothing was discarded.');
- reconcileTestingFromPublished();
- if(!saveLocalTestData()){testKpis=JSON.parse(prior);testReportMeta=JSON.parse(priorMeta);return flash('Testing data could not be saved locally. '+(real.length?'Official records were published.':'No official records were changed.'));}
- $('review').hidden=true;
- if(real.length&&!localOnly)await load();else render();
- flash('Compact KPI snapshot saved: '+snapshot.length+' employees. '+(localOnly?'No official records changed.':'Official publishing requested.'));
-
-};
-setInterval(()=>{if(me)load().catch(()=>{})},60000);
-</script></body></html>
-+v.toLocaleString('en-US',{maximumFractionDigits:2}):v.toLocaleString('en-US',{maximumFractionDigits:2});
-   return '<tr><td>'+esc(r.month.slice(0,7))+'</td><td>'+esc(formatted)+'</td><td>'+historyChange(v,prev)+'</td><td>'+historyChange(v,year)+'</td><td>'+esc(r.report_end||'N/A')+'</td></tr>';
+ const data=(scope==='store'?storeHistory:employeeHistory.filter(r=>r.employee_id===employee)).slice().sort((a,b)=>b.month.localeCompare(a.month));
+ const lookup=new Map(data.map(r=>[r.month,r]));
+ $('historyRows').innerHTML=data.slice(0,18).map(r=>{
+  const v=metricValue(r,key),prior=metricValue(lookup.get(monthOffset(r.month,-1)),key),year=metricValue(lookup.get(monthOffset(r.month,-12)),key);
+  const value=v===null?'N/A':(key==='gp'?'USD ':'')+v.toLocaleString('en-US',{maximumFractionDigits:2});
+  return '<tr><td>'+esc(r.month.slice(0,7))+'</td><td>'+esc(value)+'</td><td>'+percentChange(v,prior)+'</td><td>'+percentChange(v,year)+'</td><td>'+esc(r.report_end||'N/A')+'</td></tr>';
  }).join('');
- $('historyStatus').textContent=historyError||(!recent.length?'No approved monthly history available for this selection.':recent.length+' recorded month(s) displayed. Missing comparison months show N/A.');
+ $('historyStatus').textContent=historyError||(!data.length?'No recorded history for this selection.':Math.min(data.length,18)+' month(s) displayed.');
 }
 async function loadSalesHistory(){
- historyError='';$('historyStatus').textContent='Loading monthly history from Supabase…';
+ historyError='';$('historyStatus').textContent='Loading monthly history…';
  try{
-  const [store,employee]=await Promise.all([
-    db.from('store_monthly_history').select('*').order('month',{ascending:false}).limit(18),
-    db.from('employee_monthly_history').select('*').order('month',{ascending:false}).limit(2000)
-  ]);
-  if(store.error||employee.error)throw store.error||employee.error;
-  storeHistory=store.data||[];employeeHistory=employee.data||[];
-  const available=[...new Map((profiles||[]).filter(p=>p.user_id).map(p=>[p.user_id,p])).values()];
+  const result=await Promise.all([db.from('store_monthly_history').select('*').order('month',{ascending:false}).limit(18),db.from('employee_monthly_history').select('*').order('month',{ascending:false}).limit(2000)]);
+  if(result[0].error||result[1].error)throw result[0].error||result[1].error;
+  storeHistory=result[0].data||[];employeeHistory=result[1].data||[];
   const selected=$('historyEmployee').value;
-  $('historyEmployee').innerHTML='<option value="">Select employee</option>'+available.map(p=>'<option value="'+esc(p.user_id)+'">'+esc(p.full_name||p.att_uid||p.user_id)+'</option>').join('');
-  if(available.some(p=>p.user_id===selected))$('historyEmployee').value=selected;
- }catch(e){storeHistory=[];employeeHistory=[];historyError='Historical Sales unavailable: '+e.message+'. Database migrations may not be applied yet.'}
+  $('historyEmployee').innerHTML='<option value="">Select employee</option>'+profiles.map(p=>'<option value="'+esc(p.user_id)+'">'+esc(p.full_name||p.att_uid||p.user_id)+'</option>').join('');
+  if(profiles.some(p=>p.user_id===selected))$('historyEmployee').value=selected;
+ }catch(error){storeHistory=[];employeeHistory=[];historyError='Historical Sales unavailable: '+error.message}
  renderSalesHistory();
 }
 $('historyScope').onchange=renderSalesHistory;
