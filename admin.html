@@ -34,16 +34,43 @@ header .tag{color:#79cfff}
 .home-back{margin:0 0 15px;background:#163f68;border-color:#668db1}
 @media(min-width:900px){.home-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.home-tile{min-height:240px;padding:18px 15px}.home-tile .tile-title{font-size:19px}.home-tile .tile-desc{font-size:13px}.home-tile .tile-chip{position:static;align-self:flex-start;margin-top:10px}.home-tile .tile-arrow{right:9px}}
 @media(max-width:580px){main{padding:14px 12px 70px}header{padding:16px 14px}.home-grid{gap:10px}.home-tile{min-height:200px;padding:15px 13px 13px;border-radius:19px}.home-tile .tile-title{font-size:17px;margin:8px 12px 6px 0}.home-tile .tile-desc{font-size:12px}.home-tile .tile-icon,.home-tile .tile-icon svg{width:31px;height:31px}.home-tile .tile-arrow{font-size:21px;right:10px}.home-tile .tile-chip{position:static;align-self:flex-start;margin-top:7px;font-size:10px}.home-tile .tile-foot{font-size:11px}.home-tile .tile-foot b{font-size:15px}}
+
+/* Mobile-first page navigation and MTD KPI cards */
+html{width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%}
+body{width:100%;min-width:0;overflow-x:hidden}
+main{width:100%;max-width:1100px;min-width:0;padding-bottom:calc(70px + env(safe-area-inset-bottom))}
+header{padding-top:calc(16px + env(safe-area-inset-top));min-width:0}
+header>div{min-width:0}header h1{overflow-wrap:anywhere}
+.page-navigation{display:flex;align-items:center;gap:12px;margin-bottom:18px;min-width:0}
+.page-navigation[hidden]{display:none!important}
+.page-navigation button{margin:0;flex-shrink:0;background:rgba(28,73,112,.8);border:1px solid #7a9fbf;border-radius:12px;padding:10px 16px;box-shadow:none}
+#currentPageTitle{font-weight:750;font-size:clamp(15px,3vw,19px);overflow-wrap:anywhere}
+.section,.card,.grid,.home-grid,.home-tile,.metric{min-width:0;max-width:100%}
+.home-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.home-tile{aspect-ratio:1/1;min-height:0;height:auto;overflow:hidden}
+.home-tile .tile-desc{overflow-wrap:anywhere}
+.home-tile .tile-foot{overflow-wrap:anywhere}
+.home-tile .tile-title{overflow-wrap:anywhere}
+.overview-intro{margin:4px 0 17px}
+.overview-intro h2{margin:0 0 6px}
+.store-kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.store-kpi{border:1px solid rgba(128,176,215,.48);border-radius:18px;background:rgba(29,68,104,.8);padding:17px;overflow-wrap:anywhere}
+.store-kpi b{font-size:clamp(19px,4vw,27px);letter-spacing:-.03em}
+.kpi-delta,.kpi-note{display:block;margin-top:10px;color:#c5dff0;font-size:12px;line-height:1.4}
+.table-scroll,.table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+input,select,button{min-width:0}
+@media(max-width:580px){header{gap:7px}header h1{font-size:24px}header #logout{padding:9px 11px;font-size:12px}.home-tile{padding:12px 11px;aspect-ratio:1/1;min-height:0}.home-tile .tile-title{font-size:clamp(13px,4vw,17px);line-height:1.12}.home-tile .tile-desc{font-size:clamp(10px,2.7vw,12px);line-height:1.3}.home-tile .tile-foot{font-size:10px;padding-top:6px}.home-tile .tile-foot b{font-size:clamp(11px,3.3vw,15px)}.home-tile .tile-icon,.home-tile .tile-icon svg{width:27px;height:27px}.home-tile .tile-chip{font-size:9px;padding:3px 6px}.home-tile .tile-arrow{top:42%;font-size:19px}.home-banner{padding:12px}.store-kpi{padding:13px}.card{overflow-wrap:anywhere}}
+@media(max-width:360px){.home-grid{gap:7px}.home-tile{padding:10px 8px}.home-tile .tile-desc{font-size:10px}.home-tile .tile-title{font-size:13px}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body>
 <div id="login"><div class="card"><div class="tag">CHERRYDALE POINT · OWS306</div><h1>Management Sign In</h1><p class="muted">Admin accounts only</p><form id="loginForm" onsubmit="return false"><label class="field">Email<input id="email" type="email" required autocomplete="username"></label><label class="field">Password<input id="password" type="password" required autocomplete="current-password"></label><button type="submit">Sign In</button></form><p id="loginError" class="warning"></p></div></div>
 <header><div><div class="tag">ONE WIRELESS SOLUTION · STORE #306</div><h1>Management Center</h1><small id="identity">Cherrydale Point</small></div><button id="logout">Sign Out</button></header>
-<main><div class="nav" id="nav"><button class="active" data-page="home">Home</button><button data-page="overview">Store Overview</button><button data-page="team">Team Dashboard</button><button data-page="reports">Report Center</button><button data-page="accounts">User Accounts</button><button data-page="settings">Settings</button><button data-page="payouts">Payout Center</button></div>
+<main><div class="page-navigation" id="pageNavigation" hidden><button type="button" id="homeButton" class="home-back" aria-label="Return to home dashboard">⌂ &nbsp; Home</button><span id="currentPageTitle" aria-live="polite"></span></div>
 <section id="home" class="section active">
  <div class="home-banner"><strong>Cherrydale Point OWS306</strong><small id="homeSystem">Management dashboard · Connected data</small></div>
  <div class="home-grid" id="homeGrid"></div>
  <div class="home-bottom"><span><b>Store</b>Cherrydale Point OWS306</span><span><b>Current period</b><span id="homePeriod">—</span></span><span><b>Employees</b><span id="homePeople">—</span></span><span><b>Latest approved report</b><span id="homeReportDate">—</span></span></div>
 </section>
-<section id="overview" class="section"><div class="grid" id="storeMetrics"></div><div class="card"><h2>Store Performance</h2><p class="muted">Totals from the latest approved collective report. These are not employee AGT/ADT targets.</p><div id="storeBreakdown"></div></div><div class="card"><h2>Team Snapshot</h2><div id="overviewStaff"></div></div></section>
+<section id="overview" class="section"><div class="overview-intro"><h2>Store MTD Performance</h2><div id="storeBreakdown" class="subtle"></div></div><div class="grid store-kpi-grid" id="storeMetrics"></div><div class="card"><h2>Team Snapshot</h2><div id="overviewStaff"></div></div></section>
 <section id="team" class="section"><div class="card"><h2>Employee Performance · GP / Voice / INT / HTP</h2><div id="staffList"></div></div><div id="employeeDetail" class="card hidden"><div class="row space"><h2 id="detailName">Employee Dashboard</h2><button id="closeDetail">Close</button></div><div id="detailMetrics"></div><p class="muted">Management detail view: official AGT/ADT calculations are preserved. The full pixel-identical Employee App preview is not implemented in this build.</p><div id="detailOfficial"></div><h3>Shift history</h3><div id="detailShifts"></div><div class="row"><label>Correct shift date <input id="fixDate" type="date"></label><button id="markWorked">Mark Worked</button><button id="markMissed">Remove Shift</button></div></div></section>
 <section id="reports" class="section"><div class="card"><h2>Collective KPI Report</h2><p class="muted">Upload one store-wide Sales Performance Report. Review every employee's values before publishing. No data changes until you approve.</p><label class="field">PDF report<input type="file" id="pdf" accept=".pdf,application/pdf"></label><p id="parseStatus" class="muted"></p><div class="row"><label>Report start <input type="date" id="start"></label><label>Report end <input type="date" id="end"></label></div><div id="review" hidden><h3>Review and correct extracted employee rows</h3><p class="warning">Verify names, UIDs and every KPI against the PDF. If extraction is incomplete, enter missing values manually. Do not publish until verified.</p><div class="table-scroll"><table><thead><tr><th>UID</th><th>Name</th><th>GP</th><th>Voice</th><th>UP</th><th>CRU</th><th>FN</th><th>INT</th><th>OPPS</th><th>Events</th><th>APO</th><th>HTP</th></tr></thead><tbody id="reviewRows"></tbody></table></div><button id="publish">Approve &amp; Publish</button></div></div><div class="card"><h2>Published Reports</h2><div id="reportHistory"></div></div></section>
 <section id="accounts" class="section"><div class="card"><h2>User Account Management</h2><p class="muted">Admin or Employee role. Create logins using a secure Edge Function. No service-role secret is ever included in this website.</p><div id="accountList"></div><h3>Invite team member</h3><form id="inviteForm"><div class="grid"><label class="field">Full name<input id="newName" required></label><label class="field">AT&amp;T UID<input id="newUid" required></label><label class="field">Email<input id="newEmail" type="email" required></label><label class="field">Permission<select id="newRole"><option value="employee">Employee</option><option value="admin">Admin</option></select></label></div><button type="submit">Send Invitation</button></form></div></section>
@@ -68,8 +95,8 @@ const flash=t=>{$('notice').textContent=t;$('notice').style.display='block';setT
 const values=r=>r?.actuals||{},name=id=>profiles.find(p=>p.user_id===id)?.full_name||'Unknown';
 const latest=id=>kpis.filter(r=>r.employee_id===id).sort((a,b)=>b.published_at.localeCompare(a.published_at))[0];
 const total=id=>shifts.filter(s=>s.employee_id===id&&s.state==='active'&&s.shift_date.startsWith(new Date().toLocaleDateString('en-CA',{timeZone:'America/New_York'}).slice(0,7))).length;
-function showPage(p){document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===p));document.querySelectorAll('#nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===p));window.scrollTo({top:0,behavior:'instant'});}
-document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>showPage(b.dataset.page));
+function showPage(p){document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===p));$('pageNavigation').hidden=p==='home';$('currentPageTitle').textContent=({overview:'Store Overview',team:'Team Snapshots',reports:'KPI Reports',accounts:'Employee Management',settings:'Settings & Targets',payouts:'Payout Center'})[p]||'';window.scrollTo({top:0,behavior:'instant'});}
+$('homeButton').onclick=()=>showPage('home');
 // Exact original app calculation function and status logic; do not modify without approval.
 const KPI_CONFIG=[{key:'VGA',name:'Voice Gross Adds',type:'daily',dailyTarget:1.25,groupSpan:1,groupTarget:1.25},{key:'UP',name:'Upgrades',type:'daily',dailyTarget:1.1,groupSpan:1,groupTarget:1.1},{key:'CRU',name:'Corporate Responsibility User',type:'grouped',dailyTarget:.25,groupSpan:4,groupTarget:1},{key:'FN',name:'FirstNet',type:'grouped',dailyTarget:1/6,groupSpan:6,groupTarget:1},{key:'INT',name:'Internet (Internet Air + HSI)',type:'grouped',dailyTarget:.5,groupSpan:2,groupTarget:1},{key:'OPPS',name:'Opportunities',type:'daily',dailyTarget:2.35,groupSpan:1,groupTarget:2.35},{key:'EVENTS',name:'Premium Out-of-Store Events',type:'grouped',dailyTarget:.25,groupSpan:4,groupTarget:1}];
 function statusFor(target,actual,variance,base){if(variance<=1e-9)return{code:'green',label:'Met'};const ratio=target>0?actual/target:0;if(ratio>=.75||variance<=base)return{code:'yellow',label:'Almost There'};return{code:'red',label:'Not Met'}}
@@ -119,8 +146,17 @@ function renderHome(){
 }
 
 function render(){renderHome();const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).join('');$('overviewStaff').innerHTML=people.map(snap).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));
-const most=reports.slice().sort((a,b)=>b.report_end.localeCompare(a.report_end))[0];const list=kpis.filter(r=>r.report_id===most?.id);const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0);
-$('storeMetrics').innerHTML=[['Store Gross Profit',money(gp)],['Postpaid Voice',sum('VGA')],['Internet',sum('INT')],['Team Members',people.length+' / 10']].map(([label,value])=>`<div class="metric"><small>${label}</small><b>${value}</b></div>`).join('');$('storeBreakdown').textContent=most?'Latest report: '+most.report_start+' through '+most.report_end+' · '+list.length+' employees.':'No collective report published yet.';
+const most=reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];const list=kpis.filter(r=>r.report_id===most?.id);const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0);
+const prev=reports.filter(r=>r.id!==most?.id&&String(r.report_end).slice(0,7)===String(most?.report_end).slice(0,7)).sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
+const prevList=prev?kpis.filter(r=>r.report_id===prev.id):[];
+const entries=[['Gross Profit',gp,'gp',true],['Voice',sum('VGA'),'VGA'],['Upgrades',sum('UP'),'UP'],['CRU',sum('CRU'),'CRU'],['FirstNet',sum('FN'),'FN'],['Internet',sum('INT'),'INT'],['Opportunities',sum('OPPS'),'OPPS'],['Event Sales',sum('EVENTS'),'EVENTS'],['Hometech',list.reduce((a,r)=>a+n(r.htp),0),'htp'],['APO',null,'apo']];
+$('storeMetrics').innerHTML=entries.map(([label,val,key,isMoney])=>{
+ const previous=prevList.length?(key==='gp'?prevList.reduce((a,r)=>a+n(r.gp),0):key==='htp'?prevList.reduce((a,r)=>a+n(r.htp),0):prevList.reduce((a,r)=>a+n(values(r)[key]),0)):null;
+ const delta=val!==null&&previous!==null?val-previous:null;
+ const change=delta===null?'':('<span class="kpi-delta">'+(delta>0?'+':'')+(isMoney?money(delta):delta)+' since prior report</span>');
+ return '<div class="metric store-kpi"><small>'+esc(label)+'</small><b>'+(val===null?'—':isMoney?money(val):val)+'</b>'+(val===null?'<span class="kpi-note">Store APO calculation pending verification</span>':change)+'</div>';
+}).join('');
+$('storeBreakdown').textContent=most?new Date(String(most.report_end)+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'})+' · MTD · Data through '+String(most.report_end)+' · '+list.length+' employee KPI record'+(list.length===1?'':'s'):'No approved collective report yet. Upload and approve a KPI PDF to populate store totals.';
 $('reportHistory').innerHTML=reports.slice().sort((a,b)=>b.created_at.localeCompare(a.created_at)).map(r=>`<p>${esc(r.report_start)} – ${esc(r.report_end)} · ${esc(r.status)}</p>`).join('')||'No reports yet.';
 $('accountList').innerHTML=profiles.map(p=>`<div class="row space" style="border-bottom:1px solid #385472;padding:9px 0"><div><strong>${esc(p.full_name)}</strong><br><small>${esc(p.att_uid)} · ${esc(p.role)} · ${p.active?'Active':'Inactive'}</small></div><div class="actions"><button data-toggle="${esc(p.user_id)}" ${p.user_id===me?.user_id?'disabled':''}>${p.active?'Deactivate':'Reactivate'}</button><button data-role="${esc(p.user_id)}" ${p.user_id===me?.user_id?'disabled':''}>${p.role==='admin'?'Make Employee':'Make Admin'}</button></div></div>`).join('');document.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>changeAccount(b.dataset.toggle,'active'));document.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>changeAccount(b.dataset.role,'role'));
 }
