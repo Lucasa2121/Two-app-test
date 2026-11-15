@@ -160,8 +160,17 @@ async function parsePDF(file){
    pages.push(content.items.map(i=>({text:String(i.str||'').trim(),x:i.transform[4],y:i.transform[5]})).filter(i=>i.text));
   }
   const registered=profiles.filter(p=>p.att_uid&&p.active);
-  const identities=pdfRows(pages[0]).flatMap(r=>registered.filter(p=>r.cells.some(c=>c.text.toUpperCase()===p.att_uid.toUpperCase())));
-  const order=[...new Map(identities.map(p=>[p.att_uid.toUpperCase(),p])).values()];
+  // Capture ALL employees listed in the PDF, not just accounts already registered.
+  // Their order is the row order on every subsequent KPI page.
+  const pdfUIDs=[];
+  for(const row of pdfRows(pages[0])){
+   for(const cell of row.cells){
+    const uid=cell.text.trim().toUpperCase();
+    if(/^[A-Z]{2}[0-9]{3,6}[A-Z0-9]*$/.test(uid)&&!pdfUIDs.includes(uid))pdfUIDs.push(uid);
+   }
+  }
+  if(!pdfUIDs.length)throw Error('No AT&T UIDs found on the report identity page.');
+  const order=pdfUIDs.map(uid=>registered.find(p=>p.att_uid.toUpperCase()===uid)).filter(Boolean);
   if(!order.length)throw Error('No registered active AT&T UIDs matched the PDF.');
   const tables=[
    {page:2,min:6,headers:['employee gp','pstpd voice acts','fn pstpd acts'],keys:['gp',null,'FN',null,'VGA',null]},
@@ -172,19 +181,21 @@ async function parsePDF(file){
   const extracted=Object.fromEntries(order.map(p=>[p.att_uid,{}]));
   const warnings=[];
   for(const spec of tables){
-   const table=reportTable(pages[spec.page-1],order.length,spec.min,spec.headers);
+   const table=reportTable(pages[spec.page-1],pdfUIDs.length,spec.min,spec.headers);
    if(table.reason){warnings.push('Page '+spec.page+': '+table.reason+'.');continue;}
-   for(let i=0;i<order.length;i++){
-    const cells=table.rows[i],uid=order[i].att_uid;
+   for(let i=0;i<pdfUIDs.length;i++){
+    const cells=table.rows[i],uid=pdfUIDs[i];
+    const profile=registered.find(p=>p.att_uid.toUpperCase()===uid);
+    if(!profile)continue;
     if(cells.length!==spec.keys.length){warnings.push('Page '+spec.page+' employee '+uid+': unexpected column count.');continue;}
-    for(let j=0;j<spec.keys.length;j++)if(spec.keys[j])extracted[uid][spec.keys[j]]=reportNumber(cells[j].text);
+    for(let j=0;j<spec.keys.length;j++)if(spec.keys[j])extracted[profile.att_uid][spec.keys[j]]=reportNumber(cells[j].text);
    }
   }
   // The live app uses header positions to identify Internet Air and HSI;
   // this collective layout uses their verified column positions for each employee.
   reviewRows=order.map(p=>{
    const v=extracted[p.att_uid];
-   if(order.length===1){
+   if(pdfUIDs.length===1){
     const text=pages.flat().map(i=>i.text).join(' ');
     const fallback=extractSingleText(text);
     for(const [key,value] of Object.entries(fallback))if(v[key]===undefined)v[key]=value;
