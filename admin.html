@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cherrydale Point · Management</title><style>
 :root{font-family:system-ui,-apple-system,sans-serif;color-scheme:dark;background:#08142a;color:#e8f5ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#16365c,#08142a 60%);min-height:100vh}header{padding:20px max(16px,calc((100vw - 1100px)/2));border-bottom:1px solid #3c5674;background:#0a1931d9;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}h1{font-size:clamp(21px,4vw,30px);margin:5px 0}h2{font-size:20px;margin:0 0 16px}h3{margin:8px 0}small,.muted{color:#a7c4de}.tag{font-size:11px;color:#6fd6ff;font-weight:800;letter-spacing:.09em}main{max-width:1100px;margin:auto;padding:20px 15px 70px}.card{background:#152d4d;border:1px solid #375578;border-radius:18px;padding:18px;margin-bottom:16px;box-shadow:0 12px 40px #0002}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.metric{background:#203c60;border-radius:13px;padding:15px}.metric b{font-size:23px;display:block;margin-top:8px}.metrics4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.metrics4 .metric{padding:9px;text-align:center}.metrics4 b{font-size:clamp(12px,2vw,17px)}button{cursor:pointer;background:#087ebc;border:1px solid #4ca8d3;color:#fff;border-radius:10px;padding:11px 14px;font-weight:700}button:hover{background:#07649b}button:disabled{opacity:.45;cursor:not-allowed}input,select{border:1px solid #58799b;background:#0d223c;color:#fff;border-radius:9px;padding:11px;max-width:100%;font:inherit}input[type=checkbox]{width:19px;height:19px}.field{display:grid;gap:6px;margin:12px 0}.field input{width:100%}.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.space{justify-content:space-between}.nav{display:flex;gap:8px;overflow-x:auto;margin-bottom:17px;padding-bottom:3px}.nav button{white-space:nowrap;background:#173454}.nav button.active{background:#087ebc}.hidden,[hidden]{display:none!important}.staff{width:100%;text-align:left;background:#1b395b;border:1px solid #4a6686;padding:15px;margin:7px 0}.staff strong{font-size:16px}.section{display:none}.section.active{display:block}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:10px 6px;text-align:left;border-bottom:1px solid #385472}th{color:#a6c4df}td input{width:90px;padding:7px}.table-scroll{overflow-x:auto}#login{position:fixed;inset:0;background:#08142a;display:grid;place-items:center;z-index:50;padding:18px}#login .card{width:min(100%,430px)}#notice{position:sticky;bottom:15px;background:#164a57;border:1px solid #57bdb9;border-radius:12px;padding:12px;display:none;margin:12px 0;z-index:5}.pill{background:#274869;border-radius:50px;padding:5px 9px;font-size:12px}.warning{color:#f5d27e}iframe{width:100%;height:78vh;border:1px solid #476585;border-radius:12px;background:#fff}.subtle{font-size:12px;color:#9fbad6}.actions{display:flex;gap:8px;flex-wrap:wrap}#previewPanel{margin-top:14px}@media(max-width:580px){.card{padding:13px}.metrics4 .metric{padding:6px}.metrics4 small{font-size:10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body>
-<div id="login"><div class="card"><div class="tag">CHERRYDALE POINT · OWS306</div><h1>Management Sign In</h1><p class="muted">Admin accounts only</p><form id="loginForm"><label class="field">Email<input id="email" type="email" required autocomplete="username"></label><label class="field">Password<input id="password" type="password" required autocomplete="current-password"></label><button type="submit">Sign In</button></form><p id="loginError" class="warning"></p></div></div>
+<div id="login"><div class="card"><div class="tag">CHERRYDALE POINT · OWS306</div><h1>Management Sign In</h1><p class="muted">Admin accounts only</p><form id="loginForm" onsubmit="return false"><label class="field">Email<input id="email" type="email" required autocomplete="username"></label><label class="field">Password<input id="password" type="password" required autocomplete="current-password"></label><button type="submit">Sign In</button></form><p id="loginError" class="warning"></p></div></div>
 <header><div><div class="tag">ONE WIRELESS SOLUTION · STORE #306</div><h1>Management Center</h1><small id="identity">Cherrydale Point</small></div><button id="logout">Sign Out</button></header>
 <main><div class="nav" id="nav"><button class="active" data-page="overview">Store Overview</button><button data-page="team">Team Dashboard</button><button data-page="reports">Report Center</button><button data-page="accounts">User Accounts</button><button data-page="settings">Settings</button><button data-page="payouts">Payout Center</button></div>
 <section id="overview" class="section active"><div class="grid" id="storeMetrics"></div><div class="card"><h2>Store Performance</h2><p class="muted">Totals from the latest approved collective report. These are not employee AGT/ADT targets.</p><div id="storeBreakdown"></div></div><div class="card"><h2>Team Snapshot</h2><div id="overviewStaff"></div></div></section>
@@ -13,7 +13,15 @@
 <div id="notice" role="status"></div></main>
 <script>
 'use strict';
-const URL='https://nrysdyykkqpsxefmoibt.supabase.co',KEY='sb_publishable_wfZmj5HeN1gbmlAYIBR8tw_M1GEH1Hk',db=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true}}),$=id=>document.getElementById(id);
+const URL='https://nrysdyykkqpsxefmoibt.supabase.co',KEY='sb_publishable_wfZmj5HeN1gbmlAYIBR8tw_M1GEH1Hk',$=id=>document.getElementById(id);
+let db=null;
+const loginMessage=message=>{$('loginError').textContent=message;};
+try{
+  if(!window.supabase?.createClient) throw Error('Supabase library did not load. Check your internet connection and refresh.');
+  db=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+}catch(e){loginMessage('Startup error: '+e.message);}
+window.addEventListener('error',e=>{if(!$('login').hidden)loginMessage('App error: '+e.message);});
+window.addEventListener('unhandledrejection',e=>{if(!$('login').hidden)loginMessage('Connection error: '+String(e.reason?.message||e.reason));});
 let me=null,profiles=[],kpis=[],shifts=[],reports=[],reviewRows=[],selected=null;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const n=x=>Number(x)||0,money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n(x));
@@ -43,10 +51,48 @@ $('closeDetail').onclick=()=>$('employeeDetail').classList.add('hidden');
 async function fixShift(worked){if(!selected||!confirm('Update this employee shift record?'))return;const {error}=await db.rpc('admin_set_shift',{p_employee:selected,p_date:$('fixDate').value,p_worked:worked});if(error)return flash(error.message);await load();openEmployee(selected);flash('Shift corrected and audited.')}
 $('markWorked').onclick=()=>fixShift(true);$('markMissed').onclick=()=>fixShift(false);
 async function load(){const queries=await Promise.all([db.from('team_profiles').select('*'),db.from('employee_kpis').select('*'),db.from('shift_logs').select('*'),db.from('kpi_reports').select('*'),db.from('app_options').select('*')]);for(const q of queries)if(q.error)throw q.error;[profiles,kpis,shifts,reports]=queries.slice(0,4).map(x=>x.data);$('individual').checked=queries[4].data.find(x=>x.key==='allow_individual_uploads')?.value===true;render()}
-async function activate(user){const {data,error}=await db.from('team_profiles').select('*').eq('user_id',user.id).single();if(error||!data?.active||data.role!=='admin'){await db.auth.signOut();$('loginError').textContent=error?'Profile lookup failed: '+error.message:!data?.active?'Admin profile missing or inactive':'Account role is '+data.role+' (Admin required)';;return}me=data;$('identity').textContent=data.full_name+' · Admin';$('login').hidden=true;try{await load()}catch(e){flash('Database setup incomplete: '+e.message)}}
-$('loginForm').onsubmit=async e=>{e.preventDefault();$('loginError').textContent='Signing in…';const {data,error}=await db.auth.signInWithPassword({email:$('email').value,password:$('password').value});if(error)return $('loginError').textContent=error.message;await activate(data.user)};
-$('logout').onclick=async()=>{await db.auth.signOut();location.reload()};
-(async()=>{const {data}=await db.auth.getUser();if(data.user)await activate(data.user)})();
+async function activate(user){
+  if(!user?.id){loginMessage('Sign-in did not return a user. Please try again.');return;}
+  let result;
+  try{
+    result=await db.from('team_profiles').select('*').eq('user_id',user.id).maybeSingle();
+  }catch(e){loginMessage('Profile request failed: '+e.message);return;}
+  const {data,error}=result;
+  if(error){loginMessage('Profile lookup failed: '+error.message);return;}
+  if(!data){loginMessage('No team profile is linked to this email account.');return;}
+  if(data.active!==true||data.role!=='admin'){
+    loginMessage('This account is not an active Admin account.');
+    return;
+  }
+  me=data;
+  $('identity').textContent=data.full_name+' · Admin';
+  $('login').hidden=true;
+  $('password').value='';
+  try{await load()}catch(e){flash('Database setup incomplete: '+e.message);}
+}
+$('loginForm').addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!db){loginMessage('Supabase connection is unavailable. Refresh this page.');return;}
+  const email=$('email').value.trim(),password=$('password').value;
+  const button=$('loginForm').querySelector('button[type="submit"]');
+  button.disabled=true;
+  loginMessage('Signing in…');
+  try{
+    const {data,error}=await db.auth.signInWithPassword({email,password});
+    if(error){loginMessage('Sign-in failed: '+error.message);return;}
+    await activate(data?.user);
+  }catch(e){loginMessage('Sign-in error: '+e.message);}
+  finally{button.disabled=false;}
+});
+$('logout').onclick=async()=>{if(db)await db.auth.signOut();location.reload()};
+(async()=>{
+  if(!db)return;
+  try{
+    const {data,error}=await db.auth.getUser();
+    if(error && !/session missing/i.test(error.message||'')){loginMessage('Session check: '+error.message);}
+    if(data?.user)await activate(data.user);
+  }catch(e){loginMessage('Session restore error: '+e.message);}
+})();
 $('saveSettings').onclick=async()=>{const {error}=await db.rpc('admin_set_uploads',{p_allow:$('individual').checked});flash(error?.message||'Employee upload setting saved.')};
 async function callAccounts(body){const {data:{session}}=await db.auth.getSession();if(!session)throw Error('Sign in again');const r=await fetch(URL+'/functions/v1/manage-team',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token,apikey:KEY},body:JSON.stringify(body)});const data=await r.json();if(!r.ok)throw Error(data.error||'Request failed');return data}
 $('inviteForm').onsubmit=async e=>{e.preventDefault();try{await callAccounts({action:'invite',name:$('newName').value,uid:$('newUid').value,email:$('newEmail').value,role:$('newRole').value});flash('Invitation sent.');e.target.reset();await load()}catch(e){flash(e.message)}};
