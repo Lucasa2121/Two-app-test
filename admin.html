@@ -61,7 +61,7 @@ header>div{min-width:0}header h1{overflow-wrap:anywhere}
 input,select,button{min-width:0}
 @media(max-width:580px){header{gap:7px}header h1{font-size:24px}header #logout{padding:9px 11px;font-size:12px}.home-tile{padding:12px 11px;aspect-ratio:1/1;min-height:0}.home-tile .tile-title{font-size:clamp(13px,4vw,17px);line-height:1.12}.home-tile .tile-desc{font-size:clamp(10px,2.7vw,12px);line-height:1.3}.home-tile .tile-foot{font-size:10px;padding-top:6px}.home-tile .tile-foot b{font-size:clamp(11px,3.3vw,15px)}.home-tile .tile-icon,.home-tile .tile-icon svg{width:27px;height:27px}.home-tile .tile-chip{font-size:9px;padding:3px 6px}.home-tile .tile-arrow{top:42%;font-size:19px}.home-banner{padding:12px}.store-kpi{padding:13px}.card{overflow-wrap:anywhere}}
 @media(max-width:360px){.home-grid{gap:7px}.home-tile{padding:10px 8px}.home-tile .tile-desc{font-size:10px}.home-tile .tile-title{font-size:13px}}
-</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body>
+.test-person{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #426182}.test-person button{background:#244c71;border-color:#6385a4;flex-shrink:0}.test-person strong{overflow-wrap:anywhere}@media(max-width:390px){.test-person{align-items:flex-start}.test-person button{padding:8px 10px}}</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body>
 <div id="login"><div class="card"><div class="tag">CHERRYDALE POINT · OWS306</div><h1>Management Sign In</h1><p class="muted">Admin accounts only</p><form id="loginForm" onsubmit="return false"><label class="field">Email<input id="email" type="email" required autocomplete="username"></label><label class="field">Password<input id="password" type="password" required autocomplete="current-password"></label><button type="submit">Sign In</button></form><p id="loginError" class="warning"></p></div></div>
 <header><div><div class="tag">ONE WIRELESS SOLUTION · STORE #306</div><h1>Management Center</h1><small id="identity">Cherrydale Point</small></div><button id="logout">Sign Out</button></header>
 <main><div class="page-navigation" id="pageNavigation" hidden><button type="button" id="homeButton" class="home-back" aria-label="Return to home dashboard">⌂ &nbsp; Home</button><span id="currentPageTitle" aria-live="polite"></span></div>
@@ -73,7 +73,7 @@ input,select,button{min-width:0}
 <section id="overview" class="section"><div class="overview-intro"><h2>Store MTD Performance</h2><div id="storeBreakdown" class="subtle"></div></div><div class="grid store-kpi-grid" id="storeMetrics"></div><div class="card"><h2>Team Snapshot</h2><div id="overviewStaff"></div></div></section>
 <section id="team" class="section"><div class="card"><h2>Employee Performance · GP / Voice / INT / HTP</h2><div id="staffList"></div></div><div id="employeeDetail" class="card hidden"><div class="row space"><h2 id="detailName">Employee Dashboard</h2><button id="closeDetail">Close</button></div><div id="detailMetrics"></div><p class="muted">Management detail view: official AGT/ADT calculations are preserved. The full pixel-identical Employee App preview is not implemented in this build.</p><div id="detailOfficial"></div><h3>Shift history</h3><div id="detailShifts"></div><div class="row"><label>Correct shift date <input id="fixDate" type="date"></label><button id="markWorked">Mark Worked</button><button id="markMissed">Remove Shift</button></div></div></section>
 <section id="reports" class="section"><div class="card"><h2>Collective KPI Report</h2><p class="muted">Upload one store-wide Sales Performance Report. Review every employee's values before publishing. No data changes until you approve.</p><label class="field">PDF report<input type="file" id="pdf" accept=".pdf,application/pdf"></label><p id="parseStatus" class="muted"></p><div class="row"><label>Report start <input type="date" id="start"></label><label>Report end <input type="date" id="end"></label></div><div id="review" hidden><h3>Review and correct extracted employee rows</h3><p class="warning">Verify names, UIDs and every KPI against the PDF. If extraction is incomplete, enter missing values manually. Do not publish until verified.</p><div class="table-scroll"><table><thead><tr><th>UID</th><th>Name</th><th>GP</th><th>Voice</th><th>UP</th><th>CRU</th><th>FN</th><th>INT</th><th>OPPS</th><th>Events</th><th>APO</th><th>HTP</th></tr></thead><tbody id="reviewRows"></tbody></table></div><button id="publish">Approve &amp; Publish</button></div></div><div class="card"><h2>Published Reports</h2><div id="reportHistory"></div></div></section>
-<section id="accounts" class="section"><div class="card"><h2>User Account Management</h2><p class="muted">Admin or Employee role. Create logins using a secure Edge Function. No service-role secret is ever included in this website.</p><div id="accountList"></div><h3>Invite team member</h3><form id="inviteForm"><div class="grid"><label class="field">Full name<input id="newName" required></label><label class="field">AT&amp;T UID<input id="newUid" required></label><label class="field">Email<input id="newEmail" type="email" required></label><label class="field">Permission<select id="newRole"><option value="employee">Employee</option><option value="admin">Admin</option></select></label></div><button type="submit">Send Invitation</button></form></div></section>
+<section id="accounts" class="section"><div class="card"><h2>Testing Employees · No Invitation</h2><p class="muted">Create management-only test profiles without an email, invitation, or Employee App login. These profiles are saved only in this browser on this device and are not synced to Supabase or included in approved KPI report totals.</p><form id="testEmployeeForm"><div class="grid"><label class="field">Full name<input id="testEmployeeName" required maxlength="100" autocomplete="off"></label><label class="field">AT&amp;T UID<input id="testEmployeeUid" required maxlength="30" autocomplete="off" autocapitalize="characters"></label></div><button type="submit">Add Testing Employee</button></form><h3>Management Testing Profiles</h3><div id="testEmployeeList"></div></div><div class="card"><h2>User Account Management</h2><p class="muted">Admin or Employee role. Create logins using a secure Edge Function. No service-role secret is ever included in this website.</p><div id="accountList"></div><h3>Invite team member</h3><form id="inviteForm"><div class="grid"><label class="field">Full name<input id="newName" required></label><label class="field">AT&amp;T UID<input id="newUid" required></label><label class="field">Email<input id="newEmail" type="email" required></label><label class="field">Permission<select id="newRole"><option value="employee">Employee</option><option value="admin">Admin</option></select></label></div><button type="submit">Send Invitation</button></form></div></section>
 <section id="settings" class="section"><div class="card"><h2>Employee App Controls</h2><label class="row"><input id="individual" type="checkbox"> Allow Individual PDF Uploads</label><p class="muted">OFF by default. Employee submissions must be reviewed by Admin; they cannot overwrite locked official KPI values.</p><button id="saveSettings">Save Setting</button></div><div class="card"><h2>Shared KPI Targets and Fast Start Goals</h2><p class="muted">Your existing Supabase tables remain authoritative. To avoid changing official calculation behavior, this first build does not add an unverified target-editing interface.</p></div></section>
 <section id="payouts" class="section"><div class="card"><h2>Payout Center</h2><p class="warning">Not enabled yet.</p><p>Commission PDF importing, payroll mapping, and bonus calculations need a verified implementation against the commission rule PDFs before any earnings are published. This placeholder does not fabricate payouts.</p></div></section>
 <div id="notice" role="status"></div></main>
@@ -88,7 +88,7 @@ try{
 }catch(e){loginMessage('Startup error: '+e.message);}
 window.addEventListener('error',e=>{if(!$('login').hidden)loginMessage('App error: '+e.message);});
 window.addEventListener('unhandledrejection',e=>{if(!$('login').hidden)loginMessage('Connection error: '+String(e.reason?.message||e.reason));});
-let me=null,profiles=[],kpis=[],shifts=[],reports=[],reviewRows=[],selected=null;
+let me=null,profiles=[],kpis=[],shifts=[],reports=[],reviewRows=[],selected=null,testEmployees=[];
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const n=x=>Number(x)||0,money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n(x));
 const flash=t=>{$('notice').textContent=t;$('notice').style.display='block';setTimeout(()=>$('notice').style.display='none',5500)};
@@ -115,6 +115,52 @@ settings:'<circle cx="12" cy="12" r="3"/><path d="M10 2h4l1 3 3 1 3-1 2 4-2 2v2l
 sync:'<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v7c0 4 18 4 18 0V5M3 12v7c0 4 18 4 18 0v-7"/>',
 payouts:'<rect x="2" y="5" width="20" height="15" rx="2"/><path d="M2 10h20M6 16h5"/>'
 };
+
+const testStorageKey='cherrydale-management-test-employees-v1';
+function readTestEmployees(){
+ try{
+  const raw=JSON.parse(localStorage.getItem(testStorageKey)||'[]');
+  return Array.isArray(raw)?raw.filter(p=>p&&typeof p.id==='string'&&typeof p.full_name==='string'&&typeof p.att_uid==='string').slice(0,100):[];
+ }catch{return [];}
+}
+function saveTestEmployees(){
+ try{localStorage.setItem(testStorageKey,JSON.stringify(testEmployees));return true}
+ catch(e){flash('Unable to save testing profile on this device: '+e.message);return false}
+}
+function renderTestEmployees(){
+ $('testEmployeeList').innerHTML=testEmployees.length?testEmployees.map(p=>'<div class="test-person"><div><strong>'+esc(p.full_name)+'</strong><br><small>'+esc(p.att_uid)+' · Testing only · No login</small></div><button type="button" data-remove-test="'+esc(p.id)+'">Remove</button></div>').join(''):'<p class="muted">No testing employees added on this device.</p>';
+ document.querySelectorAll('[data-remove-test]').forEach(b=>b.onclick=()=>{
+  if(!confirm('Remove this management-only testing profile?'))return;
+  const previous=testEmployees;testEmployees=testEmployees.filter(p=>p.id!==b.dataset.removeTest);
+  if(!saveTestEmployees()){testEmployees=previous;return}
+  render();flash('Testing employee removed from this device.');
+ });
+}
+$('testEmployeeForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ const full_name=$('testEmployeeName').value.trim().replace(/\s+/g,' ');
+ const att_uid=$('testEmployeeUid').value.trim().toUpperCase();
+ if(full_name.length<2||!/^[A-Z0-9_-]{2,30}$/.test(att_uid))return flash('Enter a valid name and AT&T UID.');
+ if(profiles.some(p=>String(p.att_uid||'').toUpperCase()===att_uid)||testEmployees.some(p=>p.att_uid===att_uid))return flash('That UID is already used by a registered or testing employee.');
+ if(testEmployees.length>=100)return flash('Testing profile limit reached.');
+ const previous=testEmployees;
+ testEmployees=[...testEmployees,{id:'test-'+Date.now()+'-'+Math.random().toString(36).slice(2),full_name,att_uid}];
+ if(!saveTestEmployees()){testEmployees=previous;return}
+ $('testEmployeeForm').reset();render();flash('Management-only testing employee added. No invitation sent.');
+});
+function testEmployeeCard(p){
+ return '<button type="button" class="staff" data-test-employee="'+esc(p.id)+'"><div class="row space"><strong>'+esc(p.full_name)+'</strong><span class="pill">'+esc(p.att_uid)+'</span></div><div class="metrics4">'+[['GP','—'],['Voice','—'],['INT','—'],['HTP','—']].map(([k,v])=>'<div class="metric"><small>'+k+'</small><b>'+v+'</b></div>').join('')+'</div><small>Testing profile · No synced KPI data</small></button>';
+}
+function openTestEmployee(id){
+ const p=testEmployees.find(x=>x.id===id);if(!p)return;
+ selected=null;$('detailName').textContent=p.full_name+' · Testing Profile';
+ $('detailMetrics').innerHTML='<p class="muted">Management-only testing employee · '+esc(p.att_uid)+'</p>';
+ $('detailOfficial').innerHTML='<p class="muted">No approved KPI records. This profile does not have an Employee App login or official AGT/ADT calculations.</p>';
+ $('detailShifts').textContent='No shift records for local testing profiles.';
+ $('employeeDetail').classList.remove('hidden');
+ $('markWorked').disabled=true;$('markMissed').disabled=true;
+ showPage('team');$('employeeDetail').scrollIntoView({behavior:'smooth'});
+}
 function renderHome(){
  const people=profiles.filter(p=>p.active),most=reports.filter(r=>r.status==='approved'||r.status==='published').sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0]||reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
  const list=most?kpis.filter(r=>r.report_id===most.id):[];
@@ -124,11 +170,11 @@ function renderHome(){
  const tiles=[
  {id:'overview',title:'Store Overview',desc:'Combined MTD performance and store progress',foot:most?'<div class="split"><span>GP (MTD)<br><b>'+money(gp)+'</b></span><span>Voice (MTD)<br><b>'+voice+'</b></span></div>':'No approved KPI data yet',chip:'MTD'},
  {id:'reports',title:'Upload KPI Report',desc:'Import and approve the Sales Performance Report',foot:most?'Latest approved: '+esc(reportDate):'Awaiting first approved report'},
- {id:'team',title:'Team Snapshots',desc:'View and manage each employee’s MTD performance',foot:people.length+' active employee'+(people.length===1?'':'s')},
+ {id:'team',title:'Team Snapshots',desc:'View and manage each employee’s MTD performance',foot:people.length+' active · '+testEmployees.length+' testing'},
  {id:'goals',title:'Goals & Targets',desc:'Store goals and performance targets',foot:'Settings & target configuration',page:'settings'},
  {id:'fast',title:'Fast Start',desc:'33% due by day 7 · Separate from official AGT/ADT',chip:'Coming Soon',disabled:true},
  {id:'history',title:'Report History',desc:'View past approved reports and reporting periods',foot:reports.length+' saved report'+(reports.length===1?'':'s'),page:'reports'},
- {id:'accounts',title:'Employee Management',desc:'Add, edit and manage employee accounts',foot:people.length+' active · '+profiles.filter(p=>!p.active).length+' inactive'},
+ {id:'accounts',title:'Employee Management',desc:'Add, edit and manage employee accounts',foot:people.length+' active · '+testEmployees.length+' testing'},
  {id:'settings',title:'App Settings',desc:'Store details and system preferences'},
  {id:'sync',title:'Sync & Data',desc:'Shared Supabase data and report status',foot:'Latest loaded data · '+esc(reportDate),page:'settings'},
  {id:'payouts',title:'Payout Center',desc:'Commission, incentives and payout tracking',chip:'Not enabled'}
@@ -140,12 +186,12 @@ function renderHome(){
   showPage(t.page||({history:'reports',goals:'settings',sync:'settings'}[t.id]||t.id));
  });
  $('homePeriod').textContent=current;
- $('homePeople').textContent=people.length+' active';
+ $('homePeople').textContent=people.length+' active · '+testEmployees.length+' testing';
  $('homeReportDate').textContent=reportDate;
  $('homeSystem').textContent=most?'Latest report: '+reportDate:'No approved report yet';
 }
 
-function render(){renderHome();const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).join('');$('overviewStaff').innerHTML=people.map(snap).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));
+function render(){renderHome();renderTestEmployees();const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');$('overviewStaff').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));document.querySelectorAll('[data-test-employee]').forEach(b=>b.onclick=()=>openTestEmployee(b.dataset.testEmployee));
 const most=reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];const list=kpis.filter(r=>r.report_id===most?.id);const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0);
 const prev=reports.filter(r=>r.id!==most?.id&&String(r.report_end).slice(0,7)===String(most?.report_end).slice(0,7)).sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
 const prevList=prev?kpis.filter(r=>r.report_id===prev.id):[];
@@ -160,7 +206,7 @@ $('storeBreakdown').textContent=most?new Date(String(most.report_end)+'T12:00:00
 $('reportHistory').innerHTML=reports.slice().sort((a,b)=>b.created_at.localeCompare(a.created_at)).map(r=>`<p>${esc(r.report_start)} – ${esc(r.report_end)} · ${esc(r.status)}</p>`).join('')||'No reports yet.';
 $('accountList').innerHTML=profiles.map(p=>`<div class="row space" style="border-bottom:1px solid #385472;padding:9px 0"><div><strong>${esc(p.full_name)}</strong><br><small>${esc(p.att_uid)} · ${esc(p.role)} · ${p.active?'Active':'Inactive'}</small></div><div class="actions"><button data-toggle="${esc(p.user_id)}" ${p.user_id===me?.user_id?'disabled':''}>${p.active?'Deactivate':'Reactivate'}</button><button data-role="${esc(p.user_id)}" ${p.user_id===me?.user_id?'disabled':''}>${p.role==='admin'?'Make Employee':'Make Admin'}</button></div></div>`).join('');document.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>changeAccount(b.dataset.toggle,'active'));document.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>changeAccount(b.dataset.role,'role'));
 }
-function openEmployee(id){selected=id;const p=profiles.find(x=>x.user_id===id),r=latest(id),count=total(id);$('detailName').textContent=p.full_name+' · Employee Dashboard';$('detailMetrics').innerHTML=snap(p).replace('data-employee','data-readonly');
+function openEmployee(id){$('markWorked').disabled=false;$('markMissed').disabled=false;selected=id;const p=profiles.find(x=>x.user_id===id),r=latest(id),count=total(id);$('detailName').textContent=p.full_name+' · Employee Dashboard';$('detailMetrics').innerHTML=snap(p).replace('data-employee','data-readonly');
 $('detailOfficial').innerHTML=!r?'<p class="warning">Waiting for Admin KPI Report.</p>':!count?'<p class="warning">No logged shifts this month; official targets cannot be calculated.</p>':`<h3>Official AGT / ADT Results · ${count} shifts</h3><div class="table-scroll"><table><thead><tr><th>KPI</th><th>Actual</th><th>Target</th><th>Adjusted Daily Target</th><th>Status</th></tr></thead><tbody>${compute(count,values(r)).map(x=>`<tr><td>${x.key}</td><td>${x.actual}</td><td>${x.target.toFixed(2)}</td><td>${x.adjusted.toFixed(2)}</td><td>${x.status.label}</td></tr>`).join('')}</tbody></table></div>`;
 $('detailShifts').textContent=shifts.filter(s=>s.employee_id===id).sort((a,b)=>b.shift_date.localeCompare(a.shift_date)).map(s=>s.shift_date+' ('+s.state+')').join(' · ')||'No shifts logged.';
 $('fixDate').value=new Date().toLocaleDateString('en-CA',{timeZone:'America/New_York'});$('employeeDetail').classList.remove('hidden');showPage('team');$('employeeDetail').scrollIntoView({behavior:'smooth'});
@@ -183,6 +229,7 @@ async function activate(user){
     return;
   }
   me=data;
+  testEmployees=readTestEmployees();
   $('identity').textContent=data.full_name+' · Admin';
   $('login').hidden=true;
   showPage('home');
