@@ -119,6 +119,12 @@ payouts:'<rect x="2" y="5" width="20" height="15" rx="2"/><path d="M2 10h20M6 16
 const testStorageKey='cherrydale-management-test-employees-v1';
 const testKpiKey='cherrydale-management-test-kpis-v1';
 const testReportKey='cherrydale-management-test-report-meta-v1';
+const savedPdfKey='cherrydale-management-approved-pdf-snapshot-v1';
+let savedPdfRows=[];
+function readSavedPdf(){try{const x=JSON.parse(localStorage.getItem(savedPdfKey)||'[]');savedPdfRows=Array.isArray(x)?x:[]}catch{savedPdfRows=[]}}
+function storeSavedPdf(rows){try{localStorage.setItem(savedPdfKey,JSON.stringify(rows));savedPdfRows=rows;return true}catch(e){flash('Unable to retain PDF snapshot: '+e.message);return false}}
+function reconcileTestingFromPublished(){let changed=0;for(const p of testEmployees){const uid=p.att_uid.toUpperCase();const saved=savedPdfRows.find(r=>r.uid===uid);if(saved){const record={...saved,uid};if(JSON.stringify(testKpis[uid])!==JSON.stringify(record)){testKpis[uid]=record;changed++}}else if(!testKpis[uid]){const registered=profiles.find(x=>String(x.att_uid||'').toUpperCase()===uid);const existing=registered?latest(registered.user_id):null;if(existing){testKpis[uid]={uid,report_end:reports.find(r=>r.id===existing.report_id)?.report_end||'',gp:existing.gp,htp:existing.htp,apo:existing.apo,actuals:values(existing)};changed++}}}if(changed)saveLocalTestData();return changed}
+
 function readTestEmployees(){
  try{
   const raw=JSON.parse(localStorage.getItem(testStorageKey)||'[]');
@@ -150,7 +156,7 @@ $('testEmployeeForm').addEventListener('submit',e=>{
  const previous=testEmployees;
  testEmployees=[...testEmployees,{id:'test-'+Date.now()+'-'+Math.random().toString(36).slice(2),full_name,att_uid,shiftsWorked:0}];
  if(!saveTestEmployees()){testEmployees=previous;return}
- $('testEmployeeForm').reset();render();flash('Management-only testing employee added. No invitation sent.');
+ const matched=reconcileTestingFromPublished();$('testEmployeeForm').reset();render();flash('Management-only testing employee added. '+(matched?'Matched saved PDF KPI data.':'Press Calculate after approved PDF data is available.'));
 });
 
 function testEmployeeCard(p){
@@ -184,11 +190,11 @@ function openTestEmployee(id){
 function renderHome(){
  const people=profiles.filter(p=>p.active),most=reports.filter(r=>r.status==='approved'||r.status==='published').sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0]||reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
  const list=most?kpis.filter(r=>r.report_id===most.id):[];
- const extra=Object.values(testKpis).filter(r=>r&&r.report_end===most?.report_end);const gp=list.reduce((a,r)=>a+n(r.gp),0)+extra.reduce((a,r)=>a+n(r.gp),0),voice=list.reduce((a,r)=>a+n(values(r).VGA),0)+extra.reduce((a,r)=>a+n(r.actuals?.VGA),0);
+ const extra=Object.values(testKpis).filter(r=>r&&r.report_end===(most?.report_end||testReportMeta?.end)&&testEmployees.some(p=>p.att_uid===r.uid));const gp=list.reduce((a,r)=>a+n(r.gp),0)+extra.reduce((a,r)=>a+n(r.gp),0),voice=list.reduce((a,r)=>a+n(values(r).VGA),0)+extra.reduce((a,r)=>a+n(r.actuals?.VGA),0);
  const reportDate=most?.report_end||'No approved report';
  const current=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'America/New_York'});
  const tiles=[
- {id:'overview',title:'Store Overview',desc:'Combined MTD performance and store progress',foot:most?'<div class="split"><span>GP (MTD)<br><b>'+money(gp)+'</b></span><span>Voice (MTD)<br><b>'+voice+'</b></span></div>':'No approved KPI data yet',chip:'MTD'},
+ {id:'overview',title:'Store Overview',desc:'Combined MTD performance and store progress',foot:most||extra.length?'<div class="split"><span>GP (MTD)<br><b>'+money(gp)+'</b></span><span>Voice (MTD)<br><b>'+voice+'</b></span></div>':'No approved KPI data yet',chip:'MTD'},
  {id:'reports',title:'Upload KPI Report',desc:'Import and approve the Sales Performance Report',foot:most?'Latest approved: '+esc(reportDate):'Awaiting first approved report'},
  {id:'team',title:'Team Snapshots',desc:'View and manage each employee’s MTD performance',foot:people.length+' active · '+testEmployees.length+' testing'},
  {id:'goals',title:'Goals & Targets',desc:'Store goals and performance targets',foot:'Settings & target configuration',page:'settings'},
@@ -212,7 +218,7 @@ function renderHome(){
 }
 
 function render(){renderHome();renderTestEmployees();bindTestShifts($('testEmployeeList'));const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');$('overviewStaff').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));document.querySelectorAll('[data-test-employee]').forEach(b=>b.onclick=()=>openTestEmployee(b.dataset.testEmployee));
-const most=reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];const list=kpis.filter(r=>r.report_id===most?.id);const testing=Object.values(testKpis).filter(r=>r&&r.report_end===most?.report_end&&testEmployees.some(p=>p.att_uid===r.uid));const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0)+testing.reduce((a,r)=>a+n(r.actuals?.[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0)+testing.reduce((a,r)=>a+n(r.gp),0);
+const most=reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];const list=kpis.filter(r=>r.report_id===most?.id);const effectiveDate=most?.report_end||testReportMeta?.end;const testing=Object.values(testKpis).filter(r=>r&&r.report_end===effectiveDate&&testEmployees.some(p=>p.att_uid===r.uid));const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0)+testing.reduce((a,r)=>a+n(r.actuals?.[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0)+testing.reduce((a,r)=>a+n(r.gp),0);
 const prev=reports.filter(r=>r.id!==most?.id&&String(r.report_end).slice(0,7)===String(most?.report_end).slice(0,7)).sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
 const prevList=prev?kpis.filter(r=>r.report_id===prev.id):[];
 const entries=[['Gross Profit',gp,'gp',true],['Voice',sum('VGA'),'VGA'],['Upgrades',sum('UP'),'UP'],['CRU',sum('CRU'),'CRU'],['FirstNet',sum('FN'),'FN'],['Internet',sum('INT'),'INT'],['Opportunities',sum('OPPS'),'OPPS'],['Event Sales',sum('EVENTS'),'EVENTS'],['Hometech',list.reduce((a,r)=>a+n(r.htp),0)+testing.reduce((a,r)=>a+n(r.htp),0),'htp'],['APO',null,'apo']];
@@ -222,7 +228,7 @@ $('storeMetrics').innerHTML=entries.map(([label,val,key,isMoney])=>{
  const change=delta===null?'':('<span class="kpi-delta">'+(delta>0?'+':'')+(isMoney?money(delta):delta)+' since prior report</span>');
  return '<div class="metric store-kpi"><small>'+esc(label)+'</small><b>'+(val===null?'—':isMoney?money(val):val)+'</b>'+(val===null?'<span class="kpi-note">Store APO calculation pending verification</span>':change)+'</div>';
 }).join('');
-$('storeBreakdown').textContent=most?new Date(String(most.report_end)+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'})+' · MTD · Data through '+String(most.report_end)+' · '+list.length+' published + '+testing.length+' local testing record(s)':'No approved collective report yet. Upload and approve a KPI PDF to populate store totals.';
+$('storeBreakdown').textContent=most||testing.length?new Date(String(effectiveDate)+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'})+' · MTD · Data through '+String(most.report_end)+' · '+list.length+' published + '+testing.length+' local testing record(s)':'No approved collective report yet. Upload and approve a KPI PDF to populate store totals.';
 $('reportHistory').innerHTML=reports.slice().sort((a,b)=>b.created_at.localeCompare(a.created_at)).map(r=>`<p>${esc(r.report_start)} – ${esc(r.report_end)} · ${esc(r.status)}</p>`).join('')||'No reports yet.';
 $('accountList').innerHTML=profiles.map(p=>`<div class="row space" style="border-bottom:1px solid #385472;padding:9px 0"><div><strong>${esc(p.full_name)}</strong><br><small>${esc(p.att_uid)} · ${esc(p.role)} · ${p.active?'Active':'Inactive'}</small></div><div class="actions"><button data-toggle="${esc(p.user_id)}" ${p.user_id===me?.user_id?'disabled':''}>${p.active?'Deactivate':'Reactivate'}</button><button data-role="${esc(p.user_id)}" ${p.user_id===me?.user_id?'disabled':''}>${p.role==='admin'?'Make Employee':'Make Admin'}</button></div></div>`).join('');document.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>changeAccount(b.dataset.toggle,'active'));document.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>changeAccount(b.dataset.role,'role'));
 }
@@ -249,13 +255,15 @@ async function refreshManagementData(scope){
   // Local test snapshots are read again without re-importing or double-counting PDFs.
   testEmployees=readTestEmployees();readLocalTestData();
   await load();
+  const restored=reconcileTestingFromPublished();
+  if(restored)render();
   if(scope==='employee'){
    if(testId&&testEmployees.some(p=>p.id===testId))openTestEmployee(testId);
    else if(employeeId&&profiles.some(p=>p.user_id===employeeId))openEmployee(employeeId);
    else throw Error('The selected employee is no longer available.');
   }
   const updated=$(scope==='store'?'storeRefreshStatus':'employeeRefreshStatus');
-  updated.textContent='Recalculated '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+' · Existing records only';
+  updated.textContent='Calculated '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+' · '+restored+' testing snapshot(s) matched';
   flash(scope==='store'?'Store totals recalculated. No new PDF required.':'Employee performance recalculated. No new PDF required.');
  }catch(e){status.textContent='Refresh failed: '+e.message;flash('Refresh failed: '+e.message)}
  finally{refreshBusy=false;button.disabled=false}
@@ -277,7 +285,7 @@ async function activate(user){
   }
   me=data;
   testEmployees=readTestEmployees();
-  readLocalTestData();
+  readLocalTestData();readSavedPdf();
   $('identity').textContent=data.full_name+' · Admin';
   $('login').hidden=true;
   showPage('home');
@@ -385,7 +393,7 @@ async function parsePDF(file){
    }
   }
   if(!pdfUIDs.length)throw Error('No AT&T UIDs found on the report identity page.');
-  const order=pdfUIDs.map(uid=>matchedProfiles.find(p=>p.att_uid.toUpperCase()===uid)).filter(Boolean);
+  const order=pdfUIDs.map(uid=>matchedProfiles.find(p=>p.att_uid.toUpperCase()===uid)||{att_uid:uid,full_name:'PDF Employee '+uid,testing:true,unmatched:true});
   if(!order.length)throw Error('No registered or testing AT&T UIDs matched the PDF.');
   const tables=[
    {page:2,min:6,headers:['employee gp','pstpd voice acts','fn pstpd acts'],keys:['gp',null,'FN',null,'VGA',null]},
@@ -400,7 +408,7 @@ async function parsePDF(file){
    if(table.reason){warnings.push('Page '+spec.page+': '+table.reason+'.');continue;}
    for(let i=0;i<pdfUIDs.length;i++){
     const cells=table.rows[i],uid=pdfUIDs[i];
-    const profile=matchedProfiles.find(p=>p.att_uid.toUpperCase()===uid);
+    const profile=order.find(p=>p.att_uid.toUpperCase()===uid);
     if(!profile)continue;
     if(cells.length!==spec.keys.length){warnings.push('Page '+spec.page+' employee '+uid+': unexpected column count.');continue;}
     for(let j=0;j<spec.keys.length;j++)if(spec.keys[j])extracted[profile.att_uid][spec.keys[j]]=reportNumber(cells[j].text);
@@ -415,7 +423,7 @@ async function parsePDF(file){
     const fallback=extractSingleText(text);
     for(const [key,value] of Object.entries(fallback))if(v[key]===undefined)v[key]=value;
    }
-   return {uid:p.att_uid,name:p.full_name,testing:!!p.testing,gp:v.gp??'',VGA:v.VGA??'',UP:v.UP??'',CRU:v.CRU??'',FN:v.FN??'',INT:v.InternetAir!=null&&v.HSI!=null?v.InternetAir+v.HSI:(v.INT??''),OPPS:v.OPPS??'',EVENTS:v.EVENTS??'',APO:v.APO??'',HTP:v.HTP??''};
+   return {uid:p.att_uid,name:p.full_name,testing:!!p.testing,unmatched:!!p.unmatched,gp:v.gp??'',VGA:v.VGA??'',UP:v.UP??'',CRU:v.CRU??'',FN:v.FN??'',INT:v.InternetAir!=null&&v.HSI!=null?v.InternetAir+v.HSI:(v.INT??''),OPPS:v.OPPS??'',EVENTS:v.EVENTS??'',APO:v.APO??'',HTP:v.HTP??''};
   });
   const keys=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
   const found=reviewRows.reduce((sum,r)=>sum+keys.filter(k=>r[k]!=='').length,0);
@@ -438,10 +446,13 @@ $('publish').onclick=async()=>{
  // Replace the MTD snapshot for each matching test UID, never add consecutive MTD PDFs.
  for(const r of testing)testKpis[r.uid]={uid:r.uid,report_start:start,report_end:end,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))};
  testReportMeta={start,end,approvedAt:new Date().toISOString()};
+ const snapshot=reviewRows.map(r=>({uid:r.uid,report_start:start,report_end:end,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))}));
+ const snapshotSaved=storeSavedPdf(snapshot);
  if(!saveLocalTestData()){testKpis=JSON.parse(prior);testReportMeta=JSON.parse(priorMeta);return flash('Testing data could not be saved locally. '+(real.length?'Official records were published.':'No official records were changed.'));}
  $('review').hidden=true;
  if(real.length)await load();else render();
- flash('Approved: '+real.length+' official and '+testing.length+' local testing employee(s).');
+ flash('Approved: '+real.length+' official and '+testing.length+' local testing employee(s). '+(snapshotSaved?'PDF snapshot retained for future recalculation.':'PDF snapshot could not be retained.'));
+
 };
 setInterval(()=>{if(me)load().catch(()=>{})},60000);
 </script></body></html>
