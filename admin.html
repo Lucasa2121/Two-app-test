@@ -98,15 +98,82 @@ async function callAccounts(body){const {data:{session}}=await db.auth.getSessio
 $('inviteForm').onsubmit=async e=>{e.preventDefault();try{await callAccounts({action:'invite',name:$('newName').value,uid:$('newUid').value,email:$('newEmail').value,role:$('newRole').value});flash('Invitation sent.');e.target.reset();await load()}catch(e){flash(e.message)}};
 async function changeAccount(id,field){const p=profiles.find(x=>x.user_id===id);if(!p||!confirm('Change permissions for '+p.full_name+'?'))return;try{await callAccounts({action:'update',user_id:id,...(field==='role'?{role:p.role==='admin'?'employee':'admin'}:{active:!p.active})});await load();flash('Account updated.')}catch(e){flash(e.message)}}
 // Extract PDF text using page positions; do NOT automatically publish unverified values.
-async function parsePDF(file){if(!file)return;$('parseStatus').textContent='Reading PDF…';try{const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;const pages=[];for(let i=1;i<=pdf.numPages;i++){const items=(await(await pdf.getPage(i)).getTextContent()).items.map(x=>({text:x.str.trim(),x:x.transform[4],y:x.transform[5]})).filter(x=>x.text);pages.push(items)};
-// Names/UIDs on page 1; numeric cells across pages. Row alignment must be reviewed.
-const first=pages[0]||[];const known=profiles.filter(p=>p.att_uid);const matched=known.filter(p=>first.some(t=>t.text.toUpperCase()===p.att_uid.toUpperCase()));
-if(!matched.length)throw Error('No registered AT&T UIDs found. Register team accounts before importing.');
-reviewRows=matched.map(p=>({uid:p.att_uid,name:p.full_name,gp:'',VGA:'',UP:'',CRU:'',FN:'',INT:'',OPPS:'',EVENTS:'',APO:'',HTP:''}));
-// Conservative extraction: fields start blank; Admin must confirm each number against PDF.
-$('parseStatus').textContent='Found '+matched.length+' matching UIDs across '+pdf.numPages+' pages. Enter and verify the numeric cells against the PDF before publishing.';
-$('review').hidden=false;drawReview();
-}catch(e){$('parseStatus').textContent='Import could not be prepared: '+e.message}}
+
+function reportNumber(text){
+  const cleaned=String(text??'').replace(/[$,\s]/g,'').replace(/\u2212/g,'-');
+  return /^-?\d+(?:\.\d+)?$/.test(cleaned)?Number(cleaned):null;
+}
+function pdfRows(items){
+  const rows=[];
+  for(const item of items.slice().sort((a,b)=>b.y-a.y||a.x-b.x)){
+    let row=rows.find(r=>Math.abs(r.y-item.y)<3.2);
+    if(!row){row={y:item.y,cells:[]};rows.push(row);}
+    row.cells.push(item);
+  }
+  return rows.sort((a,b)=>b.y-a.y).map(r=>r.cells.sort((a,b)=>a.x-b.x));
+}
+function numericDataRows(items,minCols){
+  return pdfRows(items).map(cells=>cells.map(c=>({x:c.x,value:reportNumber(c.text)})).filter(c=>c.value!==null))
+    .filter(cells=>cells.length>=minCols).map(cells=>cells.map(c=>c.value));
+}
+async function parsePDF(file){
+  if(!file)return;
+  $('review').hidden=true;
+  $('parseStatus').textContent='Reading and extracting employee KPIs from PDF…';
+  try{
+    if(!window.pdfjsLib)throw Error('PDF reader library did not load.');
+    const pdf=await pdfjsLib.getDocument({data:await file.arrayBuffer()}).promise;
+    if(pdf.numPages<5)throw Error('Expected the five-page Sales Performance Report. This file has '+pdf.numPages+' pages.');
+    const pages=[];
+    for(let i=1;i<=pdf.numPages;i++){
+      const content=await(await pdf.getPage(i)).getTextContent();
+      pages.push(content.items.map(x=>({text:String(x.str||'').trim(),x:x.transform[4],y:x.transform[5]})).filter(x=>x.text));
+    }
+    const first=pages[0]||[];
+    const registered=profiles.filter(p=>p.att_uid&&p.active);
+    const matches=registered.filter(p=>first.some(t=>t.text.toUpperCase().includes(p.att_uid.toUpperCase())));
+    if(!matches.length)throw Error('No registered active employee UIDs were found on page 1. Add their accounts first.');
+    const identityRows=pdfRows(first).filter(cells=>cells.some(c=>registered.some(p=>c.text.toUpperCase().includes(p.att_uid.toUpperCase()))));
+    const order=[];
+    for(const cells of identityRows){
+      for(const cell of cells){
+        const p=registered.find(p=>cell.text.toUpperCase().includes(p.att_uid.toUpperCase()));
+        if(p&&!order.includes(p))order.push(p);
+      }
+    }
+    if(!order.length)throw Error('Could not establish the employee order from page 1.');
+    const sections=[
+      {page:2,min:6,keys:['gp',null,'FN',null,'VGA',null]},
+      {page:3,min:8,keys:['CRU','UP','OPPS',null,null,null,null,null]},
+      {page:4,min:8,keys:[null,'InternetAir',null,'HSI',null,null,null,'APO']},
+      {page:5,min:1,keys:['EVENTS']}
+    ];
+    const extracted={};
+    const warnings=[];
+    for(const section of sections){
+      const rows=numericDataRows(pages[section.page-1]||[],section.min);
+      if(rows.length!==order.length){
+        warnings.push('Page '+section.page+': expected '+order.length+' employee rows, found '+rows.length+'; verify manually.');
+        continue;
+      }
+      rows.forEach((row,i)=>{
+        if(row.length!==section.keys.length){warnings.push('Page '+section.page+', row '+(i+1)+': column count differs; verify manually.');return;}
+        const uid=order[i].att_uid;
+        extracted[uid]??={};
+        section.keys.forEach((key,j)=>{if(key)extracted[uid][key]=row[j];});
+      });
+    }
+    reviewRows=order.map(p=>{
+      const v=extracted[p.att_uid]||{};
+      return {uid:p.att_uid,name:p.full_name,gp:v.gp??'',VGA:v.VGA??'',UP:v.UP??'',CRU:v.CRU??'',FN:v.FN??'',INT:v.InternetAir!==undefined&&v.HSI!==undefined?v.InternetAir+v.HSI:'',OPPS:v.OPPS??'',EVENTS:v.EVENTS??'',APO:v.APO??'',HTP:''};
+    });
+    const populated=reviewRows.reduce((sum,r)=>sum+['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO'].filter(k=>r[k]!=='').length,0);
+    const totalFields=reviewRows.length*9;
+    $('parseStatus').textContent='Auto-extracted '+populated+' of '+totalFields+' KPI values for '+order.length+' employees. '+(warnings.length?warnings.join(' '):'')+' Review every value against the PDF before approving. HTP remains blank until its source mapping is confirmed.';
+    $('review').hidden=false;
+    drawReview();
+  }catch(e){$('parseStatus').textContent='PDF extraction could not finish: '+e.message;}
+}
 $('pdf').onchange=e=>parsePDF(e.target.files?.[0]);
 function drawReview(){const fields=['uid','name','gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];$('reviewRows').innerHTML=reviewRows.map((r,i)=>'<tr>'+fields.map(f=>`<td>${['uid','name'].includes(f)?esc(r[f]):`<input type="number" min="0" step="any" aria-label="${esc(r.name)} ${f}" data-i="${i}" data-f="${f}" value="${esc(r[f])}" required>`}</td>`).join('')+'</tr>').join('');document.querySelectorAll('#reviewRows input').forEach(x=>x.oninput=()=>reviewRows[Number(x.dataset.i)][x.dataset.f]=x.value)}
 $('publish').onclick=async()=>{const start=$('start').value,end=$('end').value;if(!start||!end)return flash('Enter report start and end dates.');const fields=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO'];if(reviewRows.some(r=>fields.some(k=>r[k]===''||!Number.isFinite(Number(r[k]))||Number(r[k])<0)))return flash('Fill all required numbers; do not guess missing values.');if(!confirm('Have you verified every row against the original PDF? Publishing will update employee dashboards.'))return;
