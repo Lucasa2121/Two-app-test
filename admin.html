@@ -13,12 +13,12 @@
 <div id="notice" role="status"></div></main>
 <script>
 'use strict';
-const URL='https://nrysdyykkqpsxefmoibt.supabase.co',KEY='sb_publishable_wfZmj5HeN1gbmlAYIBR8tw_M1GEH1Hk',$=id=>document.getElementById(id);
+const SUPABASE_URL='https://nrysdyykkqpsxefmoibt.supabase.co',KEY='sb_publishable_wfZmj5HeN1gbmlAYIBR8tw_M1GEH1Hk',$=id=>document.getElementById(id);
 let db=null;
 const loginMessage=message=>{$('loginError').textContent=message;};
 try{
   if(!window.supabase?.createClient) throw Error('Supabase library did not load. Check your internet connection and refresh.');
-  db=window.supabase.createClient(URL,KEY,{auth:{persistSession:true,autoRefreshToken:true}});
+  db=window.supabase.createClient(SUPABASE_URL,KEY,{auth:{persistSession:true,autoRefreshToken:true}});
 }catch(e){loginMessage('Startup error: '+e.message);}
 window.addEventListener('error',e=>{if(!$('login').hidden)loginMessage('App error: '+e.message);});
 window.addEventListener('unhandledrejection',e=>{if(!$('login').hidden)loginMessage('Connection error: '+String(e.reason?.message||e.reason));});
@@ -94,7 +94,7 @@ $('logout').onclick=async()=>{if(db)await db.auth.signOut();location.reload()};
   }catch(e){loginMessage('Session restore error: '+e.message);}
 })();
 $('saveSettings').onclick=async()=>{const {error}=await db.rpc('admin_set_uploads',{p_allow:$('individual').checked});flash(error?.message||'Employee upload setting saved.')};
-async function callAccounts(body){const {data:{session}}=await db.auth.getSession();if(!session)throw Error('Sign in again');const r=await fetch(URL+'/functions/v1/manage-team',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token,apikey:KEY},body:JSON.stringify(body)});const data=await r.json();if(!r.ok)throw Error(data.error||'Request failed');return data}
+async function callAccounts(body){const {data:{session}}=await db.auth.getSession();if(!session)throw Error('Sign in again');const r=await fetch(SUPABASE_URL+'/functions/v1/manage-team',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+session.access_token,apikey:KEY},body:JSON.stringify(body)});const data=await r.json();if(!r.ok)throw Error(data.error||'Request failed');return data}
 $('inviteForm').onsubmit=async e=>{e.preventDefault();try{await callAccounts({action:'invite',name:$('newName').value,uid:$('newUid').value,email:$('newEmail').value,role:$('newRole').value});flash('Invitation sent.');e.target.reset();await load()}catch(e){flash(e.message)}};
 async function changeAccount(id,field){const p=profiles.find(x=>x.user_id===id);if(!p||!confirm('Change permissions for '+p.full_name+'?'))return;try{await callAccounts({action:'update',user_id:id,...(field==='role'?{role:p.role==='admin'?'employee':'admin'}:{active:!p.active})});await load();flash('Account updated.')}catch(e){flash(e.message)}}
 // Extract PDF text using page positions; do NOT automatically publish unverified values.
