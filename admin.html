@@ -330,17 +330,23 @@ function renderSalesHistory(){
  $('historyEmployee').disabled=scope!=='employee';
  const data=(scope==='store'?storeHistory:employeeHistory.filter(r=>r.employee_id===employee)).slice().sort((a,b)=>b.month.localeCompare(a.month));
  const lookup=new Map(data.map(r=>[r.month,r]));
- $('historyRows').innerHTML=data.slice(0,18).map(r=>{
+ const currentMonth=new Date().toISOString().slice(0,7)+'-01';
+ const firstVisibleMonth=monthOffset(currentMonth,-17);
+ const visible=data.filter(r=>r.month>=firstVisibleMonth&&r.month<=currentMonth);
+ $('historyRows').innerHTML=visible.map(r=>{
   const v=metricValue(r,key),prior=metricValue(lookup.get(monthOffset(r.month,-1)),key),year=metricValue(lookup.get(monthOffset(r.month,-12)),key);
   const value=v===null?'N/A':(key==='gp'?'USD ':'')+v.toLocaleString('en-US',{maximumFractionDigits:2});
   return '<tr><td>'+esc(r.month.slice(0,7))+'</td><td>'+esc(value)+'</td><td>'+percentChange(v,prior)+'</td><td>'+percentChange(v,year)+'</td><td>'+esc(r.report_end||'N/A')+'</td></tr>';
  }).join('');
- $('historyStatus').textContent=historyError||(!data.length?'No recorded history for this selection.':Math.min(data.length,18)+' month(s) displayed.');
+ $('historyStatus').textContent=historyError||(!data.length?'No recorded history for this selection.':visible.length+' recorded month(s) in the rolling 18-month window.');
 }
 async function loadSalesHistory(){
  historyError='';$('historyStatus').textContent='Loading monthly history…';
  try{
-  const result=await Promise.all([db.from('store_monthly_history').select('*').order('month',{ascending:false}).limit(18),db.from('employee_monthly_history').select('*').order('month',{ascending:false}).limit(2000)]);
+  // Fetch 30 calendar months so the oldest displayed months retain YoY baselines.
+  const currentMonth=new Date().toISOString().slice(0,7)+'-01';
+  const comparisonStart=monthOffset(currentMonth,-29);
+  const result=await Promise.all([db.from('store_monthly_history').select('*').gte('month',comparisonStart).order('month',{ascending:false}).limit(30),db.from('employee_monthly_history').select('*').gte('month',comparisonStart).order('month',{ascending:false}).limit(5000)]);
   if(result[0].error||result[1].error)throw result[0].error||result[1].error;
   storeHistory=result[0].data||[];employeeHistory=result[1].data||[];
   const selected=$('historyEmployee').value;
