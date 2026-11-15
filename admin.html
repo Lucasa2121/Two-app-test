@@ -61,7 +61,7 @@ header>div{min-width:0}header h1{overflow-wrap:anywhere}
 input,select,button{min-width:0}
 @media(max-width:580px){header{gap:7px}header h1{font-size:24px}header #logout{padding:9px 11px;font-size:12px}.home-tile{padding:12px 11px;aspect-ratio:1/1;min-height:0}.home-tile .tile-title{font-size:clamp(13px,4vw,17px);line-height:1.12}.home-tile .tile-desc{font-size:clamp(10px,2.7vw,12px);line-height:1.3}.home-tile .tile-foot{font-size:10px;padding-top:6px}.home-tile .tile-foot b{font-size:clamp(11px,3.3vw,15px)}.home-tile .tile-icon,.home-tile .tile-icon svg{width:27px;height:27px}.home-tile .tile-chip{font-size:9px;padding:3px 6px}.home-tile .tile-arrow{top:42%;font-size:19px}.home-banner{padding:12px}.store-kpi{padding:13px}.card{overflow-wrap:anywhere}}
 @media(max-width:360px){.home-grid{gap:7px}.home-tile{padding:10px 8px}.home-tile .tile-desc{font-size:10px}.home-tile .tile-title{font-size:13px}}
-.test-person{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #426182}.test-person button{background:#244c71;border-color:#6385a4;flex-shrink:0}.test-person strong{overflow-wrap:anywhere}@media(max-width:390px){.test-person{align-items:flex-start}.test-person button{padding:8px 10px}}</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body>
+.test-person{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #426182}.test-person button{background:#244c71;border-color:#6385a4;flex-shrink:0}.test-person strong{overflow-wrap:anywhere}@media(max-width:390px){.test-person{align-items:flex-start}.test-person button{padding:8px 10px}}.test-shifts{max-width:200px;margin-top:8px}.test-shifts input{width:100%;max-width:140px}.test-person>div{min-width:0;flex:1}.test-shifts small{display:block;color:#b6cce0}.test-person{align-items:flex-start}</style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script></head><body>
 <div id="login"><div class="card"><div class="tag">CHERRYDALE POINT · OWS306</div><h1>Management Sign In</h1><p class="muted">Admin accounts only</p><form id="loginForm" onsubmit="return false"><label class="field">Email<input id="email" type="email" required autocomplete="username"></label><label class="field">Password<input id="password" type="password" required autocomplete="current-password"></label><button type="submit">Sign In</button></form><p id="loginError" class="warning"></p></div></div>
 <header><div><div class="tag">ONE WIRELESS SOLUTION · STORE #306</div><h1>Management Center</h1><small id="identity">Cherrydale Point</small></div><button id="logout">Sign Out</button></header>
 <main><div class="page-navigation" id="pageNavigation" hidden><button type="button" id="homeButton" class="home-back" aria-label="Return to home dashboard">⌂ &nbsp; Home</button><span id="currentPageTitle" aria-live="polite"></span></div>
@@ -73,7 +73,7 @@ input,select,button{min-width:0}
 <section id="overview" class="section"><div class="overview-intro"><h2>Store MTD Performance</h2><div id="storeBreakdown" class="subtle"></div></div><div class="grid store-kpi-grid" id="storeMetrics"></div><div class="card"><h2>Team Snapshot</h2><div id="overviewStaff"></div></div></section>
 <section id="team" class="section"><div class="card"><h2>Employee Performance · GP / Voice / INT / HTP</h2><div id="staffList"></div></div><div id="employeeDetail" class="card hidden"><div class="row space"><h2 id="detailName">Employee Dashboard</h2><button id="closeDetail">Close</button></div><div id="detailMetrics"></div><p class="muted">Management detail view: official AGT/ADT calculations are preserved. The full pixel-identical Employee App preview is not implemented in this build.</p><div id="detailOfficial"></div><h3>Shift history</h3><div id="detailShifts"></div><div class="row"><label>Correct shift date <input id="fixDate" type="date"></label><button id="markWorked">Mark Worked</button><button id="markMissed">Remove Shift</button></div></div></section>
 <section id="reports" class="section"><div class="card"><h2>Collective KPI Report</h2><p class="muted">Upload one store-wide Sales Performance Report. Review every employee's values before publishing. No data changes until you approve.</p><label class="field">PDF report<input type="file" id="pdf" accept=".pdf,application/pdf"></label><p id="parseStatus" class="muted"></p><div class="row"><label>Report start <input type="date" id="start"></label><label>Report end <input type="date" id="end"></label></div><div id="review" hidden><h3>Review and correct extracted employee rows</h3><p class="warning">Verify names, UIDs and every KPI against the PDF. If extraction is incomplete, enter missing values manually. Do not publish until verified.</p><div class="table-scroll"><table><thead><tr><th>UID</th><th>Name</th><th>GP</th><th>Voice</th><th>UP</th><th>CRU</th><th>FN</th><th>INT</th><th>OPPS</th><th>Events</th><th>APO</th><th>HTP</th></tr></thead><tbody id="reviewRows"></tbody></table></div><button id="publish">Approve &amp; Publish</button></div></div><div class="card"><h2>Published Reports</h2><div id="reportHistory"></div></div></section>
-<section id="accounts" class="section"><div class="card"><h2>Testing Employees · No Invitation</h2><p class="muted">Create management-only test profiles without an email, invitation, or Employee App login. These profiles are saved only in this browser on this device and are not synced to Supabase or included in approved KPI report totals.</p><form id="testEmployeeForm"><div class="grid"><label class="field">Full name<input id="testEmployeeName" required maxlength="100" autocomplete="off"></label><label class="field">AT&amp;T UID<input id="testEmployeeUid" required maxlength="30" autocomplete="off" autocapitalize="characters"></label></div><button type="submit">Add Testing Employee</button></form><h3>Management Testing Profiles</h3><div id="testEmployeeList"></div></div><div class="card"><h2>User Account Management</h2><p class="muted">Admin or Employee role. Create logins using a secure Edge Function. No service-role secret is ever included in this website.</p><div id="accountList"></div><h3>Invite team member</h3><form id="inviteForm"><div class="grid"><label class="field">Full name<input id="newName" required></label><label class="field">AT&amp;T UID<input id="newUid" required></label><label class="field">Email<input id="newEmail" type="email" required></label><label class="field">Permission<select id="newRole"><option value="employee">Employee</option><option value="admin">Admin</option></select></label></div><button type="submit">Send Invitation</button></form></div></section>
+<section id="accounts" class="section"><div class="card"><h2>Testing Employees · No Invitation</h2><p class="muted">Create management-only test profiles without an email, invitation, or Employee App login. These profiles and their PDF sales data are saved in this browser on this device, not in Supabase. Their approved local PDF totals are included in this device’s Store Overview without changing official employee records.</p><form id="testEmployeeForm"><div class="grid"><label class="field">Full name<input id="testEmployeeName" required maxlength="100" autocomplete="off"></label><label class="field">AT&amp;T UID<input id="testEmployeeUid" required maxlength="30" autocomplete="off" autocapitalize="characters"></label></div><button type="submit">Add Testing Employee</button></form><h3>Management Testing Profiles</h3><div id="testEmployeeList"></div></div><div class="card"><h2>User Account Management</h2><p class="muted">Admin or Employee role. Create logins using a secure Edge Function. No service-role secret is ever included in this website.</p><div id="accountList"></div><h3>Invite team member</h3><form id="inviteForm"><div class="grid"><label class="field">Full name<input id="newName" required></label><label class="field">AT&amp;T UID<input id="newUid" required></label><label class="field">Email<input id="newEmail" type="email" required></label><label class="field">Permission<select id="newRole"><option value="employee">Employee</option><option value="admin">Admin</option></select></label></div><button type="submit">Send Invitation</button></form></div></section>
 <section id="settings" class="section"><div class="card"><h2>Employee App Controls</h2><label class="row"><input id="individual" type="checkbox"> Allow Individual PDF Uploads</label><p class="muted">OFF by default. Employee submissions must be reviewed by Admin; they cannot overwrite locked official KPI values.</p><button id="saveSettings">Save Setting</button></div><div class="card"><h2>Shared KPI Targets and Fast Start Goals</h2><p class="muted">Your existing Supabase tables remain authoritative. To avoid changing official calculation behavior, this first build does not add an unverified target-editing interface.</p></div></section>
 <section id="payouts" class="section"><div class="card"><h2>Payout Center</h2><p class="warning">Not enabled yet.</p><p>Commission PDF importing, payroll mapping, and bonus calculations need a verified implementation against the commission rule PDFs before any earnings are published. This placeholder does not fabricate payouts.</p></div></section>
 <div id="notice" role="status"></div></main>
@@ -88,7 +88,7 @@ try{
 }catch(e){loginMessage('Startup error: '+e.message);}
 window.addEventListener('error',e=>{if(!$('login').hidden)loginMessage('App error: '+e.message);});
 window.addEventListener('unhandledrejection',e=>{if(!$('login').hidden)loginMessage('Connection error: '+String(e.reason?.message||e.reason));});
-let me=null,profiles=[],kpis=[],shifts=[],reports=[],reviewRows=[],selected=null,testEmployees=[];
+let me=null,profiles=[],kpis=[],shifts=[],reports=[],reviewRows=[],selected=null,testEmployees=[],testKpis={},testReportMeta=null;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const n=x=>Number(x)||0,money=x=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(n(x));
 const flash=t=>{$('notice').textContent=t;$('notice').style.display='block';setTimeout(()=>$('notice').style.display='none',5500)};
@@ -117,23 +117,27 @@ payouts:'<rect x="2" y="5" width="20" height="15" rx="2"/><path d="M2 10h20M6 16
 };
 
 const testStorageKey='cherrydale-management-test-employees-v1';
+const testKpiKey='cherrydale-management-test-kpis-v1';
+const testReportKey='cherrydale-management-test-report-meta-v1';
 function readTestEmployees(){
  try{
   const raw=JSON.parse(localStorage.getItem(testStorageKey)||'[]');
   return Array.isArray(raw)?raw.filter(p=>p&&typeof p.id==='string'&&typeof p.full_name==='string'&&typeof p.att_uid==='string').slice(0,100):[];
  }catch{return [];}
 }
+function readLocalTestData(){try{const k=JSON.parse(localStorage.getItem(testKpiKey)||'{}');testKpis=k&&typeof k==='object'&&!Array.isArray(k)?k:{};testReportMeta=JSON.parse(localStorage.getItem(testReportKey)||'null')}catch{testKpis={};testReportMeta=null}}
+function saveLocalTestData(){try{localStorage.setItem(testKpiKey,JSON.stringify(testKpis));localStorage.setItem(testReportKey,JSON.stringify(testReportMeta));return true}catch(e){flash('Unable to save testing data: '+e.message);return false}}
 function saveTestEmployees(){
  try{localStorage.setItem(testStorageKey,JSON.stringify(testEmployees));return true}
  catch(e){flash('Unable to save testing profile on this device: '+e.message);return false}
 }
 function renderTestEmployees(){
- $('testEmployeeList').innerHTML=testEmployees.length?testEmployees.map(p=>'<div class="test-person"><div><strong>'+esc(p.full_name)+'</strong><br><small>'+esc(p.att_uid)+' · Testing only · No login</small></div><button type="button" data-remove-test="'+esc(p.id)+'">Remove</button></div>').join(''):'<p class="muted">No testing employees added on this device.</p>';
+ $('testEmployeeList').innerHTML=testEmployees.length?testEmployees.map(p=>'<div class="test-person"><div><strong>'+esc(p.full_name)+'</strong><br><small>'+esc(p.att_uid)+' · Testing only · No login</small>'+testEmployeeShifts(p)+'</div><button type="button" data-remove-test="'+esc(p.id)+'">Remove</button></div>').join(''):'<p class="muted">No testing employees added on this device.</p>';
  document.querySelectorAll('[data-remove-test]').forEach(b=>b.onclick=()=>{
   if(!confirm('Remove this management-only testing profile?'))return;
   const previous=testEmployees;testEmployees=testEmployees.filter(p=>p.id!==b.dataset.removeTest);
   if(!saveTestEmployees()){testEmployees=previous;return}
-  render();flash('Testing employee removed from this device.');
+  delete testKpis[previous.find(p=>p.id===b.dataset.removeTest)?.att_uid];saveLocalTestData();render();flash('Testing employee removed from this device.');
  });
 }
 $('testEmployeeForm').addEventListener('submit',e=>{
@@ -144,27 +148,43 @@ $('testEmployeeForm').addEventListener('submit',e=>{
  if(profiles.some(p=>String(p.att_uid||'').toUpperCase()===att_uid)||testEmployees.some(p=>p.att_uid===att_uid))return flash('That UID is already used by a registered or testing employee.');
  if(testEmployees.length>=100)return flash('Testing profile limit reached.');
  const previous=testEmployees;
- testEmployees=[...testEmployees,{id:'test-'+Date.now()+'-'+Math.random().toString(36).slice(2),full_name,att_uid}];
+ testEmployees=[...testEmployees,{id:'test-'+Date.now()+'-'+Math.random().toString(36).slice(2),full_name,att_uid,shiftsWorked:0}];
  if(!saveTestEmployees()){testEmployees=previous;return}
  $('testEmployeeForm').reset();render();flash('Management-only testing employee added. No invitation sent.');
 });
+
 function testEmployeeCard(p){
- return '<button type="button" class="staff" data-test-employee="'+esc(p.id)+'"><div class="row space"><strong>'+esc(p.full_name)+'</strong><span class="pill">'+esc(p.att_uid)+'</span></div><div class="metrics4">'+[['GP','—'],['Voice','—'],['INT','—'],['HTP','—']].map(([k,v])=>'<div class="metric"><small>'+k+'</small><b>'+v+'</b></div>').join('')+'</div><small>Testing profile · No synced KPI data</small></button>';
+ const r=testKpis[p.att_uid],a=r?.actuals||{};
+ return '<button type="button" class="staff" data-test-employee="'+esc(p.id)+'"><div class="row space"><strong>'+esc(p.full_name)+'</strong><span class="pill">'+esc(p.att_uid)+'</span></div><div class="metrics4">'+[['GP',r?.gp==null?'—':money(r.gp)],['Voice',a.VGA??'—'],['INT',a.INT??'—'],['HTP',r?.htp??'—']].map(([k,v])=>'<div class="metric"><small>'+k+'</small><b>'+esc(v)+'</b></div>').join('')+'</div><small>Testing · '+Number(p.shiftsWorked||0)+' shifts worked · '+(r?'PDF data loaded':'Awaiting PDF')+'</small></button>';
+}
+function testEmployeeShifts(p){
+ return '<div class="test-shifts"><label class="field">MTD Shifts Worked <input type="number" inputmode="decimal" min="0" max="60" step="0.5" value="'+esc(p.shiftsWorked??0)+'" data-test-shifts="'+esc(p.id)+'" aria-label="MTD shifts worked for '+esc(p.full_name)+'"></label><small>Testing only · Saved on this device</small></div>';
+}
+function bindTestShifts(root=document){
+ root.querySelectorAll('[data-test-shifts]').forEach(input=>input.onchange=()=>{
+  const p=testEmployees.find(x=>x.id===input.dataset.testShifts);if(!p)return;
+  const value=Number(input.value);
+  if(!Number.isFinite(value)||value<0||value>60||value*2%1!==0){flash('Enter 0–60 shifts in increments of 0.5.');input.value=p.shiftsWorked??0;return}
+  const old=p.shiftsWorked;p.shiftsWorked=value;
+  if(!saveTestEmployees()){p.shiftsWorked=old;input.value=old;return}
+  render();if($('employeeDetail').classList.contains('hidden')===false&&selected===null)openTestEmployee(p.id);
+  flash('Testing shifts saved for '+p.full_name);
+ });
 }
 function openTestEmployee(id){
  const p=testEmployees.find(x=>x.id===id);if(!p)return;
- selected=null;$('detailName').textContent=p.full_name+' · Testing Profile';
- $('detailMetrics').innerHTML='<p class="muted">Management-only testing employee · '+esc(p.att_uid)+'</p>';
- $('detailOfficial').innerHTML='<p class="muted">No approved KPI records. This profile does not have an Employee App login or official AGT/ADT calculations.</p>';
- $('detailShifts').textContent='No shift records for local testing profiles.';
- $('employeeDetail').classList.remove('hidden');
- $('markWorked').disabled=true;$('markMissed').disabled=true;
- showPage('team');$('employeeDetail').scrollIntoView({behavior:'smooth'});
+ selected=null;const r=testKpis[p.att_uid],count=Number(p.shiftsWorked)||0;
+ $('detailName').textContent=p.full_name+' · Testing Profile';
+ $('detailMetrics').innerHTML=testEmployeeCard(p).replace('data-test-employee','data-readonly')+testEmployeeShifts(p);
+ $('detailOfficial').innerHTML=!r?'<p class="muted">Upload a collective KPI PDF and approve the testing data to see performance.</p>':!count?'<p class="warning">Enter MTD shifts worked to calculate the testing targets.</p>':'<h3>Testing AGT / ADT Preview · '+count+' shifts</h3><div class="table-scroll"><table><thead><tr><th>KPI</th><th>Actual</th><th>Target</th><th>Adjusted Daily Target</th><th>Status</th></tr></thead><tbody>'+compute(count,r.actuals).map(x=>'<tr><td>'+esc(x.key)+'</td><td>'+x.actual+'</td><td>'+x.target.toFixed(2)+'</td><td>'+x.adjusted.toFixed(2)+'</td><td>'+esc(x.status.label)+'</td></tr>').join('')+'</tbody></table></div>';
+ $('detailShifts').textContent='Testing shifts: '+count+' (manually entered MTD total)';
+ $('employeeDetail').classList.remove('hidden');$('markWorked').disabled=true;$('markMissed').disabled=true;
+ bindTestShifts($('employeeDetail'));showPage('team');$('employeeDetail').scrollIntoView({behavior:'smooth'});
 }
 function renderHome(){
  const people=profiles.filter(p=>p.active),most=reports.filter(r=>r.status==='approved'||r.status==='published').sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0]||reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
  const list=most?kpis.filter(r=>r.report_id===most.id):[];
- const gp=list.reduce((a,r)=>a+n(r.gp),0),voice=list.reduce((a,r)=>a+n(values(r).VGA),0);
+ const extra=Object.values(testKpis).filter(r=>r&&r.report_end===most?.report_end);const gp=list.reduce((a,r)=>a+n(r.gp),0)+extra.reduce((a,r)=>a+n(r.gp),0),voice=list.reduce((a,r)=>a+n(values(r).VGA),0)+extra.reduce((a,r)=>a+n(r.actuals?.VGA),0);
  const reportDate=most?.report_end||'No approved report';
  const current=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'America/New_York'});
  const tiles=[
@@ -191,18 +211,18 @@ function renderHome(){
  $('homeSystem').textContent=most?'Latest report: '+reportDate:'No approved report yet';
 }
 
-function render(){renderHome();renderTestEmployees();const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');$('overviewStaff').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));document.querySelectorAll('[data-test-employee]').forEach(b=>b.onclick=()=>openTestEmployee(b.dataset.testEmployee));
-const most=reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];const list=kpis.filter(r=>r.report_id===most?.id);const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0);
+function render(){renderHome();renderTestEmployees();bindTestShifts($('testEmployeeList'));const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');$('overviewStaff').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));document.querySelectorAll('[data-test-employee]').forEach(b=>b.onclick=()=>openTestEmployee(b.dataset.testEmployee));
+const most=reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];const list=kpis.filter(r=>r.report_id===most?.id);const testing=Object.values(testKpis).filter(r=>r&&r.report_end===most?.report_end&&testEmployees.some(p=>p.att_uid===r.uid));const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0)+testing.reduce((a,r)=>a+n(r.actuals?.[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0)+testing.reduce((a,r)=>a+n(r.gp),0);
 const prev=reports.filter(r=>r.id!==most?.id&&String(r.report_end).slice(0,7)===String(most?.report_end).slice(0,7)).sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
 const prevList=prev?kpis.filter(r=>r.report_id===prev.id):[];
-const entries=[['Gross Profit',gp,'gp',true],['Voice',sum('VGA'),'VGA'],['Upgrades',sum('UP'),'UP'],['CRU',sum('CRU'),'CRU'],['FirstNet',sum('FN'),'FN'],['Internet',sum('INT'),'INT'],['Opportunities',sum('OPPS'),'OPPS'],['Event Sales',sum('EVENTS'),'EVENTS'],['Hometech',list.reduce((a,r)=>a+n(r.htp),0),'htp'],['APO',null,'apo']];
+const entries=[['Gross Profit',gp,'gp',true],['Voice',sum('VGA'),'VGA'],['Upgrades',sum('UP'),'UP'],['CRU',sum('CRU'),'CRU'],['FirstNet',sum('FN'),'FN'],['Internet',sum('INT'),'INT'],['Opportunities',sum('OPPS'),'OPPS'],['Event Sales',sum('EVENTS'),'EVENTS'],['Hometech',list.reduce((a,r)=>a+n(r.htp),0)+testing.reduce((a,r)=>a+n(r.htp),0),'htp'],['APO',null,'apo']];
 $('storeMetrics').innerHTML=entries.map(([label,val,key,isMoney])=>{
- const previous=prevList.length?(key==='gp'?prevList.reduce((a,r)=>a+n(r.gp),0):key==='htp'?prevList.reduce((a,r)=>a+n(r.htp),0):prevList.reduce((a,r)=>a+n(values(r)[key]),0)):null;
+ const previous=prevList.length&&!testing.length?(key==='gp'?prevList.reduce((a,r)=>a+n(r.gp),0):key==='htp'?prevList.reduce((a,r)=>a+n(r.htp),0):prevList.reduce((a,r)=>a+n(values(r)[key]),0)):null;
  const delta=val!==null&&previous!==null?val-previous:null;
  const change=delta===null?'':('<span class="kpi-delta">'+(delta>0?'+':'')+(isMoney?money(delta):delta)+' since prior report</span>');
  return '<div class="metric store-kpi"><small>'+esc(label)+'</small><b>'+(val===null?'—':isMoney?money(val):val)+'</b>'+(val===null?'<span class="kpi-note">Store APO calculation pending verification</span>':change)+'</div>';
 }).join('');
-$('storeBreakdown').textContent=most?new Date(String(most.report_end)+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'})+' · MTD · Data through '+String(most.report_end)+' · '+list.length+' employee KPI record'+(list.length===1?'':'s'):'No approved collective report yet. Upload and approve a KPI PDF to populate store totals.';
+$('storeBreakdown').textContent=most?new Date(String(most.report_end)+'T12:00:00').toLocaleDateString('en-US',{month:'long',year:'numeric'})+' · MTD · Data through '+String(most.report_end)+' · '+list.length+' published + '+testing.length+' local testing record(s)':'No approved collective report yet. Upload and approve a KPI PDF to populate store totals.';
 $('reportHistory').innerHTML=reports.slice().sort((a,b)=>b.created_at.localeCompare(a.created_at)).map(r=>`<p>${esc(r.report_start)} – ${esc(r.report_end)} · ${esc(r.status)}</p>`).join('')||'No reports yet.';
 $('accountList').innerHTML=profiles.map(p=>`<div class="row space" style="border-bottom:1px solid #385472;padding:9px 0"><div><strong>${esc(p.full_name)}</strong><br><small>${esc(p.att_uid)} · ${esc(p.role)} · ${p.active?'Active':'Inactive'}</small></div><div class="actions"><button data-toggle="${esc(p.user_id)}" ${p.user_id===me?.user_id?'disabled':''}>${p.active?'Deactivate':'Reactivate'}</button><button data-role="${esc(p.user_id)}" ${p.user_id===me?.user_id?'disabled':''}>${p.role==='admin'?'Make Employee':'Make Admin'}</button></div></div>`).join('');document.querySelectorAll('[data-toggle]').forEach(b=>b.onclick=()=>changeAccount(b.dataset.toggle,'active'));document.querySelectorAll('[data-role]').forEach(b=>b.onclick=()=>changeAccount(b.dataset.role,'role'));
 }
@@ -230,6 +250,7 @@ async function activate(user){
   }
   me=data;
   testEmployees=readTestEmployees();
+  readLocalTestData();
   $('identity').textContent=data.full_name+' · Admin';
   $('login').hidden=true;
   showPage('home');
@@ -326,6 +347,7 @@ async function parsePDF(file){
    pages.push(content.items.map(i=>({text:String(i.str||'').trim(),x:i.transform[4],y:i.transform[5]})).filter(i=>i.text));
   }
   const registered=profiles.filter(p=>p.att_uid&&p.active);
+  const matchedProfiles=[...registered,...testEmployees.map(p=>({...p,testing:true}))];
   // Capture ALL employees listed in the PDF, not just accounts already registered.
   // Their order is the row order on every subsequent KPI page.
   const pdfUIDs=[];
@@ -336,8 +358,8 @@ async function parsePDF(file){
    }
   }
   if(!pdfUIDs.length)throw Error('No AT&T UIDs found on the report identity page.');
-  const order=pdfUIDs.map(uid=>registered.find(p=>p.att_uid.toUpperCase()===uid)).filter(Boolean);
-  if(!order.length)throw Error('No registered active AT&T UIDs matched the PDF.');
+  const order=pdfUIDs.map(uid=>matchedProfiles.find(p=>p.att_uid.toUpperCase()===uid)).filter(Boolean);
+  if(!order.length)throw Error('No registered or testing AT&T UIDs matched the PDF.');
   const tables=[
    {page:2,min:6,headers:['employee gp','pstpd voice acts','fn pstpd acts'],keys:['gp',null,'FN',null,'VGA',null]},
    {page:3,min:8,headers:['cru voice acts','ups','pstpd opps'],keys:['CRU','UP','OPPS',null,null,null,null,null]},
@@ -351,7 +373,7 @@ async function parsePDF(file){
    if(table.reason){warnings.push('Page '+spec.page+': '+table.reason+'.');continue;}
    for(let i=0;i<pdfUIDs.length;i++){
     const cells=table.rows[i],uid=pdfUIDs[i];
-    const profile=registered.find(p=>p.att_uid.toUpperCase()===uid);
+    const profile=matchedProfiles.find(p=>p.att_uid.toUpperCase()===uid);
     if(!profile)continue;
     if(cells.length!==spec.keys.length){warnings.push('Page '+spec.page+' employee '+uid+': unexpected column count.');continue;}
     for(let j=0;j<spec.keys.length;j++)if(spec.keys[j])extracted[profile.att_uid][spec.keys[j]]=reportNumber(cells[j].text);
@@ -366,18 +388,33 @@ async function parsePDF(file){
     const fallback=extractSingleText(text);
     for(const [key,value] of Object.entries(fallback))if(v[key]===undefined)v[key]=value;
    }
-   return {uid:p.att_uid,name:p.full_name,gp:v.gp??'',VGA:v.VGA??'',UP:v.UP??'',CRU:v.CRU??'',FN:v.FN??'',INT:v.InternetAir!=null&&v.HSI!=null?v.InternetAir+v.HSI:(v.INT??''),OPPS:v.OPPS??'',EVENTS:v.EVENTS??'',APO:v.APO??'',HTP:v.HTP??''};
+   return {uid:p.att_uid,name:p.full_name,testing:!!p.testing,gp:v.gp??'',VGA:v.VGA??'',UP:v.UP??'',CRU:v.CRU??'',FN:v.FN??'',INT:v.InternetAir!=null&&v.HSI!=null?v.InternetAir+v.HSI:(v.INT??''),OPPS:v.OPPS??'',EVENTS:v.EVENTS??'',APO:v.APO??'',HTP:v.HTP??''};
   });
   const keys=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
   const found=reviewRows.reduce((sum,r)=>sum+keys.filter(k=>r[k]!=='').length,0);
-  $('parseStatus').textContent='Extracted '+found+'/'+(reviewRows.length*keys.length)+' fields for '+order.length+' employee(s). '+warnings.join(' ')+' Review all figures against the PDF before approving.';
+  $('parseStatus').textContent='Extracted '+found+'/'+(reviewRows.length*keys.length)+' fields for '+order.length+' employee(s). '+warnings.join(' ')+' Review all figures against the PDF before approving. Testing rows will stay local to this device.';
   $('review').hidden=false;drawReview();
  }catch(e){$('parseStatus').textContent='PDF extraction failed: '+e.message;}
 }
 $('pdf').onchange=e=>parsePDF(e.target.files?.[0]);
-function drawReview(){const fields=['uid','name','gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];$('reviewRows').innerHTML=reviewRows.map((r,i)=>'<tr>'+fields.map(f=>`<td>${['uid','name'].includes(f)?esc(r[f]):`<input type="number" min="0" step="any" aria-label="${esc(r.name)} ${f}" data-i="${i}" data-f="${f}" value="${esc(r[f])}" required>`}</td>`).join('')+'</tr>').join('');document.querySelectorAll('#reviewRows input').forEach(x=>x.oninput=()=>reviewRows[Number(x.dataset.i)][x.dataset.f]=x.value)}
-$('publish').onclick=async()=>{const start=$('start').value,end=$('end').value;if(!start||!end)return flash('Enter report start and end dates.');const fields=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO'];if(reviewRows.some(r=>fields.some(k=>r[k]===''||!Number.isFinite(Number(r[k]))||Number(r[k])<0)))return flash('Fill all required numbers; do not guess missing values.');if(!confirm('Have you verified every row against the original PDF? Publishing will update employee dashboards.'))return;
-const rows=reviewRows.map(r=>({uid:r.uid,gp:Number(r.gp),apo:Number(r.APO),htp:r.HTP===''?null:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))}));
-const {error}=await db.rpc('publish_collective_report',{p_start:start,p_end:end,p_rows:rows});if(error)return flash(error.message);flash('Collective report published. Employee dashboards will refresh.');$('review').hidden=true;await load()};
+function drawReview(){const fields=['uid','name','gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];$('reviewRows').innerHTML=reviewRows.map((r,i)=>'<tr>'+fields.map(f=>`<td>${['uid','name'].includes(f)?esc(r[f])+(f==='name'&&r.testing?' (Testing)':''):`<input type="number" min="0" step="any" aria-label="${esc(r.name)} ${f}" data-i="${i}" data-f="${f}" value="${esc(r[f])}" required>`}</td>`).join('')+'</tr>').join('');document.querySelectorAll('#reviewRows input').forEach(x=>x.oninput=()=>reviewRows[Number(x.dataset.i)][x.dataset.f]=x.value)}
+$('publish').onclick=async()=>{
+ const start=$('start').value,end=$('end').value;
+ if(!start||!end||start>end)return flash('Enter a valid report start and end date.');
+ const fields=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
+ if(reviewRows.some(r=>fields.some(k=>r[k]===''||!Number.isFinite(Number(r[k]))||Number(r[k])<0)))return flash('Verify every KPI value, including Hometech. Do not guess missing values.');
+ const real=reviewRows.filter(r=>!r.testing),testing=reviewRows.filter(r=>r.testing);
+ if(!confirm('Approve '+real.length+' registered employee(s) for official publishing and '+testing.length+' testing employee(s) for local Management-only data? Verify all figures against the PDF.'))return;
+ const rows=real.map(r=>({uid:r.uid,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))}));
+ if(real.length){const {error}=await db.rpc('publish_collective_report',{p_start:start,p_end:end,p_rows:rows});if(error)return flash('Official publishing failed: '+error.message);}
+ const prior=JSON.stringify(testKpis),priorMeta=JSON.stringify(testReportMeta);
+ // Replace the MTD snapshot for each matching test UID, never add consecutive MTD PDFs.
+ for(const r of testing)testKpis[r.uid]={uid:r.uid,report_start:start,report_end:end,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))};
+ testReportMeta={start,end,approvedAt:new Date().toISOString()};
+ if(!saveLocalTestData()){testKpis=JSON.parse(prior);testReportMeta=JSON.parse(priorMeta);return flash('Testing data could not be saved locally. '+(real.length?'Official records were published.':'No official records were changed.'));}
+ $('review').hidden=true;
+ if(real.length)await load();else render();
+ flash('Approved: '+real.length+' official and '+testing.length+' local testing employee(s).');
+};
 setInterval(()=>{if(me)load().catch(()=>{})},60000);
 </script></body></html>
