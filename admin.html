@@ -72,7 +72,7 @@ input,select,button{min-width:0}
 </section>
 <section id="overview" class="section"><div class="overview-intro"><h2>Store MTD Performance</h2><div id="storeBreakdown" class="subtle"></div><button type="button" id="refreshStore" class="refresh-action">↻ Refresh Store Data</button><small id="storeRefreshStatus" class="muted" role="status"></small></div><div class="grid store-kpi-grid" id="storeMetrics"></div><div class="card"><h2>Team Snapshot</h2><div id="overviewStaff"></div></div></section>
 <section id="team" class="section"><div class="card"><h2>Employee Performance · GP / Voice / INT / HTP</h2><div id="staffList"></div></div><div id="employeeDetail" class="card hidden"><div class="row space"><h2 id="detailName">Employee Dashboard</h2><button id="closeDetail">Close</button></div><div class="row refresh-row"><button type="button" id="refreshEmployee" class="refresh-action">↻ Refresh Employee Data</button><small id="employeeRefreshStatus" class="muted" role="status"></small></div><div id="detailMetrics"></div><p class="muted">Management detail view: official AGT/ADT calculations are preserved. The full pixel-identical Employee App preview is not implemented in this build.</p><div id="detailOfficial"></div><h3>Shift history</h3><div id="detailShifts"></div><div class="row"><label>Correct shift date <input id="fixDate" type="date"></label><button id="markWorked">Mark Worked</button><button id="markMissed">Remove Shift</button></div></div></section>
-<section id="reports" class="section"><div class="card"><h2>Collective KPI Report</h2><p class="muted">Upload one store-wide Sales Performance Report. Review every employee's values before publishing. No data changes until you approve.</p><label class="field">PDF report<input type="file" id="pdf" accept=".pdf,application/pdf"></label><p id="parseStatus" class="muted"></p><div class="row"><label>Report start <input type="date" id="start"></label><label>Report end <input type="date" id="end"></label></div><div id="review" hidden><h3>Review and correct extracted employee rows</h3><p class="warning">Verify names, UIDs and every KPI against the PDF. If extraction is incomplete, enter missing values manually. Do not publish until verified.</p><div class="table-scroll"><table><thead><tr><th>UID</th><th>Name</th><th>GP</th><th>Voice</th><th>UP</th><th>CRU</th><th>FN</th><th>INT</th><th>OPPS</th><th>Events</th><th>APO</th><th>HTP</th></tr></thead><tbody id="reviewRows"></tbody></table></div><button id="publish">Approve &amp; Publish</button></div></div><div class="card"><h2>Published Reports</h2><div id="reportHistory"></div></div></section>
+<section id="reports" class="section"><div class="card"><h2>Collective KPI Report</h2><p class="muted">Upload updated store-wide KPI PDFs as often as needed. Each approved MTD snapshot replaces earlier values for matching testing employees; totals are never added together. The extracted KPI numbers are saved compactly, not the original PDF.</p><label class="field">PDF report<input type="file" id="pdf" accept=".pdf,application/pdf"></label><p id="parseStatus" class="muted"></p><div class="row"><label>Report start <input type="date" id="start"></label><label>Report end <input type="date" id="end"></label></div><div id="review" hidden><h3>Review and correct extracted employee rows</h3><p class="warning">Verify names, UIDs and every KPI against the PDF. If extraction is incomplete, enter missing values manually. Do not publish until verified.</p><div class="table-scroll"><table><thead><tr><th>UID</th><th>Name</th><th>GP</th><th>Voice</th><th>UP</th><th>CRU</th><th>FN</th><th>INT</th><th>OPPS</th><th>Events</th><th>APO</th><th>HTP</th></tr></thead><tbody id="reviewRows"></tbody></table></div><label class="field"><input type="checkbox" id="localOnly" checked> Save locally for Management calculations only (do not republish official employee records)</label><button id="publish">Approve &amp; Save KPI Snapshot</button><p class="muted">Uncheck only when intentionally publishing an official employee report. Repeat imports for testing should stay checked.</p></div></div><div class="card"><h2>Published Reports</h2><div id="reportHistory"></div><h3>Saved compact KPI snapshots (this device)</h3><div id="localSnapshotHistory" class="muted"></div></div></section>
 <section id="accounts" class="section"><div class="card"><h2>Testing Employees · No Invitation</h2><p class="muted">Create management-only test profiles without an email, invitation, or Employee App login. These profiles and their PDF sales data are saved in this browser on this device, not in Supabase. Their approved local PDF totals are included in this device’s Store Overview without changing official employee records.</p><form id="testEmployeeForm"><div class="grid"><label class="field">Full name<input id="testEmployeeName" required maxlength="100" autocomplete="off"></label><label class="field">AT&amp;T UID<input id="testEmployeeUid" required maxlength="30" autocomplete="off" autocapitalize="characters"></label></div><button type="submit">Add Testing Employee</button></form><h3>Management Testing Profiles</h3><div id="testEmployeeList"></div></div><div class="card"><h2>User Account Management</h2><p class="muted">Admin or Employee role. Create logins using a secure Edge Function. No service-role secret is ever included in this website.</p><div id="accountList"></div><h3>Invite team member</h3><form id="inviteForm"><div class="grid"><label class="field">Full name<input id="newName" required></label><label class="field">AT&amp;T UID<input id="newUid" required></label><label class="field">Email<input id="newEmail" type="email" required></label><label class="field">Permission<select id="newRole"><option value="employee">Employee</option><option value="admin">Admin</option></select></label></div><button type="submit">Send Invitation</button></form></div></section>
 <section id="settings" class="section"><div class="card"><h2>Employee App Controls</h2><label class="row"><input id="individual" type="checkbox"> Allow Individual PDF Uploads</label><p class="muted">OFF by default. Employee submissions must be reviewed by Admin; they cannot overwrite locked official KPI values.</p><button id="saveSettings">Save Setting</button></div><div class="card"><h2>Shared KPI Targets and Fast Start Goals</h2><p class="muted">Your existing Supabase tables remain authoritative. To avoid changing official calculation behavior, this first build does not add an unverified target-editing interface.</p></div></section>
 <section id="payouts" class="section"><div class="card"><h2>Payout Center</h2><p class="warning">Not enabled yet.</p><p>Commission PDF importing, payroll mapping, and bonus calculations need a verified implementation against the commission rule PDFs before any earnings are published. This placeholder does not fabricate payouts.</p></div></section>
@@ -120,11 +120,58 @@ const testStorageKey='cherrydale-management-test-employees-v1';
 const testKpiKey='cherrydale-management-test-kpis-v1';
 const testReportKey='cherrydale-management-test-report-meta-v1';
 const savedPdfKey='cherrydale-management-approved-pdf-snapshot-v1';
-let savedPdfRows=[];
-function readSavedPdf(){try{const x=JSON.parse(localStorage.getItem(savedPdfKey)||'[]');savedPdfRows=Array.isArray(x)?x:[]}catch{savedPdfRows=[]}}
-function storeSavedPdf(rows){try{localStorage.setItem(savedPdfKey,JSON.stringify(rows));savedPdfRows=rows;return true}catch(e){flash('Unable to retain PDF snapshot: '+e.message);return false}}
-function reconcileTestingFromPublished(){let changed=0;for(const p of testEmployees){const uid=p.att_uid.toUpperCase();const saved=savedPdfRows.find(r=>r.uid===uid);if(saved){const record={...saved,uid};if(JSON.stringify(testKpis[uid])!==JSON.stringify(record)){testKpis[uid]=record;changed++}}else if(!testKpis[uid]){const registered=profiles.find(x=>String(x.att_uid||'').toUpperCase()===uid);const existing=registered?latest(registered.user_id):null;if(existing){testKpis[uid]={uid,report_end:reports.find(r=>r.id===existing.report_id)?.report_end||'',gp:existing.gp,htp:existing.htp,apo:existing.apo,actuals:values(existing)};changed++}}}if(changed)saveLocalTestData();return changed}
-
+const compactHistoryKey='cherrydale-management-compact-kpi-history-v2';
+const compactKeys=['VGA','UP','CRU','FN','INT','OPPS','EVENTS'];
+let savedPdfRows=[],compactHistory=[];
+function compactRow(r){return [String(r.uid).trim().toUpperCase(),Number(r.gp),Number(r.apo),Number(r.htp),...compactKeys.map(k=>Number(r.actuals?.[k]))]}
+function expandRow(row,start,end){return {uid:row[0],report_start:start,report_end:end,gp:row[1],apo:row[2],htp:row[3],actuals:Object.fromEntries(compactKeys.map((k,i)=>[k,row[i+4]]))}}
+function readSavedPdf(){
+ try{
+  const raw=JSON.parse(localStorage.getItem(compactHistoryKey)||'[]');
+  compactHistory=Array.isArray(raw)?raw.filter(x=>x&&Array.isArray(x.r)&&typeof x.e==='string'):[];
+  // Migrate the previous snapshot without deleting its original backup.
+  if(!compactHistory.length){
+   const old=JSON.parse(localStorage.getItem(savedPdfKey)||'[]');
+   if(Array.isArray(old)&&old.length&&old[0]?.report_end){
+    compactHistory=[{s:old[0].report_start||'',e:old[0].report_end,r:old.map(compactRow)}];
+    try{localStorage.setItem(compactHistoryKey,JSON.stringify(compactHistory))}catch{}
+   }
+  }
+  savedPdfRows=compactHistory.flatMap(x=>x.r.map(r=>expandRow(r,x.s,x.e)));
+ }catch{compactHistory=[];savedPdfRows=[]}
+}
+function storeSavedPdf(rows){
+ if(!rows.length)return false;
+ const start=rows[0].report_start,end=rows[0].report_end;
+ const next=[...compactHistory.filter(x=>x.s!==start||x.e!==end),{s:start,e:end,r:rows.map(compactRow)}].sort((a,b)=>a.e.localeCompare(b.e));
+ try{
+  localStorage.setItem(compactHistoryKey,JSON.stringify(next));
+  compactHistory=next;savedPdfRows=next.flatMap(x=>x.r.map(r=>expandRow(r,x.s,x.e)));
+  return true;
+ }catch(e){flash('Snapshot storage full or unavailable: '+e.message);return false}
+}
+function latestSavedForUid(uid){
+ return savedPdfRows.filter(r=>r.uid===uid).sort((a,b)=>b.report_end.localeCompare(a.report_end))[0];
+}
+function reconcileTestingFromPublished(){
+ let changed=0;
+ for(const p of testEmployees){
+  const uid=p.att_uid.trim().toUpperCase(),saved=latestSavedForUid(uid);
+  if(saved){
+   if(JSON.stringify(testKpis[uid])!==JSON.stringify(saved)){testKpis[uid]={...saved};changed++}
+  }else if(!testKpis[uid]){
+   const registered=profiles.find(x=>String(x.att_uid||'').toUpperCase()===uid);
+   const existing=registered?latest(registered.user_id):null;
+   if(existing){testKpis[uid]={uid,report_end:reports.find(r=>r.id===existing.report_id)?.report_end||'',gp:existing.gp,htp:existing.htp,apo:existing.apo,actuals:values(existing)};changed++}
+  }
+ }
+ if(changed)saveLocalTestData();
+ return changed;
+}
+function renderCompactHistory(){
+ const el=$('localSnapshotHistory');if(!el)return;
+ el.textContent=compactHistory.length?compactHistory.slice().reverse().map(x=>x.e+' · '+x.r.length+' employee KPI rows').join(' | '):'No saved compact KPI snapshots yet.';
+}
 function readTestEmployees(){
  try{
   const raw=JSON.parse(localStorage.getItem(testStorageKey)||'[]');
@@ -190,7 +237,7 @@ function openTestEmployee(id){
 function renderHome(){
  const people=profiles.filter(p=>p.active),most=reports.filter(r=>r.status==='approved'||r.status==='published').sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0]||reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
  const list=most?kpis.filter(r=>r.report_id===most.id):[];
- const extra=Object.values(testKpis).filter(r=>r&&r.report_end===(most?.report_end||testReportMeta?.end)&&testEmployees.some(p=>p.att_uid===r.uid));const gp=list.reduce((a,r)=>a+n(r.gp),0)+extra.reduce((a,r)=>a+n(r.gp),0),voice=list.reduce((a,r)=>a+n(values(r).VGA),0)+extra.reduce((a,r)=>a+n(r.actuals?.VGA),0);
+ const extra=Object.values(testKpis).filter(r=>r&&r.report_end===[most?.report_end,testReportMeta?.end].filter(Boolean).sort().pop()&&testEmployees.some(p=>p.att_uid===r.uid));const gp=list.reduce((a,r)=>a+n(r.gp),0)+extra.reduce((a,r)=>a+n(r.gp),0),voice=list.reduce((a,r)=>a+n(values(r).VGA),0)+extra.reduce((a,r)=>a+n(r.actuals?.VGA),0);
  const reportDate=most?.report_end||'No approved report';
  const current=new Date().toLocaleDateString('en-US',{month:'long',year:'numeric',timeZone:'America/New_York'});
  const tiles=[
@@ -217,8 +264,8 @@ function renderHome(){
  $('homeSystem').textContent=most?'Latest report: '+reportDate:'No approved report yet';
 }
 
-function render(){renderHome();renderTestEmployees();bindTestShifts($('testEmployeeList'));const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');$('overviewStaff').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));document.querySelectorAll('[data-test-employee]').forEach(b=>b.onclick=()=>openTestEmployee(b.dataset.testEmployee));
-const most=reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];const list=kpis.filter(r=>r.report_id===most?.id);const effectiveDate=most?.report_end||testReportMeta?.end;const testing=Object.values(testKpis).filter(r=>r&&r.report_end===effectiveDate&&testEmployees.some(p=>p.att_uid===r.uid));const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0)+testing.reduce((a,r)=>a+n(r.actuals?.[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0)+testing.reduce((a,r)=>a+n(r.gp),0);
+function render(){renderCompactHistory();renderHome();renderTestEmployees();bindTestShifts($('testEmployeeList'));const people=profiles.filter(p=>p.active);$('staffList').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');$('overviewStaff').innerHTML=people.map(snap).concat(testEmployees.map(testEmployeeCard)).join('');document.querySelectorAll('[data-employee]').forEach(b=>b.onclick=()=>openEmployee(b.dataset.employee));document.querySelectorAll('[data-test-employee]').forEach(b=>b.onclick=()=>openTestEmployee(b.dataset.testEmployee));
+const most=reports.slice().sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];const list=kpis.filter(r=>r.report_id===most?.id);const effectiveDate=[most?.report_end,testReportMeta?.end].filter(Boolean).sort().pop();const testing=Object.values(testKpis).filter(r=>r&&r.report_end===effectiveDate&&testEmployees.some(p=>p.att_uid===r.uid));const sum=key=>list.reduce((a,r)=>a+n(values(r)[key]),0)+testing.reduce((a,r)=>a+n(r.actuals?.[key]),0);const gp=list.reduce((a,r)=>a+n(r.gp),0)+testing.reduce((a,r)=>a+n(r.gp),0);
 const prev=reports.filter(r=>r.id!==most?.id&&String(r.report_end).slice(0,7)===String(most?.report_end).slice(0,7)).sort((a,b)=>String(b.report_end).localeCompare(String(a.report_end)))[0];
 const prevList=prev?kpis.filter(r=>r.report_id===prev.id):[];
 const entries=[['Gross Profit',gp,'gp',true],['Voice',sum('VGA'),'VGA'],['Upgrades',sum('UP'),'UP'],['CRU',sum('CRU'),'CRU'],['FirstNet',sum('FN'),'FN'],['Internet',sum('INT'),'INT'],['Opportunities',sum('OPPS'),'OPPS'],['Event Sales',sum('EVENTS'),'EVENTS'],['Hometech',list.reduce((a,r)=>a+n(r.htp),0)+testing.reduce((a,r)=>a+n(r.htp),0),'htp'],['APO',null,'apo']];
@@ -263,7 +310,7 @@ async function refreshManagementData(scope){
    else throw Error('The selected employee is no longer available.');
   }
   const updated=$(scope==='store'?'storeRefreshStatus':'employeeRefreshStatus');
-  updated.textContent='Calculated '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+' · '+restored+' testing snapshot(s) matched';
+  updated.textContent='Calculated '+new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})+' · '+testEmployees.filter(p=>!!testKpis[p.att_uid]).length+' testing employees with KPI data';
   flash(scope==='store'?'Store totals recalculated. No new PDF required.':'Employee performance recalculated. No new PDF required.');
  }catch(e){status.textContent='Refresh failed: '+e.message;flash('Refresh failed: '+e.message)}
  finally{refreshBusy=false;button.disabled=false}
@@ -438,20 +485,22 @@ $('publish').onclick=async()=>{
  if(!start||!end||start>end)return flash('Enter a valid report start and end date.');
  const fields=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
  if(reviewRows.some(r=>fields.some(k=>r[k]===''||!Number.isFinite(Number(r[k]))||Number(r[k])<0)))return flash('Verify every KPI value, including Hometech. Do not guess missing values.');
- const real=reviewRows.filter(r=>!r.testing),testing=reviewRows.filter(r=>r.testing);
- if(!confirm('Approve '+real.length+' registered employee(s) for official publishing and '+testing.length+' testing employee(s) for local Management-only data? Verify all figures against the PDF.'))return;
+ const real=reviewRows.filter(r=>!r.testing),testing=reviewRows.filter(r=>r.testing),localOnly=$('localOnly').checked;
+ if(!confirm('Save '+reviewRows.length+' verified employee KPI rows as a compact MTD snapshot? '+(localOnly?'No official records will be changed.':'Official registered employee data will ALSO be published.')+' Repeated MTD snapshots replace prior values, never add them.'))return;
  const rows=real.map(r=>({uid:r.uid,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))}));
- if(real.length){const {error}=await db.rpc('publish_collective_report',{p_start:start,p_end:end,p_rows:rows});if(error)return flash('Official publishing failed: '+error.message);}
+ if(real.length&&!localOnly){const {error}=await db.rpc('publish_collective_report',{p_start:start,p_end:end,p_rows:rows});if(error)return flash('Official publishing failed: '+error.message);}
  const prior=JSON.stringify(testKpis),priorMeta=JSON.stringify(testReportMeta);
  // Replace the MTD snapshot for each matching test UID, never add consecutive MTD PDFs.
  for(const r of testing)testKpis[r.uid]={uid:r.uid,report_start:start,report_end:end,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))};
  testReportMeta={start,end,approvedAt:new Date().toISOString()};
  const snapshot=reviewRows.map(r=>({uid:r.uid,report_start:start,report_end:end,gp:Number(r.gp),apo:Number(r.APO),htp:Number(r.HTP),actuals:Object.fromEntries(['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].map(k=>[k,Number(r[k])]))}));
  const snapshotSaved=storeSavedPdf(snapshot);
+ if(!snapshotSaved)return flash('Could not save the compact KPI snapshot. Nothing was discarded.');
+ reconcileTestingFromPublished();
  if(!saveLocalTestData()){testKpis=JSON.parse(prior);testReportMeta=JSON.parse(priorMeta);return flash('Testing data could not be saved locally. '+(real.length?'Official records were published.':'No official records were changed.'));}
  $('review').hidden=true;
- if(real.length)await load();else render();
- flash('Approved: '+real.length+' official and '+testing.length+' local testing employee(s). '+(snapshotSaved?'PDF snapshot retained for future recalculation.':'PDF snapshot could not be retained.'));
+ if(real.length&&!localOnly)await load();else render();
+ flash('Compact KPI snapshot saved: '+snapshot.length+' employees. '+(localOnly?'No official records changed.':'Official publishing requested.'));
 
 };
 setInterval(()=>{if(me)load().catch(()=>{})},60000);
