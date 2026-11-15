@@ -9,9 +9,12 @@ create or replace function public.management_sync_monthly_history()
 returns trigger language plpgsql security definer
 set search_path = '' as $$
 declare
-  v_month date := coalesce(new.report_month,old.report_month);
+  v_month date;
   v_snapshot public.management_kpi_snapshots%rowtype;
 begin
+  -- NEW is undefined for DELETE triggers; choose the valid record explicitly.
+  if tg_op='DELETE' then v_month := old.report_month;
+  else v_month := new.report_month; end if;
   -- Remove derived records first. Undo DELETE removes the corresponding history;
   -- undo UPDATE/INSERT reconstructs it from the restored snapshot.
   delete from public.employee_monthly_history where month=v_month;
@@ -66,7 +69,8 @@ begin
     (r.value->>'htp')::numeric,
     (r.value->>'apo')::numeric,now()
   from jsonb_array_elements(v_snapshot.rows) as r(value)
-  join public.team_profiles p on p.att_uid=trim(r.value->>'uid');
+  join public.team_profiles p on p.att_uid=trim(r.value->>'uid')
+  where p.active is true;
 
   return new;
 end $$;
