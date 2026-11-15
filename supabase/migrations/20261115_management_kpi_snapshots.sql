@@ -43,6 +43,7 @@ begin
     where p.user_id=v_uid and p.active is true and p.role='admin'
   ) then raise exception 'Administrator authorization required' using errcode='42501'; end if;
   if p_start is null or p_end is null or p_start>p_end
+    or p_start<>date_trunc('month',p_start)::date
     or date_trunc('month',p_start)<>date_trunc('month',p_end)
     or p_end>current_date then
     raise exception 'Invalid MTD report dates';
