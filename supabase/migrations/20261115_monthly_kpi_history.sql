@@ -53,6 +53,11 @@ for select to authenticated using (exists (
  select 1 from public.team_profiles p where p.user_id=auth.uid()
  and p.active=true and p.role='admin'
 ));
+-- RLS policies alone do not grant SELECT privileges to the API role.
+grant select on public.store_monthly_history to authenticated;
+grant select on public.employee_monthly_history to authenticated;
+revoke all on public.store_monthly_history from anon;
+revoke all on public.employee_monthly_history from anon;
 -- Retention job should delete rows with month older than the 18-month window
 -- AFTER a separately verified store backup has completed. Do not schedule yet.
 -- Deactivation must be a server-side transaction that verifies store totals
