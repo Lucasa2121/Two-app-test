@@ -548,7 +548,7 @@ const FAST_ITEMS=[
  {key:"APO",label:"APO",pdf:"APO",goal:35,money:true}
 ];
 let fastLatest=null,fastDeadline=null;
-function fastGoals(){const data=cloudFastGoals||{};return Object.fromEntries(FAST_ITEMS.map(item=>[item.key,Number(data[item.key])>0?Number(data[item.key]):item.goal]))}
+function fastGoals(){const data=cloudFastGoals||{};return Object.fromEntries(FAST_ITEMS.map(item=>[item.key,Number.isFinite(data[item.key])&&data[item.key]>=0?data[item.key]:null]))}
 function loadFast(){const state=readJSON(FAST_STATE_KEY);if(state&&state.month===monthKey()){fastLatest=state.latest||null;fastDeadline=state.deadline||null}else{fastLatest=null;fastDeadline=null}renderFast()}
 function saveFast(){writeJSON(FAST_STATE_KEY,{month:monthKey(),latest:fastLatest,deadline:fastDeadline})}
 function fastReportDate(text){const m=text.match(/Sales\s+Performance\s+Report\s*:\s*\d{1,2}\/\d{1,2}\/\d{4}\s*[-–]\s*(\d{1,2})\/(\d{1,2})\/(\d{4})/i);if(!m)return null;const date=[m[3],m[1].padStart(2,"0"),m[2].padStart(2,"0")].join("-");return date.startsWith(monthKey()+"-")?date:null}
@@ -562,7 +562,7 @@ function positionFastStart(){
  if(day>=8){if(main.lastElementChild!==row)main.appendChild(row);}
  else {const unified=document.querySelector(".unified-panel");if(unified&&row.nextElementSibling!==unified)main.insertBefore(row,unified);}
 }
-function renderFast(){positionFastStart();const root=$("fastMetrics");if(!root)return;root.replaceChildren();const goals=fastGoals(),today=Number(localDate().slice(-2)),source=today>7&&fastDeadline?fastDeadline:fastLatest;$("fastPeriod").textContent="Days 1–7 · "+new Date().toLocaleString("en-US",{month:"long",year:"numeric"});for(const item of FAST_ITEMS){const goal=goals[item.key],actual=source?.values?.[item.key],known=validNum(actual),pct=known?actual/goal*100:0,status=!known?"":pct>=50?"green":pct>=33?"yellow":"red";const card=make("div","fast-metric "+status),top=make("div","fast-metric-top"),name=make("strong","",item.label),percentage=make("span","fast-metric-pct",known?Math.round(pct)+"%":"—");top.append(name,percentage);const display=n=>item.money?money(n):fmt(n);const sub=make("div","fast-metric-sub",(known?display(actual):"No PDF value")+" / "+display(goal)),track=make("div","fast-track"),fill=make("div","fast-fill");fill.style.width=Math.min(100,pct*2)+"%";track.append(fill,make("span","fast-marker"),make("span","fast-marker preferred"));track.setAttribute("aria-label","Fast Start progress: 33% of monthly goal is the minimum at 66% of bar; 50% of monthly goal fills the bar");card.append(top,sub,track);root.append(card)}let note="Upload a KPI PDF to see Fast Start progress. ";if(source){if(today>7&&fastDeadline)note="Day-7 result saved from report ending "+fastDeadline.date+". ";else if(today>7)note="Past day 7: showing latest MTD values only; day-7 achievement is unverified. ";else note="Current MTD progress"+(source.date?" through "+source.date:"")+". ";}$("fastNote").textContent=note+"Goals reset monthly on the 1st; "+(cloudReady?"goals are shared via Supabase.":"cloud settings not yet connected.")}
+function renderFast(){positionFastStart();const root=$("fastMetrics");if(!root)return;root.replaceChildren();const goals=fastGoals(),today=Number(localDate().slice(-2)),source=today>7&&fastDeadline?fastDeadline:fastLatest;$("fastPeriod").textContent="Days 1–7 · "+new Date().toLocaleString("en-US",{month:"long",year:"numeric"});for(const item of FAST_ITEMS){const goal=goals[item.key],actual=source?.values?.[item.key],configured=Number.isFinite(goal)&&goal>0,known=configured&&validNum(actual),pct=known?actual/goal*100:0,status=!known?"":pct>=50?"green":pct>=33?"yellow":"red";const card=make("div","fast-metric "+status),top=make("div","fast-metric-top"),name=make("strong","",item.label),percentage=make("span","fast-metric-pct",known?Math.round(pct)+"%":"—");top.append(name,percentage);const display=n=>item.money?money(n):fmt(n);const sub=make("div","fast-metric-sub",(!configured?"Goal not configured":known?display(actual):"No PDF value")+" / "+display(goal)),track=make("div","fast-track"),fill=make("div","fast-fill");fill.style.width=Math.min(100,pct*2)+"%";track.append(fill,make("span","fast-marker"),make("span","fast-marker preferred"));track.setAttribute("aria-label","Fast Start progress: 33% of monthly goal is the minimum at 66% of bar; 50% of monthly goal fills the bar");card.append(top,sub,track);root.append(card)}let note="Upload a KPI PDF to see Fast Start progress. ";if(source){if(today>7&&fastDeadline)note="Day-7 result saved from report ending "+fastDeadline.date+". ";else if(today>7)note="Past day 7: showing latest MTD values only; day-7 achievement is unverified. ";else note="Current MTD progress"+(source.date?" through "+source.date:"")+". ";}$("fastNote").textContent=note+"Goals reset monthly on the 1st; "+(cloudReady?"goals are shared via Supabase.":"cloud settings not yet connected.")}
 function renderFastAdmin(){const root=$("fastAdminFields");root.replaceChildren();const saved=fastGoals();for(const metric of FAST_ITEMS){const box=make("div","admin-field"),label=make("label","",metric.label+" · "+metric.pdf),input=make("input");input.type="number";input.min="0.01";input.max="10000000";input.step=metric.money?"0.01":"1";input.dataset.fastKey=metric.key;input.value=saved[metric.key];box.append(label,input);root.append(box)}}
 async function saveFastAdmin(){if(!adminUnlocked)return;const data={};for(const input of $("fastAdminFields").querySelectorAll("input")){const item=FAST_ITEMS.find(m=>m.key===input.dataset.fastKey),n=Number(input.value);if(!item||!Number.isFinite(n)||n<=0||n>10000000||(!item.money&&!Number.isInteger(n))){$("fastAdminMessage").textContent="Enter valid positive goals (whole sales counts; GP/APO allow dollars and cents).";return}data[item.key]=n}if(!await cloudWriteFast(data,$("fastAdminMessage")))return;cloudFastGoals=data;$("fastAdminMessage").textContent="Shared Fast Start goals saved to Supabase.";renderFast()}
 function renderHtp(){const saved=readJSON("ows306_htp_display_v1");$("htpValue").textContent=saved&&saved.month===monthKey()&&validNum(saved.value)?fmt(saved.value):"—"}
@@ -574,19 +574,14 @@ function cloudNotice(message){const el=document.getElementById("cloudStatus");if
 async function cloudRefresh(){
  if(!cloudClient||cloudBusy)return;cloudBusy=true;
  try{
-  const [kpi,fast]=await Promise.all([cloudClient.from("kpi_settings").select("kpi_key,target_type,daily_target,group_span,group_target"),cloudClient.from("fast_start_goals").select("metric_key,monthly_goal")]);
-  if(kpi.error)throw kpi.error;if(fast.error)throw fast.error;
-  const byKey=new Map(kpi.data.map(x=>[x.kpi_key,x]));
-  if(!ORIGINAL_KPI_CONFIG.every(x=>byKey.has(x.key)))throw Error("Cloud KPI settings are incomplete.");
-  const proposed=ORIGINAL_KPI_CONFIG.map(x=>{const r=byKey.get(x.key);return {...x,type:r.target_type,dailyTarget:Number(r.daily_target),groupSpan:Number(r.group_span),groupTarget:Number(r.group_target)}});
-  const validated=validateConfig(proposed);if(!validated.ok)throw Error(validated.message);
-  const fastMap=Object.fromEntries(fast.data.map(x=>[x.metric_key,Number(x.monthly_goal)]));
-  if(!FAST_ITEMS.every(x=>Number.isFinite(fastMap[x.key])&&fastMap[x.key]>0))throw Error("Cloud Fast Start goals are incomplete.");
-  KPI_CONFIG=validated.config;cloudFastGoals=fastMap;cloudReady=true;
-  renderOfficial();renderWhatIf(true);renderChart();renderFast();
-  if(adminUnlocked){renderAdminFields();renderFastAdmin()}
-  cloudNotice("Shared goals connected · Supabase");
- }catch(err){cloudReady=false;cloudNotice("Cloud sync unavailable: "+(err.message||"check database setup"));}
+  const {data:{user},error:authError}=await cloudClient.auth.getUser();
+  if(authError||!user)throw authError||new Error("Sign in to view shared Fast Start goals");
+  const {data,error}=await cloudClient.from("fast_start_goals").select("metric,target").eq("goal_month",monthKey()+"-01");
+  if(error)throw error;
+  const map=Object.fromEntries((data||[]).map(r=>[r.metric,Number(r.target)]));
+  cloudFastGoals=map;cloudReady=true;renderFast();
+  cloudNotice("Shared Fast Start goals loaded · "+Object.keys(map).length+" configured");
+ }catch(err){cloudFastGoals=null;cloudReady=false;renderFast();cloudNotice("Shared goals unavailable: "+(err.message||"sign in required"))}
  finally{cloudBusy=false}
 }
 async function cloudInit(){cloudNotice("Connecting shared goals…");await cloudRefresh();setInterval(cloudRefresh,60000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)cloudRefresh()})}
@@ -597,11 +592,7 @@ async function cloudWriteKpis(config,feedback){
  for(const r of rows){const {data,error}=await cloudClient.from("kpi_settings").update({daily_target:r.daily_target,group_span:r.group_span,group_target:r.group_target}).eq("kpi_key",r.kpi_key).select("kpi_key");if(error||!data?.length){feedback.textContent="Save failed: "+(error?.message||"permission denied");await cloudRefresh();return false}}
  await cloudRefresh();return true
 }
-async function cloudWriteFast(goals,feedback){
- if(!cloudClient||!cloudReady){feedback.textContent="Cloud is not connected. No changes were saved.";return false}
- for(const item of FAST_ITEMS){const {data,error}=await cloudClient.from("fast_start_goals").update({monthly_goal:goals[item.key]}).eq("metric_key",item.key).select("metric_key");if(error||!data?.length){feedback.textContent="Save failed: "+(error?.message||"permission denied");await cloudRefresh();return false}}
- await cloudRefresh();return true
-}
+async function cloudWriteFast(goals,feedback){feedback.textContent="Fast Start goals are managed in the Management App. No changes saved here.";return false}
 
 // Local-only, versioned backup. Never export Supabase auth/session tokens or shared cloud settings.
 const BACKUP_KEYS=["ows306_official_v4","ows306_month_history_v1","ows306_adt_history_all_v1","ows306_fast_start_progress_v2","ows306_htp_display_v1","ows306_fast_start_draft_v1","ows306_admin_config_v1","att_ows306_simple_v3"];
