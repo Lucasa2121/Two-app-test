@@ -699,8 +699,7 @@ async function refreshEmployeeExtras(){
 }
 async function refresh(){if(!current)return;
  try{
- await updateLogShiftButton();
- await refreshEmployeeExtras();
+ await Promise.allSettled([updateLogShiftButton(),refreshEmployeeExtras()]);
  const shifts=await countShifts();$('employeeShiftCount').textContent=shifts+' shifts MTD';
  const {data:rows,error}=await client.from('employee_kpis').select('actuals,gp,apo,htp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(1);
  if(error)throw error;
