@@ -624,7 +624,7 @@ const $=id=>document.getElementById(id),client=window.supabase?.createClient('ht
 let current=null,undoDeadline=0,undoTimer=null;
 const msg=t=>$('loginMessage').textContent=t;
 function wait(t){$('employeeWaiting').textContent=t;}
-async function countShifts(){const month=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit'}).format(new Date());const {data,error}=await client.from('shift_logs').select('shift_date').eq('employee_id',current.user_id).eq('state','active').gte('shift_date',month+'-01').lt('shift_date',month.slice(0,4)+'-'+String(Number(month.slice(5))+1).padStart(2,'0')+'-01');if(error)throw error;return data.length;}
+async function countShifts(){const month=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit'}).format(new Date());const {data,error}=await client.from('shift_logs').select('shift_date').eq('employee_id',current.user_id).eq('state','active').gte('shift_date',month+'-01').lt('shift_date',new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5)),1)).toISOString().slice(0,10));if(error)throw error;return data.length;}
 async function updateLogShiftButton(){
  const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
  const {data,error}=await client.from('shift_logs').select('state').eq('employee_id',current.user_id).eq('shift_date',today).maybeSingle();
@@ -718,7 +718,7 @@ async function activate(user,shouldLog=false){const {data,error}=await client.fr
 }
 $('employeeLogin').addEventListener('submit',async e=>{e.preventDefault();msg('Signing in…');const {data,error}=await client.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});if(error){msg(error.message);return}await activate(data.user,$('loginShift').checked);$('loginPassword').value='';$('loginShift').checked=false});
 $('employeeLogShift').onclick=logShift;
-$('employeeSignOut').onclick=async()=>{await client.auth.signOut();current=null;document.body.classList.remove('employeeMode');$('employeeGate').hidden=false;location.reload()};
+$('employeeSignOut').onclick=async()=>{await client.auth.signOut();current=null;document.body.classList.remove('employeeMode','allowIndividualUploads');$('employeeGate').hidden=false;location.reload()};
 
 $('employeeUndoButton').onclick=async()=>{const {data,error}=await client.rpc('undo_my_shift');if(error||!data){alert(error?.message||'Undo window has expired');return}clearInterval(undoTimer);$('employeeUndo').style.display='none';await refresh()};
 if(!client){msg('Supabase library unavailable. Check internet access.');return}
