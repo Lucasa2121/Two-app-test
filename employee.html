@@ -592,18 +592,7 @@ async function cloudRefresh(){
  finally{cloudBusy=false}
 }
 async function cloudInit(){cloudNotice("Connecting shared goals…");await cloudRefresh();setInterval(cloudRefresh,60000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)cloudRefresh()})}
-async function cloudWriteKpis(config,feedback){
- feedback.textContent="Employee access is read-only; no official KPI target changes saved.";
- return false;
- /* Disabled legacy KPI settings writes.
-
- if(!cloudClient||!cloudReady){feedback.textContent="Cloud is not connected. No changes were saved.";return false}
- const rows=config.map(m=>({kpi_key:m.key,kpi_name:m.name,target_type:m.type,daily_target:m.dailyTarget,group_span:m.groupSpan,group_target:m.groupTarget}));
- // Update existing rows only. RLS permits UPDATE solely for authorized Admins.
- for(const r of rows){const {data,error}=await cloudClient.from("kpi_settings").update({daily_target:r.daily_target,group_span:r.group_span,group_target:r.group_target}).eq("kpi_key",r.kpi_key).select("kpi_key");if(error||!data?.length){feedback.textContent="Save failed: "+(error?.message||"permission denied");await cloudRefresh();return false}}
- await cloudRefresh();return true
-}
-*/
+async function cloudWriteKpis(config,feedback){feedback.textContent="Employee access is read-only; no official KPI target changes saved.";return false}
 async function cloudWriteFast(goals,feedback){feedback.textContent="Fast Start goals are managed in the Management App. No changes saved here.";return false}
 
 // Local-only, versioned backup. Never export Supabase auth/session tokens or shared cloud settings.
@@ -649,40 +638,7 @@ async function refreshEmployeeExtras(){
  ]);
  if(o.error)throw o.error;if(p.error)throw p.error;
  document.body.classList.toggle('allowIndividualUploads',o.data?.value===true);
- const payout=p.data?.[0],fmtMoney=n=>n==null?'—':'
- try{
- await updateLogShiftButton();
- await refreshEmployeeExtras();
- const shifts=await countShifts();$('employeeShiftCount').textContent=shifts+' shifts MTD';
- const {data:rows,error}=await client.from('employee_kpis').select('actuals,gp,apo,htp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(1);
- if(error)throw error;
- if(!rows?.length){wait('Waiting for Admin KPI Report. No approved report is assigned to your account yet.');return}
- const r=rows[0],actuals=r.actuals;
- if(!['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].every(k=>Number.isFinite(Number(actuals[k])))){wait('Admin report needs correction: one or more official KPI values are missing.');return}
- if(!shifts){wait('Approved KPI report received. Log a worked shift to calculate official AGT/ADT results.');return}
- official={shiftsWorked:shifts,actuals,gp:r.gp};pending=clone(official);whatIf=clone(actuals);pendingVerified=new Set(KEYS);syncInputs();renderOfficial();renderGP();renderWhatIf(true);renderChart();
- if(r.htp!=null)writeJSON('ows306_htp_display_v1',{month:monthKey(),value:r.htp});renderHtp();
- if(r.apo!=null){fastLatest={date:r.kpi_reports?.report_end||'',values:{GP:r.gp,VGA:actuals.VGA,INT:actuals.INT,FN:actuals.FN,CRU:actuals.CRU,OPPS:actuals.OPPS,UP:actuals.UP,APO:r.apo}};renderFast()}
- wait('Approved report synced · '+(r.kpi_reports?.report_end||'Latest report')+' · '+shifts+' logged shifts.');
- }catch(e){wait('Unable to load employee data: '+e.message)}
-}
-async function logShift(){try{const {data,error}=await client.rpc('log_my_shift');if(error)throw error;await refresh();undoDeadline=Date.parse(data.undo_deadline);clearInterval(undoTimer);$('employeeUndo').style.display='block';undoTimer=setInterval(()=>{const seconds=Math.max(0,Math.ceil((undoDeadline-Date.now())/1000));$('employeeUndoMessage').textContent=seconds?'Shift logged. Undo within '+seconds+'s.':'Shift finalized for today.';$('employeeUndoButton').hidden=!seconds;if(!seconds)clearInterval(undoTimer)},250); }catch(e){alert(e.message||'Could not log shift')}}
-async function activate(user,shouldLog=false){const {data,error}=await client.from('team_profiles').select('user_id,full_name,role,active').eq('user_id',user.id).single();if(error||!data?.active){await client.auth.signOut();msg('Account is not active. Ask Admin to activate it.');return}current=data;document.body.classList.add('employeeMode');$('employeeGate').hidden=true;$('employeeGreeting').textContent=data.full_name;$('employeeName').value=data.full_name;
- // Clear legacy local-only official data to avoid leaking the prior phone user's KPI data.
- official=null;pending={shiftsWorked:0,actuals:clone(DEFAULT_ACTUALS),gp:null};whatIf=clone(DEFAULT_ACTUALS);renderOfficial();renderGP();renderWhatIf(true);
- if(shouldLog)await logShift();else await refresh();
-}
-$('employeeLogin').addEventListener('submit',async e=>{e.preventDefault();msg('Signing in…');const {data,error}=await client.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});if(error){msg(error.message);return}await activate(data.user,$('loginShift').checked);$('loginPassword').value='';$('loginShift').checked=false});
-$('employeeLogShift').onclick=logShift;
-$('employeeSignOut').onclick=async()=>{await client.auth.signOut();current=null;document.body.classList.remove('employeeMode');$('employeeGate').hidden=false;location.reload()};
-
-$('employeeUndoButton').onclick=async()=>{const {data,error}=await client.rpc('undo_my_shift');if(error||!data){alert(error?.message||'Undo window has expired');return}clearInterval(undoTimer);$('employeeUndo').style.display='none';await refresh()};
-if(!client){msg('Supabase library unavailable. Check internet access.');return}
-(async()=>{const {data}=await client.auth.getUser();if(data.user)await activate(data.user);else msg('Sign in to view your private dashboard.')})();
-setInterval(()=>{if(current)refresh()},60000);
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&current)refresh()});
-})();
-</script></body></html>+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+ const payout=p.data?.[0],fmtMoney=n=>n==null?'—':'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
  $('employeeCommission').textContent=payout?fmtMoney(payout.commission_amount):'—';
  $('employeeBonus').textContent=payout?fmtMoney(payout.bonus_amount):'—';
  $('employeePayoutStatus').textContent=payout?'Approved payout period: '+payout.payout_month:'No approved payout available.';
@@ -690,6 +646,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&current)r
 async function refresh(){if(!current)return;
  try{
  await updateLogShiftButton();
+ await refreshEmployeeExtras();
  const shifts=await countShifts();$('employeeShiftCount').textContent=shifts+' shifts MTD';
  const {data:rows,error}=await client.from('employee_kpis').select('actuals,gp,apo,htp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(1);
  if(error)throw error;
