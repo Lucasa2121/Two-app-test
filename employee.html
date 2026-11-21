@@ -699,18 +699,34 @@ async function refreshEmployeeExtras(){
 }
 async function refreshPrivateHistory(){
  const notice=$('employeeHistoryNotice');
- const {data,error}=await client.from('employee_kpis').select('actuals,gp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(24);
- if(error){notice.textContent='Private history unavailable: '+error.message;return}
- if(!data?.length){notice.textContent='No Management-approved employee snapshots yet. Shift Progress and ADT History await verified reports.';return}
- const snapshots=data.filter(r=>r.kpi_reports&&r.kpi_reports.report_end&&r.actuals);
- if(!snapshots.length){notice.textContent='No dated Management-approved employee snapshots available.';return}
+ const [reports,logs]=await Promise.all([
+  client.from('employee_kpis').select('actuals,gp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(100),
+  client.from('shift_logs').select('shift_date').eq('employee_id',current.user_id).eq('state','active').order('shift_date',{ascending:true}).limit(100)
+ ]);
+ if(reports.error||logs.error){notice.textContent='Private history unavailable: '+(reports.error?.message||logs.error?.message);return}
+ const dated=(reports.data||[]).filter(r=>r.kpi_reports?.report_end&&r.actuals);
+ if(!dated.length){notice.textContent='No dated Management-approved employee KPI reports yet. Shift Progress and ADT History await verified snapshots.';return}
+ const unique=new Map();
+ for(const report of dated){const date=report.kpi_reports.report_end;if(!unique.has(date))unique.set(date,report)}
+ const snapshots=[...unique.entries()].map(([date,report])=>({date,actuals:report.actuals,gp:report.gp})).sort((a,b)=>a.date.localeCompare(b.date));
+ const shifts=(logs.data||[]).map(r=>r.shift_date);
+ const countAt=date=>shifts.filter(d=>d<=date&&d.slice(0,7)===date.slice(0,7)).length;
  notice.replaceChildren();
- const heading=document.createElement('strong');heading.textContent='My approved KPI report history';notice.append(heading);
- const explanation=document.createElement('p');explanation.textContent='These are month-to-date totals. Per-shift results and ADT history remain unverified until consecutive dated reports are available.';notice.append(explanation);
- for(const record of snapshots){
+ const heading=document.createElement('strong');heading.textContent='My approved KPI history and shift progress';notice.append(heading);
+ const description=document.createElement('p');description.textContent='Sales differences are shown only for consecutive worked-shift snapshots within the same month. Missing snapshots are marked unverified; official AGT/ADT formulas are unchanged.';notice.append(description);
+ for(let i=snapshots.length-1;i>=0;i--){
+  const current=snapshots[i],previous=i?snapshots[i-1]:null,shift=countAt(current.date),prior=previous&&previous.date.slice(0,7)===current.date.slice(0,7)?countAt(previous.date):0;
+  const consecutive=shift===1&&prior===0||Boolean(previous&&previous.date.slice(0,7)===current.date.slice(0,7)&&shift===prior+1);
+  const baseline=shift===1&&prior===0;
+  const metrics=['VGA','UP','CRU','FN','INT','OPPS','EVENTS'];
+  const valid=metrics.every(k=>Number.isFinite(Number(current.actuals[k]))&&current.actuals[k]!=null&&(baseline||previous?.actuals[k]!=null&&Number.isFinite(Number(previous.actuals[k]))));
   const line=document.createElement('p');
-  const metrics=['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].filter(key=>record.actuals[key]!=null&&Number.isFinite(Number(record.actuals[key]))).map(key=>key+': '+Number(record.actuals[key]).toLocaleString('en-US'));
-  line.textContent=record.kpi_reports.report_end+' · '+metrics.join(' · ')+(record.gp==null?'':' · GP $'+Number(record.gp).toLocaleString('en-US'));
+  if(consecutive&&valid){
+   const values=metrics.map(k=>{const delta=Number(current.actuals[k])-(baseline?0:Number(previous.actuals[k]));return k+': '+(delta>=0?'+':'')+delta});
+   line.textContent=current.date+' · Shift '+shift+' · '+values.join(' · ')+(current.gp==null||!baseline&&previous?.gp==null?'':' · GP difference: $'+(Number(current.gp)-(baseline?0:Number(previous.gp))).toLocaleString('en-US'));
+  }else{
+   line.textContent=current.date+' · MTD snapshot · Shift delta unverified (missing consecutive worked-shift reports or shift logs)';
+  }
   notice.append(line);
  }
 }
