@@ -716,13 +716,13 @@ async function refreshPrivateHistory(){
  const description=document.createElement('p');description.textContent='Sales differences are shown only for consecutive worked-shift snapshots within the same month. Missing snapshots are marked unverified; official AGT/ADT formulas are unchanged.';notice.append(description);
  for(let i=snapshots.length-1;i>=0;i--){
   const current=snapshots[i],previous=i?snapshots[i-1]:null,shift=countAt(current.date),prior=previous&&previous.date.slice(0,7)===current.date.slice(0,7)?countAt(previous.date):0;
-  const consecutive=shift===1&&prior===0||Boolean(previous&&previous.date.slice(0,7)===current.date.slice(0,7)&&shift===prior+1);
+  const consecutive=shifts.includes(current.date)&&(shift===1&&prior===0||Boolean(previous&&shifts.includes(previous.date)&&previous.date.slice(0,7)===current.date.slice(0,7)&&shift===prior+1));
   const baseline=shift===1&&prior===0;
   const metrics=['VGA','UP','CRU','FN','INT','OPPS','EVENTS'];
   const valid=metrics.every(k=>Number.isFinite(Number(current.actuals[k]))&&current.actuals[k]!=null&&(baseline||previous?.actuals[k]!=null&&Number.isFinite(Number(previous.actuals[k]))));
   const line=document.createElement('p');
   if(consecutive&&valid){
-   const values=metrics.map(k=>{const delta=Number(current.actuals[k])-(baseline?0:Number(previous.actuals[k]));return k+': '+(delta>=0?'+':'')+delta});
+   const values=metrics.map(k=>{const delta=Number(current.actuals[k])-(baseline?0:Number(previous.actuals[k]));const rule=KPI_CONFIG.find(m=>m.key===k);const target=rule?(rule.type==='daily'?rule.dailyTarget:rule.groupTarget/rule.groupSpan):null;const difference=target==null?'':' ('+(delta-target>=0?'+':'')+(delta-target).toFixed(2)+' vs shift target)';return k+': '+(delta>=0?'+':'')+delta+difference});
    line.textContent=current.date+' · Shift '+shift+' · '+values.join(' · ')+(current.gp==null||!baseline&&previous?.gp==null?'':' · GP difference: $'+(Number(current.gp)-(baseline?0:Number(previous.gp))).toLocaleString('en-US'));
   }else{
    line.textContent=current.date+' · MTD snapshot · Shift delta unverified (missing consecutive worked-shift reports or shift logs)';
