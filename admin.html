@@ -595,6 +595,17 @@ $('publish').onclick=async()=>{
  const fields=['gp','VGA','UP','CRU','FN','INT','OPPS','EVENTS','APO','HTP'];
  if(reviewRows.some(r=>fields.some(k=>r[k]===''||!Number.isFinite(Number(r[k]))||Number(r[k])<0)))return flash('Verify every KPI value, including Hometech. Do not guess missing values.');
  const real=reviewRows.filter(r=>!r.testing),testing=reviewRows.filter(r=>r.testing),localOnly=$('localOnly').checked;
+ if(!localOnly&&real.length){
+  const reportCheck=await db.from('kpi_reports').select('id').eq('report_start',start).eq('report_end',end).limit(1);
+  if(reportCheck.error)return flash('Unable to verify report uniqueness: '+reportCheck.error.message);
+  if(reportCheck.data?.length)return flash('This report period was already published. The server prevents duplicate official reports. Choose a different verified period or use local-only testing.');
+  const uids=real.map(r=>r.uid);
+  if(new Set(uids).size!==uids.length)return flash('Duplicate employee UID in report; review the rows before publishing.');
+  const activeUids=new Set(profiles.filter(p=>p.active).map(p=>p.att_uid));
+  const unmatched=uids.filter(uid=>!activeUids.has(uid));
+  if(unmatched.length)return flash('Active employee UID not found: '+unmatched.join(', ')+'. Update Management accounts before publishing.');
+ }
+
  if($('cloudHistory').checked&&!localOnly)return flash('Cloud history and official Employee App publishing must be approved separately. Keep local-only publishing checked for cloud history.');
  updateReplaceWarning();
  if(!confirm('WARNING: '+(compactHistory.some(x=>x.s===start&&x.e===end)?'This will REPLACE the previously saved KPI values for this period.':'This will save a new KPI snapshot.')+' '+reviewRows.length+' employee rows. '+(localOnly?'Local testing changes can be undone once. No official records will be changed.':'Official employee data will ALSO be published and CANNOT be undone with the local Undo button.')+( $('cloudHistory').checked?' Approved values will also be stored in Supabase monthly history.':'')+' Continue?'))return;
