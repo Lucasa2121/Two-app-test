@@ -697,9 +697,26 @@ async function refreshEmployeeExtras(){
  $('employeeBonus').textContent=payout?fmtMoney(payout.bonus_amount):'—';
  $('employeePayoutStatus').textContent=payout?'Approved payout period: '+payout.payout_month:'No approved payout available.';
 }
+async function refreshPrivateHistory(){
+ const notice=$('employeeHistoryNotice');
+ const {data,error}=await client.from('employee_kpis').select('actuals,gp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(24);
+ if(error){notice.textContent='Private history unavailable: '+error.message;return}
+ if(!data?.length){notice.textContent='No Management-approved employee snapshots yet. Shift Progress and ADT History await verified reports.';return}
+ const snapshots=data.filter(r=>r.kpi_reports&&r.kpi_reports.report_end&&r.actuals);
+ if(!snapshots.length){notice.textContent='No dated Management-approved employee snapshots available.';return}
+ notice.replaceChildren();
+ const heading=document.createElement('strong');heading.textContent='My approved KPI report history';notice.append(heading);
+ const explanation=document.createElement('p');explanation.textContent='These are month-to-date totals. Per-shift results and ADT history remain unverified until consecutive dated reports are available.';notice.append(explanation);
+ for(const record of snapshots){
+  const line=document.createElement('p');
+  const metrics=['VGA','UP','CRU','FN','INT','OPPS','EVENTS'].filter(key=>record.actuals[key]!=null&&Number.isFinite(Number(record.actuals[key]))).map(key=>key+': '+Number(record.actuals[key]).toLocaleString('en-US'));
+  line.textContent=record.kpi_reports.report_end+' · '+metrics.join(' · ')+(record.gp==null?'':' · GP $'+Number(record.gp).toLocaleString('en-US'));
+  notice.append(line);
+ }
+}
 async function refresh(){if(!current)return;
  try{
- await Promise.allSettled([updateLogShiftButton(),refreshEmployeeExtras()]);
+ await Promise.allSettled([updateLogShiftButton(),refreshEmployeeExtras(),refreshPrivateHistory()]);
  const shifts=await countShifts();$('employeeShiftCount').textContent=shifts+' shifts MTD';
  const {data:rows,error}=await client.from('employee_kpis').select('actuals,gp,apo,htp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(1);
  if(error)throw error;
