@@ -1,0 +1,8 @@
+{
+  "name": "Cherrydale Point OWS306 Test",
+  "short_name": "Cherrydale",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f1f5f9",
+  "theme_color": "#075aa8"
+}
