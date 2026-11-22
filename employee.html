@@ -325,13 +325,24 @@ body.employeeMode #employeeBanner{display:flex}body.employeeMode #openAdmin,body
 body.employeeMode .setup>div:nth-child(1),body.employeeMode .setup>div:nth-child(2),body.employeeMode #calculate,body.employeeMode #employeeName{display:none!important}
 body.employeeMode .setup{grid-template-columns:1fr!important}body.employeeMode #pendingNotice{display:none!important}
 body.employeeMode #whatIfBody input{pointer-events:none;opacity:.7}
+body.employeeMode #whatIfSection{display:none!important}
+body.employeeMode #shiftChart,body.employeeMode #chartLegend,body.employeeMode #clearChartSelection,body.employeeMode #historyList{display:none!important}
+body.employeeMode #employeeHistoryNotice{display:block}
+#employeeHistoryNotice{display:none;padding:12px;border:1px solid #475569;border-radius:10px;margin:10px 0;color:#cbd5e1}
+
+body.employeeMode.allowIndividualUploads .setup>div:nth-child(1){display:block!important}
+body.employeeMode.allowIndividualUploads #calculate{display:inline-block!important}
+#employeePayoutPanel{display:none}body.employeeMode #employeePayoutPanel{display:block}
+#employeePayoutPanel .payoutTotals{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px}
+#employeePayoutPanel .payoutTotals>div{flex:1;min-width:120px;padding:12px;border:1px solid #334155;border-radius:12px}
+#employeePayoutPanel .payoutTotals strong{display:block;font-size:23px;margin-top:6px}
 body.employeeMode #gpInput{pointer-events:none}
 #employeeWaiting{display:none;margin:14px;padding:15px;border-radius:12px;background:#1c385b;color:#fff}body.employeeMode #employeeWaiting{display:block}
 </style></head><body>
 <div id="employeeGate"><div class="authCard"><div style="color:#7cdaff;font-size:12px;font-weight:800">AT&amp;T · CHERRYDALE POINT OWS306</div><h2>Employee Sign In</h2><p>Your personal performance dashboard</p><form id="employeeLogin"><label>Email<input id="loginEmail" type="email" autocomplete="username" required></label><label>Password<input id="loginPassword" type="password" autocomplete="current-password" required></label><div class="checkrow"><input id="loginShift" type="checkbox"><label for="loginShift" style="margin:0">Log today's shift <span style="font-weight:400">(optional)</span></label></div><button type="submit">Sign In</button></form><small id="loginMessage">Checking your session…</small></div></div>
 <div id="employeeBanner"><strong id="employeeGreeting">Employee</strong><span class="grow"></span><span id="employeeShiftCount">— shifts MTD</span><button id="employeeLogShift" type="button" hidden>Log Today's Shift</button><button id="employeeSignOut" type="button">Sign Out</button></div><div id="employeeUndo" role="status"><span id="employeeUndoMessage"></span><button id="employeeUndoButton" type="button">Undo Shift</button></div><div id="employeeWaiting">Waiting for Admin KPI Report. Your dashboard will populate after the Admin publishes a report.</div><header><div class="header-inner"><div><h1>Daily Progress &amp; Breakdown</h1><div class="muted">Cherrydale Point OWS306</div><div id="cloudStatus" class="muted" style="font-size:11px" role="status">Connecting shared goals…</div></div><div class="identity"><label for="employeeName">Name</label><input id="employeeName" autocomplete="name" placeholder="Employee name"><span id="clock" class="muted"></span></div><button id="menuButton" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="appMenu" class="hamburger">☰</button></div><nav id="appMenu" class="app-menu" hidden><button type="button" id="openAdmin">🔒 Admin</button><button type="button" id="openHistory">◷ History</button><button type="button" id="openBackup">↧ Backup &amp; Restore</button><button type="button" id="installApp">▣ Install App</button></nav></header>
 <main><section class="card"><div class="setup"><div><div class="label-with-info"><label for="pdfFileInput">Upload KPI PDF</label><button type="button" class="info" id="uploadInfo" aria-label="Instructions for downloading your KPI PDF" title="How to get your KPI PDF">i</button></div><div class="file-row"><label for="pdfFileInput" class="file-button">Upload</label><input id="pdfFileInput" type="file" accept=".pdf,application/pdf,.txt,.csv"><span id="fileName" class="file-name">No file selected</span></div><p id="fileStatus" class="muted">PDF, TXT or CSV • Confirm actual shifts worked manually; the report date range is not shift count.</p></div><div><label for="shiftsWorkedInput">MTD Shifts Worked</label><div class="stepper"><button type="button" id="minus" aria-label="Decrease shifts">−</button><input id="shiftsWorkedInput" type="number" min="0" max="60" step="0.5"><button type="button" id="plus" aria-label="Increase shifts">+</button></div></div><div><div class="label-with-info"><label>Overall Progress</label><button type="button" class="info" id="overallInfo" aria-label="Explain overall progress">i</button></div><div class="light"><div class="lights" role="img" aria-label="Overall KPI progress"><div class="light-unit"><span id="lightRed" class="bulb red"></span><span class="light-caption">Not Met</span></div><div class="light-unit"><span id="lightYellow" class="bulb yellow"></span><span class="light-caption">Almost There</span></div><div class="light-unit"><span id="lightGreen" class="bulb green"></span><span class="light-caption">Met</span></div></div><strong id="lightLabel" class="light-summary" style="font-size:12px">Not calculated</strong></div></div></div><details style="margin-top:12px"><summary style="cursor:pointer;font-size:13px;font-weight:700">Review PDF KPI actuals (read-only)</summary><div id="pendingKpis" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:9px;padding-top:12px"></div></details><div class="actions"><button type="button" id="calculate" class="primary">Calculate</button><span id="pendingNotice" class="dirty" aria-live="polite"></span></div></section>
-<div class="kpi-summary-row"><section class="card gp-card"><h2>Employee Gross Profit</h2><div class="gp-line"><div><span id="gpActual" class="gp-number">—</span><div id="gpPct" class="muted">Goal: $15,000</div></div></div><div class="progress"><span id="gpBar" style="width:0%"></span></div></section><section class="card htp-card" aria-label="MTD HTP"><div class="htp-title">⌂ &nbsp;MTD HTP</div><div id="htpValue" class="htp-value" aria-live="polite">—</div></section></div><div class="fast-section-row"><section class="card fast-start" aria-label="Fast Start progress"><div class="fast-heading"><span>⚡ Fast Start</span><button type="button" id="fastInfo" class="info" aria-label="Explain Fast Start">i</button></div><div class="fast-dates" id="fastPeriod">Days 1–7 · Monthly kickoff</div><p class="fast-caption">33% minimum · 50% goal (max)</p><div id="fastMetrics" class="fast-metrics" aria-live="polite"></div><p id="fastNote" class="fast-note"></p></section></div><section class="card unified-panel" aria-label="AGT ADT Results and Daily Shift Priority"><div class="section-head"><div><h2>AGT / ADT Results &amp; Priority</h2><p class="muted unified-intro">Official daily targets, progress, and shift priority in one view. Ranked from highest to lowest priority.</p><div class="priority-heading-actions"><button type="button" class="info" id="priorityInfo" aria-label="Explain Daily Shift Priority">i</button><button type="button" id="copyPriorityAdt" class="copy-priority" aria-label="Copy adjusted daily targets in priority order" title="Copy ADT in priority order" disabled><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><rect x="8" y="8" width="13" height="13" rx="2.2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button><button type="button" id="sharePriorityAdt" class="copy-priority share-priority" aria-label="Share adjusted daily targets in priority order" title="Share ADT in priority order" disabled><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V3m0 0L7.5 7.5M12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button></div></div></div><div id="priorities" class="unified-list" aria-live="polite"></div><div class="stats unified-stats"><div class="stat">Met<strong id="greenCount" class="green-text">0</strong></div><div class="stat">Almost There<strong id="yellowCount" class="yellow-text">0</strong></div><div class="stat">Not Met<strong id="redCount" class="red-text">0</strong></div></div><p class="muted unified-legend">Met = 0 · Almost There = ≥75% or within one base unit · Not Met = otherwise</p></section><section class="card"><div class="section-head"><div><h2>What if…?</h2><p class="muted">Experiment freely. Official results will not change.</p></div><button type="button" id="info" class="info" aria-label="What If instructions">i</button></div><div class="table-wrap"><table><thead><tr><th>KPI</th><th>Rule</th><th class="center">What if…?</th><th class="right">Actual ADT</th><th class="right">Variance</th><th class="right">Projected ADT</th></tr></thead><tbody id="whatIfBody"></tbody></table></div></section><section class="card"><div class="section-head"><h2>Shift Progress Tracker</h2><button type="button" class="info" id="trackerInfo" aria-label="Explain Shift Progress Tracker">i</button></div><div class="chart-wrap"><svg id="shiftChart" role="img" aria-label="Shift progress chart" viewBox="0 0 800 205" preserveAspectRatio="none"></svg></div><div id="chartLegend" class="chart-legend"></div><button type="button" id="clearChartSelection" class="clear-chart">Clear selection</button></section></main>
+<div class="kpi-summary-row"><section class="card gp-card"><h2>Employee Gross Profit</h2><div class="gp-line"><div><span id="gpActual" class="gp-number">—</span><div id="gpPct" class="muted">Goal: $15,000</div></div></div><div class="progress"><span id="gpBar" style="width:0%"></span></div></section><section class="card htp-card" aria-label="MTD HTP"><div class="htp-title">⌂ &nbsp;MTD HTP</div><div id="htpValue" class="htp-value" aria-live="polite">—</div></section></div><div class="fast-section-row"><section class="card fast-start" aria-label="Fast Start progress"><div class="fast-heading"><span>⚡ Fast Start</span><button type="button" id="fastInfo" class="info" aria-label="Explain Fast Start">i</button></div><div class="fast-dates" id="fastPeriod">Days 1–7 · Monthly kickoff</div><p class="fast-caption">33% minimum · 50% goal (max)</p><div id="fastMetrics" class="fast-metrics" aria-live="polite"></div><p id="fastNote" class="fast-note"></p></section></div><section class="card unified-panel" aria-label="AGT ADT Results and Daily Shift Priority"><div class="section-head"><div><h2>AGT / ADT Results &amp; Priority</h2><p class="muted unified-intro">Official daily targets, progress, and shift priority in one view. Ranked from highest to lowest priority.</p><div class="priority-heading-actions"><button type="button" class="info" id="priorityInfo" aria-label="Explain Daily Shift Priority">i</button><button type="button" id="copyPriorityAdt" class="copy-priority" aria-label="Copy adjusted daily targets in priority order" title="Copy ADT in priority order" disabled><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"><rect x="8" y="8" width="13" height="13" rx="2.2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg></button><button type="button" id="sharePriorityAdt" class="copy-priority share-priority" aria-label="Share adjusted daily targets in priority order" title="Share ADT in priority order" disabled><svg aria-hidden="true" viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V3m0 0L7.5 7.5M12 3l4.5 4.5"/><path d="M5 12v6.5A2.5 2.5 0 0 0 7.5 21h9a2.5 2.5 0 0 0 2.5-2.5V12"/></svg></button></div></div></div><div id="priorities" class="unified-list" aria-live="polite"></div><div class="stats unified-stats"><div class="stat">Met<strong id="greenCount" class="green-text">0</strong></div><div class="stat">Almost There<strong id="yellowCount" class="yellow-text">0</strong></div><div class="stat">Not Met<strong id="redCount" class="red-text">0</strong></div></div><p class="muted unified-legend">Met = 0 · Almost There = ≥75% or within one base unit · Not Met = otherwise</p></section><section class="card" id="employeePayoutPanel"><h2>My Payout Center</h2><p class="warning"><strong>ESTIMATE ONLY — NOT FINAL PAY.</strong> Draft commission and monthly performance-bonus calculations are projections, not guaranteed earnings or confirmed paycheck amounts. Final pay may change due to missing sales, eligibility, returns, chargebacks, adjustments, or payroll processing.</p><p class="muted">Commission follows the biweekly pay calendar; performance bonus is monthly. Estimates should be refreshed when Management reviews new reports, normally every three days. Approved payouts below are separate from draft estimates.</p><p id="employeePayoutStatus" role="status">Loading approved payouts…</p><div class="payoutTotals"><div>Approved commission<strong id="employeeCommission">—</strong></div><div>Approved bonus<strong id="employeeBonus">—</strong></div></div><div id="employeeEstimator"><h3>Draft commission estimator</h3><p class="muted">November Cellular World item rates; estimates exclude chargebacks, reversals and adjustments.</p><label>Verified sale category <select id="employeeCommissionItem"></select></label><label>Quantity <input id="employeeCommissionQty" type="number" min="1" step="1" value="1"></label><button id="employeeCommissionAdd" type="button">Add sale</button><button id="employeeCommissionClear" type="button">Clear draft</button><div id="employeeCommissionLines"></div><strong id="employeeCommissionDraft">Draft gross commission: $0.00</strong><h3>Draft performance bonus</h3><p class="muted">Enter verified MyResults values. Incomplete information will not be treated as zero.</p><div id="employeeBonusFields"></div><label><input id="employeeBonusEligible" type="checkbox"> Eligibility verified</label><button id="employeeCalculateBonus" type="button">Calculate draft bonus</button><div id="employeeBonusDraft" role="status">Awaiting verified inputs.</div></div></section><section class="card" id="whatIfSection"><div class="section-head"><div><h2>What if…?</h2><p class="muted">Experiment freely. Official results will not change.</p></div><button type="button" id="info" class="info" aria-label="What If instructions">i</button></div><div class="table-wrap"><table><thead><tr><th>KPI</th><th>Rule</th><th class="center">What if…?</th><th class="right">Actual ADT</th><th class="right">Variance</th><th class="right">Projected ADT</th></tr></thead><tbody id="whatIfBody"></tbody></table></div></section><section class="card"><div class="section-head"><h2>Shift Progress Tracker</h2><button type="button" class="info" id="trackerInfo" aria-label="Explain Shift Progress Tracker">i</button></div><div id="employeeHistoryNotice" role="status">Shift Progress and ADT History are awaiting verified employee-specific snapshots from Management. No local history from another user will be shown.</div><div class="chart-wrap"><svg id="shiftChart" role="img" aria-label="Shift progress chart" viewBox="0 0 800 205" preserveAspectRatio="none"></svg></div><div id="chartLegend" class="chart-legend"></div><button type="button" id="clearChartSelection" class="clear-chart">Clear selection</button></section></main>
 <dialog id="backupDialog" class="wide-dialog"><h2>Backup &amp; Restore</h2><p class="muted">Save a private copy of this phone’s KPI results, history, and Fast Start progress. Backups do not include Supabase accounts or shared Admin goals.</p><div class="admin-actions"><button type="button" id="exportBackup" class="primary">↧ Export Backup</button><button type="button" id="chooseBackup">↥ Restore Backup</button><input type="file" id="backupFile" accept=".json,application/json" hidden></div><p id="backupMessage" class="muted" role="status" aria-live="polite"></p><p class="muted" style="font-size:12px">Keep the file private: it may contain employee performance information. Restoring replaces saved local data for this app on this phone. Existing Supabase data is not changed.</p><button type="button" class="close-dialog">Close</button></dialog>
 <dialog id="uploadDialog"><h2>How to get your KPI PDF</h2><ol class="upload-steps"><li>Go to <strong>apps.cellularworld.net</strong> and log in.</li><li>Open <strong>Opus X</strong> and log in.</li><li>From the dropdown menu, select <strong>Reports &gt; Sales &gt; Sales Performance Report</strong>.</li><li>Under <strong>Report Type</strong>, choose <strong>By Employee</strong>.</li><li>Under <strong>Employees</strong>, select <strong>Unselect All</strong>, then choose your name.</li><li>Select <strong>View Report</strong> and wait for it to load.</li><li>Click the <strong>💾 Save</strong> icon, then choose <strong>PDF</strong>.</li><li><strong>On iPhone:</strong> tap <strong>Open &gt; Share &gt; Save to Files</strong>.</li><li>Return to this app and tap <strong>Upload</strong> to select the saved PDF.</li></ol><button type="button" class="close-dialog">OK</button></dialog>
 <dialog id="overallDialog"><h2>Overall Progress</h2><p><strong style="color:var(--green)">Green — Met:</strong> All seven KPIs meet their current month-to-date targets.</p><p><strong style="color:var(--yellow)">Yellow — Almost There:</strong> No KPI is red, but at least one is within 75% of target or within one base unit.</p><p><strong style="color:var(--red)">Red — Not Met:</strong> At least one KPI is below the Almost There threshold.</p><p>Based only on the latest confirmed calculation; shift history and Employee GP do not affect this status. The number inside the active light is the equal-weight average of each KPI’s progress toward its current MTD target, capped at 100% per KPI. The light color continues to use the existing official status rules.</p><button type="button" class="close-dialog">OK</button></dialog>
@@ -585,13 +596,7 @@ async function cloudRefresh(){
  finally{cloudBusy=false}
 }
 async function cloudInit(){cloudNotice("Connecting shared goals…");await cloudRefresh();setInterval(cloudRefresh,60000);document.addEventListener("visibilitychange",()=>{if(!document.hidden)cloudRefresh()})}
-async function cloudWriteKpis(config,feedback){
- if(!cloudClient||!cloudReady){feedback.textContent="Cloud is not connected. No changes were saved.";return false}
- const rows=config.map(m=>({kpi_key:m.key,kpi_name:m.name,target_type:m.type,daily_target:m.dailyTarget,group_span:m.groupSpan,group_target:m.groupTarget}));
- // Update existing rows only. RLS permits UPDATE solely for authorized Admins.
- for(const r of rows){const {data,error}=await cloudClient.from("kpi_settings").update({daily_target:r.daily_target,group_span:r.group_span,group_target:r.group_target}).eq("kpi_key",r.kpi_key).select("kpi_key");if(error||!data?.length){feedback.textContent="Save failed: "+(error?.message||"permission denied");await cloudRefresh();return false}}
- await cloudRefresh();return true
-}
+async function cloudWriteKpis(config,feedback){feedback.textContent="Employee access is read-only; no official KPI target changes saved.";return false}
 async function cloudWriteFast(goals,feedback){feedback.textContent="Fast Start goals are managed in the Management App. No changes saved here.";return false}
 
 // Local-only, versioned backup. Never export Supabase auth/session tokens or shared cloud settings.
@@ -623,16 +628,111 @@ const $=id=>document.getElementById(id),client=window.supabase?.createClient('ht
 let current=null,undoDeadline=0,undoTimer=null;
 const msg=t=>$('loginMessage').textContent=t;
 function wait(t){$('employeeWaiting').textContent=t;}
-async function countShifts(){const month=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit'}).format(new Date());const {data,error}=await client.from('shift_logs').select('shift_date').eq('employee_id',current.user_id).eq('state','active').gte('shift_date',month+'-01').lt('shift_date',month.slice(0,4)+'-'+String(Number(month.slice(5))+1).padStart(2,'0')+'-01');if(error)throw error;return data.length;}
+async function countShifts(){const month=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit'}).format(new Date());const {data,error}=await client.from('shift_logs').select('shift_date').eq('employee_id',current.user_id).eq('state','active').gte('shift_date',month+'-01').lt('shift_date',new Date(Date.UTC(Number(month.slice(0,4)),Number(month.slice(5)),1)).toISOString().slice(0,10));if(error)throw error;return data.length;}
 async function updateLogShiftButton(){
  const today=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
- const {data,error}=await client.from('shift_logs').select('state').eq('employee_id',current.user_id).eq('shift_date',today).maybeSingle();
+ const {data,error}=await client.from('shift_logs').select('state').eq('employee_id',current.user_id).eq('shift_date',today).eq('state','active').limit(1);
  if(error)throw error;
- $('employeeLogShift').hidden=data?.state==='active';
+ $('employeeLogShift').hidden=Boolean(data?.length);
+}
+
+const commissionRates=[
+['Voice · Value Plus / Starter / 55+',5],['Voice · Extra Unlimited',15],['Voice · Premium Unlimited',20],['Voice · Elite Unlimited',25],
+['CRU / FN · Starter or FN plan',10],['CRU · Extra Unlimited',20],['CRU · Premium Unlimited',25],
+['Internet · 100 Mbps or less / 300 Mbps',20],['Internet · 500 Mbps',50],['Internet · 1000 Mbps+',55],['Quantum Fiber',50],['Internet Air / Air Business',35],
+['Posted fiber upgrade · to 300 Mbps',20],['Posted fiber upgrade · to 500 Mbps',40],['Posted fiber upgrade · to 1000 Mbps',45],['DIRECTV eligible new activation',50],
+['Upgrade · Starter / 55+',2],['Upgrade · Extra',5],['Upgrade · Premium / Elite',10],['Watch installment activation / upgrade',4],['Tablet installment activation / upgrade',4],['MiFi activation',2],['Connected device activation',2],
+['OneConnect Individual',20],['OneConnect Duo',25],['OneConnect Family',45],
+['Prepaid $35 no autopay',4],['Prepaid $45 no autopay',5],['Prepaid $60 no autopay',6],['Prepaid $35 autopay',8],['Prepaid $45 autopay',10],['Prepaid $60 autopay',12],
+['Protect Advantage 1',7],['Protect Advantage 4',12],['HomeTech Protection',10],['HomeTech Protection Broadband',10],['Turbo spiff',5],['All-Fi Fiber bolt-on',10],['Qualified event ID spiff',10]
+];
+
+const bonusTable={
+apo:[[28,33,38],[28,33,38],[28,33,38],[28,33,38]],
+voice:[[10,18,21],[15,20,24],[19,25,30],[22,31,35]],
+internet:[[5,7,9],[6,8,10],[6,9,11],[6,9,11]],
+opp:[[30,40,55],[40,50,65],[50,60,75],[60,70,85]],
+cru:[[2,5,10],[3,7,11],[4,8,12],[4,8,12]]};
+function bonusPoints(value,targets,points){let p=0;for(let i=0;i<targets.length;i++)if(value>=targets[i])p=points[i];return p}
+
+let employeeCommissionDraft=[];
+const employeeMoney=n=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const employeeEsc=s=>String(s).replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+$('employeeCommissionItem').innerHTML=commissionRates.map((r,i)=>'<option value="'+i+'">'+employeeEsc(r[0])+' · '+employeeMoney(r[1])+'</option>').join('');
+function renderEmployeeCommission(){
+ $('employeeCommissionLines').innerHTML=employeeCommissionDraft.map(r=>'<p>'+employeeEsc(r[0])+' × '+r[2]+' = '+employeeMoney(r[1]*r[2])+'</p>').join('');
+ $('employeeCommissionDraft').textContent='Draft gross commission: '+employeeMoney(employeeCommissionDraft.reduce((sum,r)=>sum+r[1]*r[2],0));
+}
+$('employeeCommissionAdd').onclick=()=>{const item=commissionRates[Number($('employeeCommissionItem').value)],qty=Number($('employeeCommissionQty').value);if(!item||!Number.isSafeInteger(qty)||qty<1||qty>10000)return alert('Enter a valid whole-number quantity.');employeeCommissionDraft.push([...item,qty]);renderEmployeeCommission()};
+$('employeeCommissionClear').onclick=()=>{employeeCommissionDraft=[];renderEmployeeCommission()};
+const employeeBonusKeys=[['Opp','Postpaid opportunities'],['Voice','Postpaid voice GA'],['Internet','Internet'],['Cru','CRU voice GA'],['Fn','FirstNet'],['Apo','APO rate (%)'],['Protection','Protection rate (%)'],['Htp','HTP rate (%)'],['Next','Next Up rate (%)'],['Events','Qualified events']];
+$('employeeBonusFields').innerHTML='<label>Store tier <select id="employeeBonusTier"><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option></select></label>'+employeeBonusKeys.map(([key,label])=>'<label>'+label+' <input id="employeeBonus'+key+'" type="number" min="0" step="any" placeholder="Verified value"></label>').join('');
+$('employeeCalculateBonus').onclick=()=>{
+ const v={};for(const [key] of employeeBonusKeys){const input=$('employeeBonus'+key),value=Number(input.value);if(input.value.trim()===''||!Number.isFinite(value)||value<0||(['Protection','Htp','Next'].includes(key)&&value>100)||(!['Apo','Protection','Htp','Next'].includes(key)&&!Number.isSafeInteger(value)))return $('employeeBonusDraft').textContent='Incomplete: enter valid verified values for every metric.';v[key]=value}
+ if(!$('employeeBonusEligible').checked)return $('employeeBonusDraft').textContent='Eligibility not verified. No bonus amount calculated.';
+ const tier=Number($('employeeBonusTier').value)-1;if(v.Opp<20)return $('employeeBonusDraft').textContent='Draft bonus: $0.00 · minimum 20 opportunities not met.';
+ const scores={
+ APO:bonusPoints(v.Apo,bonusTable.apo[tier],[10,15,20])-(v.Apo<28?5:0),
+ Voice:bonusPoints(v.Voice,bonusTable.voice[tier],[15,25,30])-(v.Voice<bonusTable.voice[tier][0]?10:0),
+ Internet:bonusPoints(v.Internet,bonusTable.internet[tier],[15,20,25]),
+ Opportunities:bonusPoints(v.Opp,bonusTable.opp[tier],[10,15,20]),
+ CRU:bonusPoints(v.Cru,bonusTable.cru[tier],[5,10,15])-(v.Fn<1?5:0),
+ Protection:bonusPoints(v.Protection,[85,90],[10,15])-(v.Htp<8?10:0),
+ NextUp:bonusPoints(v.Next,[85,90],[5,10]),
+ Events:bonusPoints(v.Events,[1,3,4],[0,5,10])-(v.Events<1?5:0)
+ };
+ const elite=v.Apo>=28&&v.Voice>=bonusTable.voice[tier][0]&&v.Internet>=bonusTable.internet[tier][0]&&v.Opp>=bonusTable.opp[tier][0]&&v.Cru>=bonusTable.cru[tier][0]&&v.Fn>=1&&v.Protection>=85&&v.Htp>=8&&v.Next>=85&&v.Events>=1;
+ const points=Object.values(scores).reduce((sum,n)=>sum+n,0),base=Math.max(0,points*15),kicker=elite?300:0;
+ $('employeeBonusDraft').textContent='Draft performance bonus: '+employeeMoney(base+kicker)+' · '+points+' points · base '+employeeMoney(base)+' · Elite 8 kicker '+employeeMoney(kicker)+'. Subject to payroll review; Management table lists 145 max base points while document introduction cites 155.';
+};
+async function refreshEmployeeExtras(){
+ const [o,p]=await Promise.all([
+ client.from('app_options').select('value').eq('key','allow_individual_uploads').maybeSingle(),
+ client.from('employee_payouts').select('payout_month,commission_amount,bonus_amount').eq('employee_id',current.user_id).eq('status','approved').order('payout_month',{ascending:false}).limit(1)
+ ]);
+ if(o.error)throw o.error;if(p.error)throw p.error;
+ document.body.classList.toggle('allowIndividualUploads',o.data?.value===true);
+ const payout=p.data?.[0],fmtMoney=n=>n==null?'—':'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+ $('employeeCommission').textContent=payout?fmtMoney(payout.commission_amount):'—';
+ $('employeeBonus').textContent=payout?fmtMoney(payout.bonus_amount):'—';
+ $('employeePayoutStatus').textContent=payout?'Approved payout period: '+payout.payout_month:'No approved payout available.';
+}
+async function refreshPrivateHistory(){
+ const notice=$('employeeHistoryNotice');
+ const [reports,logs]=await Promise.all([
+  client.from('employee_kpis').select('actuals,gp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(100),
+  client.from('shift_logs').select('shift_date').eq('employee_id',current.user_id).eq('state','active').order('shift_date',{ascending:true}).limit(100)
+ ]);
+ if(reports.error||logs.error){notice.textContent='Private history unavailable: '+(reports.error?.message||logs.error?.message);return}
+ const dated=(reports.data||[]).filter(r=>r.kpi_reports?.report_end&&r.actuals);
+ if(!dated.length){notice.textContent='No dated Management-approved employee KPI reports yet. Shift Progress and ADT History await verified snapshots.';return}
+ const unique=new Map();
+ for(const report of dated){const date=report.kpi_reports.report_end;if(!unique.has(date))unique.set(date,report)}
+ const snapshots=[...unique.entries()].map(([date,report])=>({date,actuals:report.actuals,gp:report.gp})).sort((a,b)=>a.date.localeCompare(b.date));
+ const shifts=(logs.data||[]).map(r=>r.shift_date);
+ const countAt=date=>shifts.filter(d=>d<=date&&d.slice(0,7)===date.slice(0,7)).length;
+ notice.replaceChildren();
+ const heading=document.createElement('strong');heading.textContent='My approved KPI history and shift progress';notice.append(heading);
+ const description=document.createElement('p');description.textContent='Sales differences are shown only for consecutive worked-shift snapshots within the same month. Missing snapshots are marked unverified; official AGT/ADT formulas are unchanged.';notice.append(description);
+ for(let i=snapshots.length-1;i>=0;i--){
+  const current=snapshots[i],previous=i?snapshots[i-1]:null,shift=countAt(current.date),prior=previous&&previous.date.slice(0,7)===current.date.slice(0,7)?countAt(previous.date):0;
+  const consecutive=shifts.includes(current.date)&&(shift===1&&prior===0||Boolean(previous&&shifts.includes(previous.date)&&previous.date.slice(0,7)===current.date.slice(0,7)&&shift===prior+1));
+  const baseline=shift===1&&prior===0;
+  const metrics=['VGA','UP','CRU','FN','INT','OPPS','EVENTS'];
+  const valid=metrics.every(k=>Number.isFinite(Number(current.actuals[k]))&&current.actuals[k]!=null&&(baseline||previous?.actuals[k]!=null&&Number.isFinite(Number(previous.actuals[k]))));
+  const line=document.createElement('p');
+  if(consecutive&&valid){
+   const values=metrics.map(k=>{const delta=Number(current.actuals[k])-(baseline?0:Number(previous.actuals[k]));const rule=KPI_CONFIG.find(m=>m.key===k);const target=rule?(rule.type==='daily'?rule.dailyTarget:rule.groupTarget/rule.groupSpan):null;const difference=target==null?'':' ('+(delta-target>=0?'+':'')+(delta-target).toFixed(2)+' vs shift target)';return k+': '+(delta>=0?'+':'')+delta+difference});
+   line.textContent=current.date+' · Shift '+shift+' · '+values.join(' · ')+(current.gp==null||!baseline&&previous?.gp==null?'':' · GP difference: $'+(Number(current.gp)-(baseline?0:Number(previous.gp))).toLocaleString('en-US'));
+  }else{
+   line.textContent=current.date+' · MTD snapshot · Shift delta unverified (missing consecutive worked-shift reports or shift logs)';
+  }
+  notice.append(line);
+ }
 }
 async function refresh(){if(!current)return;
  try{
- await updateLogShiftButton();
+ await Promise.allSettled([updateLogShiftButton(),refreshEmployeeExtras(),refreshPrivateHistory()]);
  const shifts=await countShifts();$('employeeShiftCount').textContent=shifts+' shifts MTD';
  const {data:rows,error}=await client.from('employee_kpis').select('actuals,gp,apo,htp,published_at,kpi_reports(report_end)').eq('employee_id',current.user_id).order('published_at',{ascending:false}).limit(1);
  if(error)throw error;
@@ -651,10 +751,11 @@ async function activate(user,shouldLog=false){const {data,error}=await client.fr
  // Clear legacy local-only official data to avoid leaking the prior phone user's KPI data.
  official=null;pending={shiftsWorked:0,actuals:clone(DEFAULT_ACTUALS),gp:null};whatIf=clone(DEFAULT_ACTUALS);renderOfficial();renderGP();renderWhatIf(true);
  if(shouldLog)await logShift();else await refresh();
+ await cloudRefresh();
 }
 $('employeeLogin').addEventListener('submit',async e=>{e.preventDefault();msg('Signing in…');const {data,error}=await client.auth.signInWithPassword({email:$('loginEmail').value.trim(),password:$('loginPassword').value});if(error){msg(error.message);return}await activate(data.user,$('loginShift').checked);$('loginPassword').value='';$('loginShift').checked=false});
 $('employeeLogShift').onclick=logShift;
-$('employeeSignOut').onclick=async()=>{await client.auth.signOut();current=null;document.body.classList.remove('employeeMode');$('employeeGate').hidden=false;location.reload()};
+$('employeeSignOut').onclick=async()=>{await client.auth.signOut();current=null;document.body.classList.remove('employeeMode','allowIndividualUploads');$('employeeGate').hidden=false;location.reload()};
 
 $('employeeUndoButton').onclick=async()=>{const {data,error}=await client.rpc('undo_my_shift');if(error||!data){alert(error?.message||'Undo window has expired');return}clearInterval(undoTimer);$('employeeUndo').style.display='none';await refresh()};
 if(!client){msg('Supabase library unavailable. Check internet access.');return}
